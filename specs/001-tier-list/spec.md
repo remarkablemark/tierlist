@@ -20,6 +20,7 @@
 - Q: What is the maximum number of items a user should be able to add to a single tier list? → A: 100 items with soft warning at 50+
 - Q: What export formats should the tier list image export support? → A: PNG only: Standard format for tier list memes across platforms
 - Q: What should be the undo/redo history limit? → A: 50 actions with circular buffer
+- Q: How should the application handle IndexedDB save failures? → A: Show error immediately, no retry: Fast failure, user must act
 
 ## User Scenarios & Testing
 
@@ -110,7 +111,7 @@ As a user, I want to export my tier list as an image so that I can share it on s
 - How does the system handle very long item names or tier labels? Text should truncate gracefully or wrap without breaking layout
 - What happens when the browser is refreshed during editing? Work-in-progress should be auto-saved to prevent data loss
 - How does the system handle attempting to drop items outside of valid drop zones? Drop should be prevented with visual feedback
-- What happens when saving fails (e.g., storage full)? User should receive clear error message with recovery options
+- What happens when saving fails (e.g., storage full)? User should receive immediate error message with options to manually export or free storage
 
 ## Requirements
 
@@ -126,6 +127,7 @@ As a user, I want to export my tier list as an image so that I can share it on s
 - **FR-007**: System MUST support drag-and-drop interaction for rearranging items within a tier
 - **FR-008**: System MUST visually distinguish between different tiers using color and labels
 - **FR-009**: System MUST persist tier list configurations to IndexedDB to allow saving and loading
+- **FR-009a**: System MUST display an immediate error notification if IndexedDB save fails, prompting user to manually export or free storage
 - **FR-010**: System MUST provide undo/redo functionality for all state-changing actions including tier operations, item operations, and customization changes with a history limit of 50 actions using circular buffer
 - **FR-011**: System MUST auto-save work-in-progress to prevent data loss on accidental navigation
 - **FR-012**: System MUST allow users to delete tiers and items with confirmation
