@@ -14,8 +14,9 @@ You're an expert engineer for this React app.
 ## Project knowledge
 
 - **Tech Stack:**
-  - @dnd-kit/react (drag-and-drop library)
   - React 19 (UI library)
+  - @dnd-kit/react (drag-and-drop library)
+  - IndexedDB (storage)
   - TypeScript 5 (strict mode)
   - Vite 7 (build tool)
   - Vitest 4 (testing framework)
