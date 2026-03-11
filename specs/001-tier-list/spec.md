@@ -17,6 +17,7 @@
 - Q: What state management approach should be used for managing tier list state? → A: React useState + useReducer with Context API
 - Q: How should users provide images for tier list items? → A: File picker dialog (local files via `<input type="file">`)
 - Q: How should the tier list application handle mobile and touch device interactions? → A: Responsive with touch support: Full functionality on mobile/tablet with touch-optimized drag-and-drop using @dnd-kit touch sensors
+- Q: What is the maximum number of items a user should be able to add to a single tier list? → A: 100 items with soft warning at 50+
 
 ## User Scenarios & Testing
 
@@ -132,6 +133,7 @@ As a user, I want to export my tier list as an image so that I can share it on s
 - **FR-015**: System MUST be fully accessible via keyboard navigation (tab, enter, arrow keys)
 - **FR-016**: System MUST support touch-based drag-and-drop interactions on mobile and tablet devices using @dnd-kit touch sensors
 - **FR-017**: System MUST provide responsive layout that adapts to viewport widths from 320px to 1920px
+- **FR-018**: System MUST allow up to 100 items per tier list and display a soft performance warning when 50+ items are added
 
 ### Key Entities
 
@@ -149,7 +151,7 @@ As a user, I want to export my tier list as an image so that I can share it on s
 - **SC-001**: Users can create a complete tier list with 5 tiers and 10 items in under 3 minutes
 - **SC-002**: 95% of users successfully complete their first tier list without assistance or tutorial
 - **SC-003**: Drag-and-drop operations complete with visual feedback in under 100 milliseconds
-- **SC-004**: System supports tier lists with up to 50 items and 10 tiers without performance degradation
+- **SC-004**: System supports tier lists with up to 100 items and 10 tiers without performance degradation; soft warning displayed at 50+ items
 - **SC-005**: 90% of users rate the tier list creation experience as "intuitive" or "very intuitive" in usability testing
 - **SC-006**: Exported images render accurately at resolutions suitable for social media sharing (minimum 1080px width)
 - **SC-007**: Auto-save preserves work-in-progress with less than 5 seconds of potential data loss
