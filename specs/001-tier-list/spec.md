@@ -5,6 +5,12 @@
 **Status**: Draft
 **Input**: User description: "tier list"
 
+## Clarifications
+
+### Session 2026-03-11
+
+- Q: How should items be uniquely identified and tracked within the system? → A: Unique ID (UUID) per item, generated at creation
+
 ## User Scenarios & Testing
 
 ### User Story 1 - Create and Organize Tiers (Priority: P1)
@@ -120,7 +126,7 @@ As a user, I want to export my tier list as an image so that I can share it on s
 
 - **Tier List**: A collection of tiers arranged in ranked order, containing items to be categorized
 - **Tier**: A ranked category within a tier list, with a label, color, and collection of items
-- **Item**: An individual element to be ranked, containing a text label and optional image
+- **Item**: An individual element to be ranked, identified by a unique UUID generated at creation, containing a text label and optional image
 - **Configuration**: The complete state of a tier list including tier order, labels, colors, and item assignments
 
 ## Success Criteria
