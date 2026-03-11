@@ -1,73 +1,161 @@
-# [PROJECT_NAME] Constitution
+<!--
+SYNC IMPACT REPORT
+==================
+Version change: 0.0.0 → 1.0.0 (Initial constitution)
+Modified principles: N/A (initial creation)
+Added sections:
+  - Core Principles (5 principles)
+  - Code Quality Standards
+  - Development Workflow
+  - Governance
+Removed sections: N/A
+Templates requiring updates:
+  - ✅ plan-template.md (no changes needed - generic)
+  - ✅ spec-template.md (no changes needed - generic)
+  - ✅ tasks-template.md (no changes needed - generic)
+Follow-up TODOs: None
+-->
 
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# Tier List Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
+### I. Test-First Development (NON-NEGOTIABLE)
 
-<!-- Example: I. Library-First -->
+All feature development MUST follow Test-Driven Development (TDD) methodology:
 
-[PRINCIPLE_1_DESCRIPTION]
+- Tests MUST be written before implementation code
+- Tests MUST fail initially (Red phase)
+- Implementation MUST make tests pass (Green phase)
+- Code MUST be refactored while keeping tests green (Refactor phase)
+- 100% test coverage required for statements, branches, functions, and lines
+- Barrel exports (index.ts files) are excluded from coverage requirements
 
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+**Rationale**: TDD ensures code correctness, reduces regressions, and provides living documentation. The red-green-refactor cycle prevents over-engineering and validates every line of production code.
 
-### [PRINCIPLE_2_NAME]
+### II. TypeScript Strict Mode
 
-<!-- Example: II. CLI Interface -->
+All TypeScript code MUST adhere to strict type-checking:
 
-[PRINCIPLE_2_DESCRIPTION]
+- No implicit any types allowed
+- All function parameters and return types MUST be explicitly typed
+- Use interfaces for object shapes and component props
+- Use proper React event types (React.MouseEvent, React.FormEvent, etc.)
+- Type guards MUST be used for runtime type checking where needed
 
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+**Rationale**: Strict typing catches errors at compile-time, improves IDE support, and serves as self-documenting code.
 
-### [PRINCIPLE_3_NAME]
+### III. Component Architecture
 
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
+React components MUST follow these patterns:
 
-[PRINCIPLE_3_DESCRIPTION]
+- Functional components only (no class components)
+- Hooks MUST be used at the top level (never inside loops or conditions)
+- Props MUST be destructured in function signature
+- Components MUST be organized in feature-based directories
+- Each component MUST have its own directory with types and tests
+- Use semantic HTML elements (header, nav, main, button, etc.)
 
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+**Rationale**: Consistent component structure improves maintainability, readability, and team collaboration.
 
-### [PRINCIPLE_4_NAME]
+### IV. Accessibility First
 
-<!-- Example: IV. Integration Testing -->
+All user-facing features MUST be accessible:
 
-[PRINCIPLE_4_DESCRIPTION]
+- Proper ARIA labels MUST be included where semantic HTML is insufficient
+- All interactive elements MUST support keyboard navigation
+- Images MUST have descriptive alt text
+- Color contrast MUST meet WCAG guidelines
+- Focus states MUST be visible and logical
 
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+**Rationale**: Accessibility ensures the application is usable by all users and is a legal requirement in many contexts.
 
-### [PRINCIPLE_5_NAME]
+### V. Tailwind-Only Styling
 
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
+All styling MUST use Tailwind CSS utility classes:
 
-[PRINCIPLE_5_DESCRIPTION]
+- No custom CSS files unless absolutely necessary (must be justified)
+- Responsive design MUST use Tailwind responsive prefixes (sm:, md:, lg:)
+- Dark mode MUST use dark: prefix
+- Component variants MUST follow consistent Tailwind patterns
 
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+**Rationale**: Tailwind provides consistent design tokens, reduces CSS bundle size, and eliminates styling context-switching.
 
-## [SECTION_2_NAME]
+## Code Quality Standards
 
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+### Linting and Formatting
 
-[SECTION_2_CONTENT]
+- ESLint MUST pass with zero errors before any commit
+- Prettier MUST be used for code formatting (auto-formatted on save)
+- No console.log statements in production code
+- No debugger statements (will cause ESLint errors)
+- TSDoc comments REQUIRED for public APIs and complex functions
 
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### Naming Conventions
 
-## [SECTION_3_NAME]
+- Components: PascalCase (UserProfile, NavigationMenu)
+- Functions: camelCase (getUserData, handleSubmit)
+- Constants: UPPER_SNAKE_CASE (API_BASE_URL, MAX_RETRIES)
+- Files:
+  - Components: ComponentName.tsx
+  - Types: ComponentName.types.ts
+  - Utilities: utilityName.ts
+  - Tests: ComponentName.test.tsx
 
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+### Error Handling
 
-[SECTION_3_CONTENT]
+- Async operations MUST use try-catch blocks
+- Promise rejections MUST be handled properly
+- Error boundaries MUST be implemented for component error handling
+- Type guards MUST be used for runtime type validation
 
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+## Development Workflow
+
+### Git Workflow
+
+- Conventional Commits MUST be used for commit messages
+- Husky hooks enforce code quality on commits
+- lint-staged runs checks on staged files only
+- Branch naming: [number]-[feature-name] (e.g., 001-add-tier-drag-drop)
+
+### Testing Standards
+
+- Vitest MUST be used for all tests
+- Testing Library (@testing-library/react) for component testing
+- @testing-library/user-event for simulating user interactions
+- External dependencies MUST be mocked (API calls, browser APIs)
+- Test names MUST clearly state what is being tested
+- Tests MUST be written first (TDD) and validated before implementation
+
+### Build and Deployment
+
+- Production builds MUST pass without errors (npm run build)
+- Type checking MUST pass (npm run lint:tsc)
+- All tests MUST pass (npm run test:ci)
+- React Compiler handles memoization automatically (no manual useMemo/useCallback)
 
 ## Governance
 
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
+### Amendment Process
 
-[GOVERNANCE_RULES]
+This constitution supersedes all other development practices. Amendments require:
 
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+1. Documentation of the proposed change
+2. Justification for the change (problem it solves)
+3. Migration plan for existing code if needed
+4. Update to version number following semantic versioning
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
+### Versioning Policy
 
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+- **MAJOR**: Backward incompatible changes (principle removals, redefinitions)
+- **MINOR**: New principles added or existing principles materially expanded
+- **PATCH**: Clarifications, wording improvements, typo fixes
+
+### Compliance Review
+
+- All pull requests MUST verify constitution compliance
+- Code reviewers MUST check for principle violations
+- Complexity MUST be justified with simpler alternatives rejected
+- This constitution MUST be reviewed quarterly for relevance
+
+**Version**: 1.0.0 | **Ratified**: 2026-03-11 | **Last Amended**: 2026-03-11
