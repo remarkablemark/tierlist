@@ -12,6 +12,7 @@
 - Q: How should items be uniquely identified and tracked within the system? → A: Unique ID (UUID) per item, generated at creation
 - Q: What persistence mechanism should be used for saving and loading tier lists? → A: IndexedDB
 - Q: What actions should be included in the undo/redo history? → A: All state-changing actions (tier create/delete/reorder, item add/move/delete, customization changes)
+- Q: When a tier containing items is deleted, what should happen to those items? → A: Move items to an "Unassigned" area below the tiers
 
 ## User Scenarios & Testing
 
@@ -27,7 +28,7 @@ As a user, I want to create a tier list with multiple ranked tiers so that I can
 
 1. **Given** a blank tier list canvas, **When** the user adds a new tier, **Then** the tier appears with a default label and can be renamed
 2. **Given** existing tiers, **When** the user reorders tiers vertically, **Then** the visual ranking updates to reflect the new order
-3. **Given** a tier list with multiple tiers, **When** the user deletes a tier, **Then** the tier is removed and remaining tiers maintain their order
+3. **Given** a tier list with multiple tiers, **When** the user deletes a tier, **Then** the tier is removed and any items in it are moved to an "Unassigned" area
 
 ---
 
@@ -98,7 +99,7 @@ As a user, I want to export my tier list as an image so that I can share it on s
 
 ### Edge Cases
 
-- What happens when a tier is deleted while containing items? Items should move to an unassigned area or prompt user for action
+- When a tier containing items is deleted, items are moved to an "Unassigned" area below the tiers for user reassignment
 - How does the system handle very long item names or tier labels? Text should truncate gracefully or wrap without breaking layout
 - What happens when the browser is refreshed during editing? Work-in-progress should be auto-saved to prevent data loss
 - How does the system handle attempting to drop items outside of valid drop zones? Drop should be prevented with visual feedback
@@ -120,6 +121,7 @@ As a user, I want to export my tier list as an image so that I can share it on s
 - **FR-010**: System MUST provide undo/redo functionality for all state-changing actions including tier operations, item operations, and customization changes
 - **FR-011**: System MUST auto-save work-in-progress to prevent data loss on accidental navigation
 - **FR-012**: System MUST allow users to delete tiers and items with confirmation
+- **FR-012a**: System MUST move items from a deleted tier to an "Unassigned" area below the tiers for user reassignment
 - **FR-013**: System MUST export tier list as a downloadable image file
 - **FR-014**: System MUST provide visual feedback during drag-and-drop operations (hover states, drop zones)
 - **FR-015**: System MUST be fully accessible via keyboard navigation (tab, enter, arrow keys)
