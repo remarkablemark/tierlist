@@ -24,6 +24,7 @@
 - Q: How should the application handle dark mode / theme switching? → A: System-preference only: Auto-detect via `prefers-color-scheme` media query, no manual toggle
 - Q: How should the application handle security and data sanitization for user-provided content (tier labels, item names)? → A: Minimal sanitization: Escape HTML entities only (`<`, `>`, `&`) to prevent XSS
 - Q: How should the application handle concurrent editing of the same tier list in multiple browser tabs? → A: Tab-local isolation: Each tab works independently; changes only visible after manual refresh
+- Q: How should the application handle export-to-image failures (e.g., canvas size limits, rendering errors)? → A: Hard fail: Show error only, no fallback or retry options
 
 ## User Scenarios & Testing
 
@@ -116,6 +117,7 @@ As a user, I want to export my tier list as an image so that I can share it on s
 - How does the system handle attempting to drop items outside of valid drop zones? Drop should be prevented with visual feedback
 - What happens when saving fails (e.g., storage full)? User should receive immediate error message with options to manually export or free storage
 - When the same tier list is edited in multiple browser tabs simultaneously, each tab operates independently with changes only visible after manual refresh
+- When image export fails (e.g., canvas size exceeded, rendering error), display error message only without retry or fallback options
 
 ## Requirements
 
@@ -144,6 +146,7 @@ As a user, I want to export my tier list as an image so that I can share it on s
 - **FR-018**: System MUST allow up to 100 items per tier list and display a soft performance warning when 50+ items are added
 - **FR-019**: System MUST automatically adapt to user's system color scheme preference (light/dark) using `prefers-color-scheme` media query
 - **FR-020**: System MUST escape HTML entities (`<`, `>`, `&`) in all user-provided text content (tier labels, item names) to prevent XSS attacks
+- **FR-021**: System MUST display an error message when image export fails (e.g., canvas size exceeded, rendering error) without offering retry or fallback options
 
 ### Key Entities
 
