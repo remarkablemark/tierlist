@@ -22,6 +22,7 @@
 - Q: What should be the undo/redo history limit? → A: 50 actions with circular buffer
 - Q: How should the application handle IndexedDB save failures? → A: Show error immediately, no retry: Fast failure, user must act
 - Q: How should the application handle dark mode / theme switching? → A: System-preference only: Auto-detect via `prefers-color-scheme` media query, no manual toggle
+- Q: How should the application handle security and data sanitization for user-provided content (tier labels, item names)? → A: Minimal sanitization: Escape HTML entities only (`<`, `>`, `&`) to prevent XSS
 
 ## User Scenarios & Testing
 
@@ -140,6 +141,7 @@ As a user, I want to export my tier list as an image so that I can share it on s
 - **FR-017**: System MUST provide responsive layout that adapts to viewport widths from 320px to 1920px
 - **FR-018**: System MUST allow up to 100 items per tier list and display a soft performance warning when 50+ items are added
 - **FR-019**: System MUST automatically adapt to user's system color scheme preference (light/dark) using `prefers-color-scheme` media query
+- **FR-020**: System MUST escape HTML entities (`<`, `>`, `&`) in all user-provided text content (tier labels, item names) to prevent XSS attacks
 
 ### Key Entities
 
