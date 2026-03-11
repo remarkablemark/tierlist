@@ -23,6 +23,7 @@
 - Q: How should the application handle IndexedDB save failures? → A: Show error immediately, no retry: Fast failure, user must act
 - Q: How should the application handle dark mode / theme switching? → A: System-preference only: Auto-detect via `prefers-color-scheme` media query, no manual toggle
 - Q: How should the application handle security and data sanitization for user-provided content (tier labels, item names)? → A: Minimal sanitization: Escape HTML entities only (`<`, `>`, `&`) to prevent XSS
+- Q: How should the application handle concurrent editing of the same tier list in multiple browser tabs? → A: Tab-local isolation: Each tab works independently; changes only visible after manual refresh
 
 ## User Scenarios & Testing
 
@@ -114,6 +115,7 @@ As a user, I want to export my tier list as an image so that I can share it on s
 - What happens when the browser is refreshed during editing? Work-in-progress should be auto-saved to prevent data loss
 - How does the system handle attempting to drop items outside of valid drop zones? Drop should be prevented with visual feedback
 - What happens when saving fails (e.g., storage full)? User should receive immediate error message with options to manually export or free storage
+- When the same tier list is edited in multiple browser tabs simultaneously, each tab operates independently with changes only visible after manual refresh
 
 ## Requirements
 
