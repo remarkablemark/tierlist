@@ -11,6 +11,7 @@
 
 - Q: How should items be uniquely identified and tracked within the system? → A: Unique ID (UUID) per item, generated at creation
 - Q: What persistence mechanism should be used for saving and loading tier lists? → A: IndexedDB
+- Q: What actions should be included in the undo/redo history? → A: All state-changing actions (tier create/delete/reorder, item add/move/delete, customization changes)
 
 ## User Scenarios & Testing
 
@@ -116,7 +117,7 @@ As a user, I want to export my tier list as an image so that I can share it on s
 - **FR-007**: System MUST support drag-and-drop interaction for rearranging items within a tier
 - **FR-008**: System MUST visually distinguish between different tiers using color and labels
 - **FR-009**: System MUST persist tier list configurations to IndexedDB to allow saving and loading
-- **FR-010**: System MUST provide undo/redo functionality for recent actions
+- **FR-010**: System MUST provide undo/redo functionality for all state-changing actions including tier operations, item operations, and customization changes
 - **FR-011**: System MUST auto-save work-in-progress to prevent data loss on accidental navigation
 - **FR-012**: System MUST allow users to delete tiers and items with confirmation
 - **FR-013**: System MUST export tier list as a downloadable image file
