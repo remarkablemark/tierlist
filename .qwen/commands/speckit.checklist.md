@@ -1,9 +1,10 @@
-description = "Generate a custom checklist for the current feature based on user requirements."
-
-prompt = """
 ---
 description: Generate a custom checklist for the current feature based on user requirements.
 ---
+
+---
+
+## description: Generate a custom checklist for the current feature based on user requirements.
 
 ## Checklist Purpose: "Unit Tests for English"
 
@@ -38,7 +39,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 1. **Setup**: Run `.specify/scripts/bash/check-prerequisites.sh --json` from repo root and parse JSON for FEATURE_DIR and AVAILABLE_DOCS list.
    - All file paths must be absolute.
-   - For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\\''m Groot' (or double-quote if possible: "I'm Groot").
+   - For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\''m Groot' (or double-quote if possible: "I'm Groot").
 
 2. **Clarify intent (dynamic)**: Derive up to THREE initial contextual clarifying questions (no pre-baked catalog). They MUST:
    - Be generated from the user's phrasing + extracted signals from spec/plan/tasks
@@ -296,4 +297,3 @@ Sample items:
 - Correct: Validation of requirement quality
 - Wrong: "Does it do X?"
 - Correct: "Is X clearly specified?"
-"""
