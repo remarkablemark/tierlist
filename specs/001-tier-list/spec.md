@@ -15,6 +15,7 @@
 - Q: When a tier containing items is deleted, what should happen to those items? → A: Move items to an "Unassigned" area below the tiers
 - Q: How should item images be provided and stored? → A: Data URLs (base64-encoded strings) stored in IndexedDB
 - Q: What state management approach should be used for managing tier list state? → A: React useState + useReducer with Context API
+- Q: How should users provide images for tier list items? → A: File picker dialog (local files via `<input type="file">`)
 
 ## User Scenarios & Testing
 
@@ -115,6 +116,7 @@ As a user, I want to export my tier list as an image so that I can share it on s
 - **FR-002**: System MUST allow users to assign custom labels to each tier (e.g., "S", "A", "B", "C", "D")
 - **FR-003**: System MUST allow users to customize the background color of each tier
 - **FR-004**: System MUST allow users to add items with text labels and optional images to the tier list
+- **FR-004a**: System MUST provide a file picker dialog (`<input type="file">`) for users to select image files from their device, converting selected files to data URLs
 - **FR-005**: System MUST support drag-and-drop interaction for moving items between tiers
 - **FR-006**: System MUST support drag-and-drop interaction for reordering tiers vertically
 - **FR-007**: System MUST support drag-and-drop interaction for rearranging items within a tier
@@ -135,6 +137,7 @@ As a user, I want to export my tier list as an image so that I can share it on s
 - **Item**: An individual element to be ranked, identified by a unique UUID generated at creation, containing a text label and optional image stored as a data URL (base64)
 - **Configuration**: The complete state of a tier list including tier order, labels, colors, and item assignments, persisted to IndexedDB
 - **State Management**: React useState + useReducer with Context API (no external state management library)
+- **Image Upload**: File picker dialog (`<input type="file">`) for selecting local image files, converted to data URLs
 
 ## Success Criteria
 
