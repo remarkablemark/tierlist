@@ -10,6 +10,7 @@
 ### Session 2026-03-11
 
 - Q: How should items be uniquely identified and tracked within the system? → A: Unique ID (UUID) per item, generated at creation
+- Q: What persistence mechanism should be used for saving and loading tier lists? → A: IndexedDB
 
 ## User Scenarios & Testing
 
@@ -114,7 +115,7 @@ As a user, I want to export my tier list as an image so that I can share it on s
 - **FR-006**: System MUST support drag-and-drop interaction for reordering tiers vertically
 - **FR-007**: System MUST support drag-and-drop interaction for rearranging items within a tier
 - **FR-008**: System MUST visually distinguish between different tiers using color and labels
-- **FR-009**: System MUST persist tier list configurations to allow saving and loading
+- **FR-009**: System MUST persist tier list configurations to IndexedDB to allow saving and loading
 - **FR-010**: System MUST provide undo/redo functionality for recent actions
 - **FR-011**: System MUST auto-save work-in-progress to prevent data loss on accidental navigation
 - **FR-012**: System MUST allow users to delete tiers and items with confirmation
@@ -127,7 +128,7 @@ As a user, I want to export my tier list as an image so that I can share it on s
 - **Tier List**: A collection of tiers arranged in ranked order, containing items to be categorized
 - **Tier**: A ranked category within a tier list, with a label, color, and collection of items
 - **Item**: An individual element to be ranked, identified by a unique UUID generated at creation, containing a text label and optional image
-- **Configuration**: The complete state of a tier list including tier order, labels, colors, and item assignments
+- **Configuration**: The complete state of a tier list including tier order, labels, colors, and item assignments, persisted to IndexedDB
 
 ## Success Criteria
 
