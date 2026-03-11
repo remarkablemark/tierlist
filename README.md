@@ -1,10 +1,12 @@
-# tierlist
+# Tier List
 
 [![build](https://github.com/remarkablemark/tierlist/actions/workflows/build.yml/badge.svg)](https://github.com/remarkablemark/tierlist/actions/workflows/build.yml)
 [![test](https://github.com/remarkablemark/tierlist/actions/workflows/test.yml/badge.svg)](https://github.com/remarkablemark/tierlist/actions/workflows/test.yml)
 [![codecov](https://codecov.io/gh/remarkablemark/tierlist/graph/badge.svg?token=DEr2eVeqdz)](https://codecov.io/gh/remarkablemark/tierlist)
 
-Vite React Tailwind Template
+⏫ Create a tier list:
+
+- [Tier List](https://remarkablemark.org/tierlist/)
 
 ## Install
 
