@@ -13,6 +13,7 @@
 - Q: What persistence mechanism should be used for saving and loading tier lists? → A: IndexedDB
 - Q: What actions should be included in the undo/redo history? → A: All state-changing actions (tier create/delete/reorder, item add/move/delete, customization changes)
 - Q: When a tier containing items is deleted, what should happen to those items? → A: Move items to an "Unassigned" area below the tiers
+- Q: How should item images be provided and stored? → A: Data URLs (base64-encoded strings) stored in IndexedDB
 
 ## User Scenarios & Testing
 
@@ -130,7 +131,7 @@ As a user, I want to export my tier list as an image so that I can share it on s
 
 - **Tier List**: A collection of tiers arranged in ranked order, containing items to be categorized
 - **Tier**: A ranked category within a tier list, with a label, color, and collection of items
-- **Item**: An individual element to be ranked, identified by a unique UUID generated at creation, containing a text label and optional image
+- **Item**: An individual element to be ranked, identified by a unique UUID generated at creation, containing a text label and optional image stored as a data URL (base64)
 - **Configuration**: The complete state of a tier list including tier order, labels, colors, and item assignments, persisted to IndexedDB
 
 ## Success Criteria
