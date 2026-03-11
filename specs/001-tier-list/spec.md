@@ -19,6 +19,7 @@
 - Q: How should the tier list application handle mobile and touch device interactions? → A: Responsive with touch support: Full functionality on mobile/tablet with touch-optimized drag-and-drop using @dnd-kit touch sensors
 - Q: What is the maximum number of items a user should be able to add to a single tier list? → A: 100 items with soft warning at 50+
 - Q: What export formats should the tier list image export support? → A: PNG only: Standard format for tier list memes across platforms
+- Q: What should be the undo/redo history limit? → A: 50 actions with circular buffer
 
 ## User Scenarios & Testing
 
@@ -125,7 +126,7 @@ As a user, I want to export my tier list as an image so that I can share it on s
 - **FR-007**: System MUST support drag-and-drop interaction for rearranging items within a tier
 - **FR-008**: System MUST visually distinguish between different tiers using color and labels
 - **FR-009**: System MUST persist tier list configurations to IndexedDB to allow saving and loading
-- **FR-010**: System MUST provide undo/redo functionality for all state-changing actions including tier operations, item operations, and customization changes
+- **FR-010**: System MUST provide undo/redo functionality for all state-changing actions including tier operations, item operations, and customization changes with a history limit of 50 actions using circular buffer
 - **FR-011**: System MUST auto-save work-in-progress to prevent data loss on accidental navigation
 - **FR-012**: System MUST allow users to delete tiers and items with confirmation
 - **FR-012a**: System MUST move items from a deleted tier to an "Unassigned" area below the tiers for user reassignment
