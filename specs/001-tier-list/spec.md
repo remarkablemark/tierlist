@@ -25,6 +25,7 @@
 - Q: How should the application handle security and data sanitization for user-provided content (tier labels, item names)? → A: Minimal sanitization: Escape HTML entities only (`<`, `>`, `&`) to prevent XSS
 - Q: How should the application handle concurrent editing of the same tier list in multiple browser tabs? → A: Tab-local isolation: Each tab works independently; changes only visible after manual refresh
 - Q: How should the application handle export-to-image failures (e.g., canvas size limits, rendering errors)? → A: Hard fail: Show error only, no fallback or retry options
+- Q: What level of screen reader accessibility support should the application provide for drag-and-drop operations? → A: Guided: Announce available actions, provide step-by-step audio cues during drag (e.g., "Press Enter to pick up, arrow keys to move")
 
 ## User Scenarios & Testing
 
@@ -140,7 +141,7 @@ As a user, I want to export my tier list as an image so that I can share it on s
 - **FR-012a**: System MUST move items from a deleted tier to an "Unassigned" area below the tiers for user reassignment
 - **FR-013**: System MUST export tier list as a downloadable PNG image file
 - **FR-014**: System MUST provide visual feedback during drag-and-drop operations (hover states, drop zones)
-- **FR-015**: System MUST be fully accessible via keyboard navigation (tab, enter, arrow keys)
+- **FR-015**: System MUST be fully accessible via keyboard navigation (tab, enter, arrow keys) with step-by-step screen reader audio cues during drag operations (e.g., "Press Enter to pick up, arrow keys to move")
 - **FR-016**: System MUST support touch-based drag-and-drop interactions on mobile and tablet devices using @dnd-kit touch sensors
 - **FR-017**: System MUST provide responsive layout that adapts to viewport widths from 320px to 1920px
 - **FR-018**: System MUST allow up to 100 items per tier list and display a soft performance warning when 50+ items are added
@@ -171,3 +172,4 @@ As a user, I want to export my tier list as an image so that I can share it on s
 - **SC-008**: All interactive elements are accessible via keyboard with visible focus indicators
 - **SC-009**: Touch drag-and-drop operations function correctly on viewports from 320px width with touch targets minimum 44x44px
 - **SC-010**: Application correctly switches between light and dark themes when user changes system preference
+- **SC-011**: Screen reader users receive audible step-by-step guidance during drag-and-drop operations (e.g., pickup, move, drop announcements)
