@@ -16,6 +16,7 @@
 - Q: How should item images be provided and stored? → A: Data URLs (base64-encoded strings) stored in IndexedDB
 - Q: What state management approach should be used for managing tier list state? → A: React useState + useReducer with Context API
 - Q: How should users provide images for tier list items? → A: File picker dialog (local files via `<input type="file">`)
+- Q: How should the tier list application handle mobile and touch device interactions? → A: Responsive with touch support: Full functionality on mobile/tablet with touch-optimized drag-and-drop using @dnd-kit touch sensors
 
 ## User Scenarios & Testing
 
@@ -129,6 +130,8 @@ As a user, I want to export my tier list as an image so that I can share it on s
 - **FR-013**: System MUST export tier list as a downloadable image file
 - **FR-014**: System MUST provide visual feedback during drag-and-drop operations (hover states, drop zones)
 - **FR-015**: System MUST be fully accessible via keyboard navigation (tab, enter, arrow keys)
+- **FR-016**: System MUST support touch-based drag-and-drop interactions on mobile and tablet devices using @dnd-kit touch sensors
+- **FR-017**: System MUST provide responsive layout that adapts to viewport widths from 320px to 1920px
 
 ### Key Entities
 
@@ -151,3 +154,4 @@ As a user, I want to export my tier list as an image so that I can share it on s
 - **SC-006**: Exported images render accurately at resolutions suitable for social media sharing (minimum 1080px width)
 - **SC-007**: Auto-save preserves work-in-progress with less than 5 seconds of potential data loss
 - **SC-008**: All interactive elements are accessible via keyboard with visible focus indicators
+- **SC-009**: Touch drag-and-drop operations function correctly on viewports from 320px width with touch targets minimum 44x44px
