@@ -18,6 +18,7 @@
 - Q: How should users provide images for tier list items? → A: File picker dialog (local files via `<input type="file">`)
 - Q: How should the tier list application handle mobile and touch device interactions? → A: Responsive with touch support: Full functionality on mobile/tablet with touch-optimized drag-and-drop using @dnd-kit touch sensors
 - Q: What is the maximum number of items a user should be able to add to a single tier list? → A: 100 items with soft warning at 50+
+- Q: What export formats should the tier list image export support? → A: PNG only: Standard format for tier list memes across platforms
 
 ## User Scenarios & Testing
 
@@ -92,11 +93,11 @@ As a user, I want to export my tier list as an image so that I can share it on s
 
 **Why this priority**: Sharing enhances the viral potential and utility of the application, but the core creation functionality works without export.
 
-**Independent Test**: User can generate a downloadable image file from their completed tier list that accurately represents the visual layout.
+**Independent Test**: User can generate a downloadable PNG image file from their completed tier list that accurately represents the visual layout.
 
 **Acceptance Scenarios**:
 
-1. **Given** a completed tier list, **When** the user exports as image, **Then** a downloadable image file is generated
+1. **Given** a completed tier list, **When** the user exports as image, **Then** a downloadable PNG image file is generated
 2. **Given** a tier list with custom colors and items, **When** exported, **Then** the image accurately reflects all visual customizations
 3. **Given** a large tier list, **When** exported, **Then** the image maintains readable quality at appropriate dimensions
 
@@ -128,7 +129,7 @@ As a user, I want to export my tier list as an image so that I can share it on s
 - **FR-011**: System MUST auto-save work-in-progress to prevent data loss on accidental navigation
 - **FR-012**: System MUST allow users to delete tiers and items with confirmation
 - **FR-012a**: System MUST move items from a deleted tier to an "Unassigned" area below the tiers for user reassignment
-- **FR-013**: System MUST export tier list as a downloadable image file
+- **FR-013**: System MUST export tier list as a downloadable PNG image file
 - **FR-014**: System MUST provide visual feedback during drag-and-drop operations (hover states, drop zones)
 - **FR-015**: System MUST be fully accessible via keyboard navigation (tab, enter, arrow keys)
 - **FR-016**: System MUST support touch-based drag-and-drop interactions on mobile and tablet devices using @dnd-kit touch sensors
