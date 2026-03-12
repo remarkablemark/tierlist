@@ -1,13 +1,10 @@
 <!--
 SYNC IMPACT REPORT
 ==================
-Version change: 0.0.0 → 1.0.0 (Initial constitution)
-Modified principles: N/A (initial creation)
-Added sections:
-  - Core Principles (5 principles)
-  - Code Quality Standards
-  - Development Workflow
-  - Governance
+Version change: 1.0.0 → 1.1.0 (Component architecture clarification)
+Modified principles:
+  - III. Component Architecture (removed feature-based directory requirement)
+Added sections: N/A
 Removed sections: N/A
 Templates requiring updates:
   - ✅ plan-template.md (no changes needed - generic)
@@ -52,7 +49,6 @@ React components MUST follow these patterns:
 - Functional components only (no class components)
 - Hooks MUST be used at the top level (never inside loops or conditions)
 - Props MUST be destructured in function signature
-- Components MUST be organized in feature-based directories
 - Each component MUST have its own directory with types and tests
 - Use semantic HTML elements (header, nav, main, button, etc.)
 
@@ -158,4 +154,4 @@ This constitution supersedes all other development practices. Amendments require
 - Complexity MUST be justified with simpler alternatives rejected
 - This constitution MUST be reviewed quarterly for relevance
 
-**Version**: 1.0.0 | **Ratified**: 2026-03-11 | **Last Amended**: 2026-03-11
+**Version**: 1.1.0 | **Ratified**: 2026-03-11 | **Last Amended**: 2026-03-11
