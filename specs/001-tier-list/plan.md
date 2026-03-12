@@ -1,105 +1,222 @@
-# Implementation Plan: [FEATURE]
+# Implementation Plan: Tier List Application
 
-**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
-**Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
+**Branch**: `001-tier-list` | **Date**: 2026-03-11 | **Spec**: [spec.md](./spec.md)
+**Input**: Feature specification from `/specs/001-tier-list/spec.md`
 
 **Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/plan-template.md` for the execution workflow.
 
 ## Summary
 
-[Extract from feature spec: primary requirement + technical approach from research]
+Build a client-side React application for creating and managing tier lists with drag-and-drop functionality. Users can create ranked tiers, add items with images, categorize items into tiers, customize appearance, save/load from IndexedDB, and export as PNG. Technical approach: React 19 with @dnd-kit for accessible drag-and-drop, useReducer + Context API for state management, IndexedDB for persistence, and Tailwind CSS for styling.
 
 ## Technical Context
 
-<!--
-  ACTION REQUIRED: Replace the content in this section with the technical details
-  for the project. The structure here is presented in advisory capacity to guide
-  the iteration process.
--->
-
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
-**Project Type**: [e.g., library/cli/web-service/mobile-app/compiler/desktop-app or NEEDS CLARIFICATION]  
-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
+**Language/Version**: TypeScript 5 (strict mode)
+**Primary Dependencies**: React 19, @dnd-kit/react (core, sortable, touch-sensor, accessibility)
+**Storage**: IndexedDB (via idb library)
+**Testing**: Vitest 4 + @testing-library/react + @testing-library/user-event
+**Target Platform**: Modern web browsers (Chrome, Firefox, Safari, Edge) - last 2 versions
+**Project Type**: Frontend-only web application (SPA)
+**Performance Goals**: 60fps drag-and-drop, <100ms visual feedback, 1080px minimum export width
+**Constraints**: Responsive 320px-1920px, 100 items max (soft warning at 50+), 50-action undo limit, system-preference dark mode only
+**Scale/Scope**: Single-page React app with feature-based organization, tab-local isolation (no cross-tab sync)
 
 ## Constitution Check
 
 _GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-[Gates determined based on constitution file]
+### Gate Evaluation
+
+| Principle                       | Status  | Notes                                                                                                                                                |
+| ------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **I. Test-First Development**   | ✅ PASS | TDD will be followed: tests written first, red-green-refactor cycle, 100% coverage required (barrel exports excluded)                                |
+| **II. TypeScript Strict Mode**  | ✅ PASS | TypeScript 5 with strict mode, explicit types for all functions, interfaces for object shapes, proper React event types                              |
+| **III. Component Architecture** | ✅ PASS | Functional components only, hooks at top level, props destructured, feature-based directories, each component has own directory with types and tests |
+| **IV. Accessibility First**     | ✅ PASS | ARIA labels, keyboard navigation via @dnd-kit keyboard sensor, screen reader announcements, visible focus indicators, 44x44px touch targets          |
+| **V. Tailwind-Only Styling**    | ✅ PASS | All styling uses Tailwind utility classes, responsive prefixes (sm:, md:, lg:), dark: prefix for system preference                                   |
+
+### Code Quality Standards Compliance
+
+- ✅ ESLint will pass with zero errors before commits
+- ✅ Prettier formatting applied
+- ✅ No console.log statements (proper error handling only)
+- ✅ No debugger statements
+- ✅ TSDoc comments for public APIs
+- ✅ Naming conventions: PascalCase components, camelCase functions, UPPER_SNAKE_CASE constants
+
+### Development Workflow Compliance
+
+- ✅ Conventional Commits for git messages
+- ✅ Husky hooks enforce code quality
+- ✅ Vitest for testing, Testing Library for components
+- ✅ Mock external dependencies (IndexedDB, @dnd-kit context)
+- ✅ React Compiler handles memoization (no manual optimization)
+
+**Result**: ✅ ALL GATES PASS - No violations. Plan aligns with constitution principles.
 
 ## Project Structure
 
 ### Documentation (this feature)
 
 ```text
-specs/[###-feature]/
-├── plan.md              # This file (/speckit.plan command output)
-├── research.md          # Phase 0 output (/speckit.plan command)
-├── data-model.md        # Phase 1 output (/speckit.plan command)
-├── quickstart.md        # Phase 1 output (/speckit.plan command)
-├── contracts/           # Phase 1 output (/speckit.plan command)
-└── tasks.md             # Phase 2 output (/speckit.tasks command - NOT created by /speckit.plan)
+specs/001-tier-list/
+├── plan.md              # This implementation plan
+├── research.md          # Phase 0 output - Technical decisions and best practices
+├── data-model.md        # Phase 1 output - Entity definitions and validation
+├── quickstart.md        # Phase 1 output - Getting started guide
+├── contracts/           # Phase 1 output - Interface contracts
+│   └── interface-contracts.md
+└── tasks.md             # Phase 2 output - Implementation tasks (created by /speckit.tasks)
 ```
 
 ### Source Code (repository root)
 
-<!--
-  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
-  for this feature. Delete unused options and expand the chosen structure with
-  real paths (e.g., apps/admin, packages/something). The delivered plan must
-  not include Option labels.
--->
-
 ```text
-# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
 src/
-├── models/
-├── services/
-├── cli/
-└── lib/
-
-tests/
-├── contract/
-├── integration/
-└── unit/
-
-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
-backend/
-├── src/
-│   ├── models/
-│   ├── services/
-│   └── api/
-└── tests/
-
-frontend/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   └── services/
-└── tests/
-
-# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
-api/
-└── [same as backend above]
-
-ios/ or android/
-└── [platform-specific structure: feature modules, UI flows, platform tests]
+├── features/
+│   └── tier-list/
+│       ├── components/
+│       │   ├── TierListCanvas/
+│       │   │   ├── TierListCanvas.tsx
+│       │   │   ├── TierListCanvas.types.ts
+│       │   │   ├── TierListCanvas.test.tsx
+│       │   │   └── index.ts
+│       │   ├── Tier/
+│       │   │   ├── Tier.tsx
+│       │   │   ├── Tier.types.ts
+│       │   │   ├── Tier.test.tsx
+│       │   │   └── index.ts
+│       │   ├── TierListItem/
+│       │   │   ├── TierListItem.tsx
+│       │   │   ├── TierListItem.types.ts
+│       │   │   ├── TierListItem.test.tsx
+│       │   │   └── index.ts
+│       │   ├── AddItemButton/
+│       │   │   ├── AddItemButton.tsx
+│       │   │   ├── AddItemButton.types.ts
+│       │   │   ├── AddItemButton.test.tsx
+│       │   │   └── index.ts
+│       │   ├── UndoRedoControls/
+│       │   │   ├── UndoRedoControls.tsx
+│       │   │   ├── UndoRedoControls.types.ts
+│       │   │   ├── UndoRedoControls.test.tsx
+│       │   │   └── index.ts
+│       │   └── ExportButton/
+│       │       ├── ExportButton.tsx
+│       │       ├── ExportButton.types.ts
+│       │       ├── ExportButton.test.tsx
+│       │       └── index.ts
+│       ├── hooks/
+│       │   ├── useTierList.ts
+│       │   ├── useTierList.test.ts
+│       │   ├── useDragAndDrop.ts
+│       │   ├── useDragAndDrop.test.ts
+│       │   ├── useIndexedDB.ts
+│       │   ├── useIndexedDB.test.ts
+│       │   ├── useExportToPng.ts
+│       │   └── useExportToPng.test.ts
+│       ├── services/
+│       │   ├── storage.ts
+│       │   ├── storage.test.ts
+│       │   ├── export.ts
+│       │   └── export.test.ts
+│       ├── store/
+│       │   ├── tierListReducer.ts
+│       │   ├── tierListReducer.test.ts
+│       │   ├── tierListContext.tsx
+│       │   └── tierListContext.test.tsx
+│       ├── types/
+│       │   └── index.ts
+│       └── utils/
+│           ├── escapeHtml.ts
+│           ├── escapeHtml.test.ts
+│           ├── validation.ts
+│           └── validation.test.ts
+├── components/          # Shared components (if any)
+├── hooks/               # Shared hooks (if any)
+└── utils/               # Shared utilities (if any)
 ```
 
-**Structure Decision**: [Document the selected structure and reference the real
-directories captured above]
+**Structure Decision**: Single project with feature-based organization. The tier list feature is contained within `src/features/tier-list/` with components, hooks, services, store, types, and utilities subdirectories. Each component has its own directory containing the component file, types file, test file, and barrel export. This structure aligns with the project's existing conventions from AGENTS.md and supports future feature additions.
 
 ## Complexity Tracking
 
 > **Fill ONLY if Constitution Check has violations that must be justified**
 
-| Violation                  | Why Needed         | Simpler Alternative Rejected Because |
-| -------------------------- | ------------------ | ------------------------------------ |
-| [e.g., 4th project]        | [current need]     | [why 3 projects insufficient]        |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient]  |
+No violations detected. All constitution principles are satisfied by this plan.
+
+---
+
+## Phase 2: Implementation Planning
+
+**Status**: READY FOR TASK CREATION
+
+### Prerequisites Complete
+
+- [x] Phase 0: Research completed (`research.md`)
+- [x] Phase 1: Data model defined (`data-model.md`)
+- [x] Phase 1: Interface contracts defined (`contracts/interface-contracts.md`)
+- [x] Phase 1: Quick start guide created (`quickstart.md`)
+- [x] Phase 1: Agent context updated (QWEN.md)
+- [x] Constitution Check: Re-evaluated post-design - ALL GATES PASS
+
+### Next Steps
+
+1. **Create Tasks**: Run `/speckit.tasks` to generate `tasks.md` with implementation tasks
+2. **Create Checklist**: Run `/speckit.checklist` to generate verification checklist
+3. **Begin Implementation**: Follow TDD workflow (red-green-refactor)
+
+### Implementation Phases
+
+**Phase 2.1: Core Infrastructure**
+
+- Set up feature directory structure
+- Define TypeScript types
+- Implement tier list reducer
+- Create context provider
+- Set up IndexedDB
+
+**Phase 2.2: Tier Components**
+
+- TierListCanvas component
+- Tier component with drag-and-drop
+- Tier reordering, labeling, coloring
+- Tier deletion with item recovery
+
+**Phase 2.3: Item Components**
+
+- TierListItem component
+- File upload for images
+- Item drag-and-drop between tiers
+- Item deletion
+
+**Phase 2.4: Undo/Redo**
+
+- Wrap state with undo/redo
+- Implement UNDO/REDO actions
+- 50-action circular buffer
+
+**Phase 2.5: Persistence**
+
+- Auto-save on state change
+- Save/load UI
+- Error handling
+
+**Phase 2.6: Export**
+
+- PNG export implementation
+- Export button component
+
+**Phase 2.7: Accessibility**
+
+- Keyboard navigation
+- Screen reader announcements
+- ARIA labels
+- Touch target sizing
+
+**Phase 2.8: Testing & Polish**
+
+- Unit tests for reducer
+- Component tests
+- Integration tests
+- 100% coverage achievement
