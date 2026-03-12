@@ -289,7 +289,6 @@ export function useTierListContext() {
 
 ```typescript
 // features/tier-list/store/tierListReducer.test.ts
-import { describe, it, expect } from 'vitest';
 import { tierListReducer } from './tierListReducer';
 import { createDefaultTierList } from '../utils/createDefaultTierList';
 

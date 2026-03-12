@@ -39,11 +39,11 @@
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
 - [x] T005 Define TypeScript types in `src/types/tierList.types.ts`: TierList, Tier, TierListItem, ItemMetadata, TierListSettings, TierListState, TierListAction
-- [ ] T006 [P] Create utility: `src/utils/escapeHtml.ts` with escapeHtml function and tests
-- [ ] T007 [P] Create utility: `src/utils/validation.ts` with validateTierList, validateTier, validateItem, isValidCssColor, getTotalItemCount, findItemLocation and tests
-- [ ] T008 [P] Create utility: `src/utils/generateId.ts` with generateId function using crypto.randomUUID() and tests
-- [ ] T009 Create IndexedDB service: `src/services/storage.ts` with openDB, saveTierList, loadTierList, deleteTierList, saveImage, loadImage, deleteImage functions
-- [ ] T010 Write storage service tests: `src/services/storage.test.ts` mocking IndexedDB with fake-indexeddb
+- [x] T006 [P] Create utility: `src/utils/escapeHtml.ts` with escapeHtml function and tests
+- [x] T007 [P] Create utility: `src/utils/validation.ts` with validateTierList, validateTier, validateItem, isValidCssColor, getTotalItemCount, findItemLocation and tests
+- [x] T008 [P] Create utility: `src/utils/generateId.ts` with generateId function using crypto.randomUUID() and tests
+- [x] T009 Create IndexedDB service: `src/services/storage.ts` with openDB, saveTierList, loadTierList, deleteTierList, saveImage, loadImage, deleteImage functions
+- [x] T010 Write storage service tests: `src/services/storage.test.ts` mocking IndexedDB with fake-indexeddb
 - [ ] T011 Create tier list reducer: `src/store/tierListReducer.ts` implementing all TierListAction types (TIER_ADD, TIER_DELETE, TIER_REORDER, TIER_UPDATE_LABEL, TIER_UPDATE_COLOR, TIER_RESET, ITEM_ADD, ITEM_DELETE, ITEM_MOVE, ITEM_REORDER, ITEM_UPDATE_LABEL, DRAG_START, DRAG_MOVE, DRAG_END, UNDO, REDO, SETTINGS_UPDATE, LOAD, SAVE_REQUEST, SAVE_SUCCESS, SAVE_ERROR)
 - [ ] T012 Write reducer tests: `src/store/tierListReducer.test.ts` covering all action types
 - [ ] T013 Create context provider: `src/store/tierListContext.tsx` with TierListContext, TierListProvider, useTierListContext
