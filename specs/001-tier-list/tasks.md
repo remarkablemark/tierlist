@@ -26,10 +26,9 @@
 **Purpose**: Project initialization and dependency installation
 
 - [ ] T001 Verify Node.js 24, npm, and existing project structure
-- [ ] T002 Install @dnd-kit dependencies: `@dnd-kit/core`, `@dnd-kit/sortable`, `@dnd-kit/touch-sensor`, `@dnd-kit/accessibility`
-- [ ] T003 Install idb library for IndexedDB: `npm install idb`
-- [ ] T004 [P] Install html2canvas for PNG export: `npm install html2canvas`
-- [ ] T005 [P] Install fake-indexeddb for testing: `npm install --save-dev fake-indexeddb`
+- [ ] T002 Install idb library for IndexedDB: `npm install idb`
+- [ ] T003 [P] Install html2canvas for PNG export: `npm install html2canvas`
+- [ ] T004 [P] Install fake-indexeddb for testing: `npm install --save-dev fake-indexeddb`
 
 ---
 
