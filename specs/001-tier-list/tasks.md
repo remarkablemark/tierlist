@@ -3,7 +3,7 @@
 **Input**: Design documents from `/specs/001-tier-list/`
 **Prerequisites**: plan.md, spec.md, research.md, data-model.md, contracts/interface-contracts.md, quickstart.md
 
-**Tests**: TDD approach required per constitution principle I - tests written first, red-green-refactor cycle, 100% coverage required (barrel exports excluded)
+**Tests**: TDD approach required per constitution principle I - tests written first, red-green-refactor cycle, 100% coverage required (barrel exports excluded). ⚠ Implementation tasks MAY NOT begin until all related tests in the same phase have been written and observed failing.
 
 **Organization**: Tasks are organized by user story to enable independent implementation and testing of each story.
 
@@ -61,17 +61,17 @@
 
 ### Tests for User Story 1 ⚠️
 
-> **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
+> **NOTE: Write these tests FIRST, ensure they FAIL before implementation. Do not start T020-T030 while these tests are red.**
 
 - [ ] T016 [P] [US1] Component test: TierList renders with default tiers in `src/components/TierList/TierList.test.tsx`
 - [ ] T017 [P] [US1] Component test: Tier displays label and color in `src/components/Tier/Tier.test.tsx`
 - [ ] T018 [P] [US1] Integration test: Add tier flow in `src/components/TierList/TierList.test.tsx`
 - [ ] T019 [P] [US1] Integration test: Delete tier with items moves to unassigned in `src/components/TierList/TierList.test.tsx`
+- [ ] T021 [P] [US1] Unit test: createDefaultTierList produces DEFAULT_TIERS baseline in `src/utils/createDefaultTierList.test.ts`
 
 ### Implementation for User Story 1
 
 - [ ] T020 [P] [US1] Create default tier list factory: `src/utils/createDefaultTierList.ts` with createDefaultTierList function and DEFAULT_TIERS array
-- [ ] T021 [P] [US1] Write createDefaultTierList tests: `src/utils/createDefaultTierList.test.ts`
 - [ ] T022 [US1] Create TierList component: `src/components/TierList/TierList.tsx` with DndContext provider, renders tiers, handles tier add/delete/reorder
 - [ ] T023 [US1] Create TierList types: `src/components/TierList/TierList.types.ts` with TierListProps interface
 - [ ] T024 [US1] Create barrel export: `src/components/TierList/index.ts`
@@ -93,6 +93,8 @@
 **Independent Test**: User can add items to the tier list and drag each item into any tier, with items remaining in their assigned tier until moved
 
 ### Tests for User Story 2 ⚠️
+
+> **NOTE: Write these tests FIRST, ensure they FAIL before implementation. Do not start T035-T045 while these tests are red.**
 
 - [ ] T031 [P] [US2] Component test: TierListItem renders with image and label in `src/components/TierListItem/TierListItem.test.tsx`
 - [ ] T032 [P] [US2] Component test: AddItemButton opens file picker in `src/components/AddItemButton/AddItemButton.test.tsx`
@@ -125,6 +127,8 @@
 
 ### Tests for User Story 3 ⚠️
 
+> **NOTE: Write these tests FIRST, ensure they FAIL before implementation. Do not start T049-T054 while these tests are red.**
+
 - [ ] T046 [P] [US3] Component test: Tier color picker updates color in `src/components/Tier/Tier.test.tsx`
 - [ ] T047 [P] [US3] Component test: Tier label input updates label in `src/components/Tier/Tier.test.tsx`
 - [ ] T048 [P] [US3] Integration test: Customize tier and verify persistence in `src/components/TierList/TierList.test.tsx`
@@ -150,20 +154,25 @@
 
 ### Tests for User Story 4 ⚠️
 
+> **NOTE: Write these tests FIRST, ensure they FAIL before implementation. Do not start T058-T065 while these tests are red.**
+
 - [ ] T055 [P] [US4] Integration test: Save tier list and verify IndexedDB storage in `src/services/storage.test.ts`
 - [ ] T056 [P] [US4] Integration test: Load saved tier list and verify state restoration in `src/components/TierList/TierList.test.tsx`
 - [ ] T057 [P] [US4] Error test: Handle IndexedDB save failure with user notification in `src/services/storage.test.ts`
+- [ ] T057a [P] [US4] Hook test: Auto-save debounces saves (≤500ms), registers `beforeunload`, and surfaces non-blocking status indicator in `src/hooks/useAutoSave.test.ts`
+- [ ] T057b [US4] Integration test: Auto-saved work-in-progress restores after refresh/navigation in `src/components/TierList/TierList.test.tsx`
 
 ### Implementation for User Story 4
 
-- [ ] T058 [P] [US4] Create auto-save hook: `src/hooks/useAutoSave.ts` that saves on state change with debouncing
+- [ ] T058 [P] [US4] Create auto-save hook: `src/hooks/useAutoSave.ts` that debounces saves (≤500ms), registers `beforeunload` persistence, displays non-blocking status indicator, and logs failures
 - [ ] T059 [US4] Create save/load UI component: `src/components/SaveLoadControls/SaveLoadControls.tsx` with save button, load list, delete saved list
 - [ ] T060 [US4] Create SaveLoadControls types: `src/components/SaveLoadControls/SaveLoadControls.types.ts`
 - [ ] T061 [US4] Create barrel export: `src/components/SaveLoadControls/index.ts`
 - [ ] T062 [US4] Extend useTierList hook with persistence operations: save, load, createNew, getAllSaved
 - [ ] T063 [US4] Add persistence actions to reducer: LOAD, SAVE_REQUEST, SAVE_SUCCESS, SAVE_ERROR
 - [ ] T064 [US4] Implement IndexedDB error handling with user notifications (QuotaExceededError, NotFoundError)
-- [ ] T065 [US4] Add work-in-progress auto-save on component unmount and before navigation
+- [ ] T065 [US4] Wire auto-save hook into TierList lifecycle to trigger debounced saves on reducer commits, handle `beforeunload`, and enqueue failure logs in IndexedDB
+- [ ] T065a [US4] Implement restoration flow leveraging auto-save snapshot when app initializes (TierList + context)
 
 **Checkpoint**: User Story 4 complete - persistence functional independently
 
@@ -177,14 +186,17 @@
 
 ### Tests for User Story 5 ⚠️
 
+> **NOTE: Write these tests FIRST, ensure they FAIL before implementation. Do not start T068-T074 while these tests are red.**
+
 - [ ] T066 [P] [US5] Integration test: Export generates PNG file in `src/components/ExportButton/ExportButton.test.tsx`
 - [ ] T067 [P] [US5] Error test: Export failure shows error message in `src/components/ExportButton/ExportButton.test.tsx`
+- [ ] T067a [P] [US5] Validation test: Export enforces ≥1080px width, 2x scale, and displays standardized error banner copy in `src/components/ExportButton/ExportButton.test.tsx`
 
 ### Implementation for User Story 5
 
-- [ ] T068 [P] [US5] Create export utility: `src/utils/exportToPng.ts` with exportTierListToPng function using html2canvas, 2x scale, minimum 1080px width
+- [ ] T068 [P] [US5] Create export utility: `src/utils/exportToPng.ts` with exportTierListToPng function using html2canvas, enforcing ≥1080px width, 2x scale, and returning standardized error messages plus failure logging hook
 - [ ] T069 [P] [US5] Write export utility tests: `src/utils/exportToPng.test.ts` mocking html2canvas
-- [ ] T070 [US5] Create ExportButton component: `src/components/ExportButton/ExportButton.tsx` with loading state, error handling, download trigger
+- [ ] T070 [US5] Create ExportButton component: `src/components/ExportButton/ExportButton.tsx` with loading state, standardized error banner messaging, download trigger, and logging of failures to IndexedDB
 - [ ] T071 [US5] Create ExportButton types: `src/components/ExportButton/ExportButton.types.ts` with ExportButtonProps interface
 - [ ] T072 [US5] Create barrel export: `src/components/ExportButton/index.ts`
 - [ ] T073 [US5] Extend useTierList hook with exportToPng operation

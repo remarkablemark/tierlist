@@ -99,14 +99,21 @@ src/
 │   │   ├── UndoRedoControls.types.ts
 │   │   ├── UndoRedoControls.test.tsx
 │   │   └── index.ts
-│   └── ExportButton/
-│       ├── ExportButton.tsx
-│       ├── ExportButton.types.ts
-│       ├── ExportButton.test.tsx
+│   ├── ExportButton/
+│   │   ├── ExportButton.tsx
+│   │   ├── ExportButton.types.ts
+│   │   ├── ExportButton.test.tsx
+│   │   └── index.ts
+│   └── SaveLoadControls/
+│       ├── SaveLoadControls.tsx
+│       ├── SaveLoadControls.types.ts
+│       ├── SaveLoadControls.test.tsx
 │       └── index.ts
 ├── hooks/
 │   ├── useTierList.ts
-│   └── useTierList.test.ts
+│   ├── useTierList.test.ts
+│   ├── useAutoSave.ts
+│   └── useAutoSave.test.ts
 ├── services/
 │   ├── storage.ts
 │   └── storage.test.ts
@@ -115,6 +122,13 @@ src/
 │   ├── tierListReducer.test.ts
 │   ├── tierListContext.tsx
 │   └── tierListContext.test.tsx
+├── utils/
+│   ├── escapeHtml.ts
+│   ├── escapeHtml.test.ts
+│   ├── validation.ts
+│   ├── validation.test.ts
+│   ├── exportToPng.ts
+│   └── exportToPng.test.ts
 └── utils/
     ├── escapeHtml.ts
     ├── escapeHtml.test.ts

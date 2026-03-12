@@ -114,7 +114,7 @@ As a user, I want to export my tier list as an image so that I can share it on s
 
 - When a tier containing items is deleted, items are moved to an "Unassigned" area below the tiers for user reassignment
 - How does the system handle very long item names or tier labels? Text should truncate gracefully or wrap without breaking layout
-- What happens when the browser is refreshed during editing? Work-in-progress should be auto-saved to prevent data loss
+- What happens when the browser is refreshed during editing? Work-in-progress should be auto-saved to prevent data loss (debounced save after each reducer commit and restore flow on load)
 - How does the system handle attempting to drop items outside of valid drop zones? Drop should be prevented with visual feedback
 - What happens when saving fails (e.g., storage full)? User should receive immediate error message with options to manually export or free storage
 - When the same tier list is edited in multiple browser tabs simultaneously, each tab operates independently with changes only visible after manual refresh
@@ -136,10 +136,10 @@ As a user, I want to export my tier list as an image so that I can share it on s
 - **FR-009**: System MUST persist tier list configurations to IndexedDB to allow saving and loading
 - **FR-009a**: System MUST display an immediate error notification if IndexedDB save fails, prompting user to manually export or free storage
 - **FR-010**: System MUST provide undo/redo functionality for all state-changing actions including tier operations, item operations, and customization changes with a history limit of 50 actions using circular buffer
-- **FR-011**: System MUST auto-save work-in-progress to prevent data loss on accidental navigation
+- **FR-011**: System MUST auto-save work-in-progress within 5 seconds of the last state change using a debounced save (≤500ms delay after idle) and persist state when the tab is closed (`beforeunload` listener) while displaying a non-blocking status indicator
 - **FR-012**: System MUST allow users to delete tiers and items with confirmation
 - **FR-012a**: System MUST move items from a deleted tier to an "Unassigned" area below the tiers for user reassignment
-- **FR-013**: System MUST export tier list as a downloadable PNG image file
+- **FR-013**: System MUST export tier list as a downloadable PNG image file at ≥1080px width with 2x scaling to preserve readability of tier labels and item images
 - **FR-014**: System MUST provide visual feedback during drag-and-drop operations (hover states, drop zones)
 - **FR-015**: System MUST be fully accessible via keyboard navigation (tab, enter, arrow keys) with step-by-step screen reader audio cues during drag operations (e.g., "Press Enter to pick up, arrow keys to move")
 - **FR-016**: System MUST support touch-based drag-and-drop interactions on mobile and tablet devices using @dnd-kit touch sensors
@@ -147,7 +147,7 @@ As a user, I want to export my tier list as an image so that I can share it on s
 - **FR-018**: System MUST allow up to 100 items per tier list and display a soft performance warning when 50+ items are added
 - **FR-019**: System MUST automatically adapt to user's system color scheme preference (light/dark) using `prefers-color-scheme` media query
 - **FR-020**: System MUST escape HTML entities (`<`, `>`, `&`) in all user-provided text content (tier labels, item names) to prevent XSS attacks
-- **FR-021**: System MUST display an error message when image export fails (e.g., canvas size exceeded, rendering error) without offering retry or fallback options
+- **FR-021**: System MUST display a standardized error banner (“Export failed due to browser limits. Reduce the number of tiers/items and try again.”) when image export fails (e.g., canvas size exceeded, rendering error) without offering retry or fallback options and MUST log the failure in IndexedDB for later diagnostics
 
 ### Key Entities
 
