@@ -28,7 +28,7 @@
 - [x] T001 Verify Node.js 24, npm, and existing project structure
 - [x] T002 Install idb library for IndexedDB: `npm install idb`
 - [x] T003 [P] Install html2canvas for PNG export: `npm install html2canvas`
-- [ ] T004 [P] Install fake-indexeddb for testing: `npm install --save-dev fake-indexeddb`
+- [x] T004 [P] Install fake-indexeddb for testing: `npm install --save-dev fake-indexeddb`
 
 ---
 
