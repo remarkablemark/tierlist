@@ -38,7 +38,7 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T005 Define TypeScript types in `src/types/tierList.types.ts`: TierList, Tier, TierListItem, ItemMetadata, TierListSettings, TierListState, TierListAction
+- [x] T005 Define TypeScript types in `src/types/tierList.types.ts`: TierList, Tier, TierListItem, ItemMetadata, TierListSettings, TierListState, TierListAction
 - [ ] T006 [P] Create utility: `src/utils/escapeHtml.ts` with escapeHtml function and tests
 - [ ] T007 [P] Create utility: `src/utils/validation.ts` with validateTierList, validateTier, validateItem, isValidCssColor, getTotalItemCount, findItemLocation and tests
 - [ ] T008 [P] Create utility: `src/utils/generateId.ts` with generateId function using crypto.randomUUID() and tests
