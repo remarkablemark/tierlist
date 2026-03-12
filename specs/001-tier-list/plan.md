@@ -122,18 +122,13 @@ src/
 │   ├── tierListReducer.test.ts
 │   ├── tierListContext.tsx
 │   └── tierListContext.test.tsx
-├── utils/
-│   ├── escapeHtml.ts
-│   ├── escapeHtml.test.ts
-│   ├── validation.ts
-│   ├── validation.test.ts
-│   ├── exportToPng.ts
-│   └── exportToPng.test.ts
 └── utils/
     ├── escapeHtml.ts
     ├── escapeHtml.test.ts
     ├── validation.ts
-    └── validation.test.ts
+    ├── validation.test.ts
+    ├── exportToPng.ts
+    └── exportToPng.test.ts
 ```
 
 **Structure Decision**: Flat structure without feature directories. Since this app has a single feature (the tier list), the extra nesting of `features/tier-list/` is unnecessary overhead. Components live in `src/components/`, with shared utilities in `src/hooks/`, `src/services/`, `src/store/`, and `src/utils/`. This matches the existing `src/components/App/` pattern and keeps navigation simple. Refactor to feature-based structure only if genuinely separate features are added later.
