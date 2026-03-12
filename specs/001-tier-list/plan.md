@@ -73,71 +73,56 @@ specs/001-tier-list/
 
 ```text
 src/
-├── features/
-│   └── tier-list/
-│       ├── components/
-│       │   ├── TierListCanvas/
-│       │   │   ├── TierListCanvas.tsx
-│       │   │   ├── TierListCanvas.types.ts
-│       │   │   ├── TierListCanvas.test.tsx
-│       │   │   └── index.ts
-│       │   ├── Tier/
-│       │   │   ├── Tier.tsx
-│       │   │   ├── Tier.types.ts
-│       │   │   ├── Tier.test.tsx
-│       │   │   └── index.ts
-│       │   ├── TierListItem/
-│       │   │   ├── TierListItem.tsx
-│       │   │   ├── TierListItem.types.ts
-│       │   │   ├── TierListItem.test.tsx
-│       │   │   └── index.ts
-│       │   ├── AddItemButton/
-│       │   │   ├── AddItemButton.tsx
-│       │   │   ├── AddItemButton.types.ts
-│       │   │   ├── AddItemButton.test.tsx
-│       │   │   └── index.ts
-│       │   ├── UndoRedoControls/
-│       │   │   ├── UndoRedoControls.tsx
-│       │   │   ├── UndoRedoControls.types.ts
-│       │   │   ├── UndoRedoControls.test.tsx
-│       │   │   └── index.ts
-│       │   └── ExportButton/
-│       │       ├── ExportButton.tsx
-│       │       ├── ExportButton.types.ts
-│       │       ├── ExportButton.test.tsx
-│       │       └── index.ts
-│       ├── hooks/
-│       │   ├── useTierList.ts
-│       │   ├── useTierList.test.ts
-│       │   ├── useDragAndDrop.ts
-│       │   ├── useDragAndDrop.test.ts
-│       │   ├── useIndexedDB.ts
-│       │   ├── useIndexedDB.test.ts
-│       │   ├── useExportToPng.ts
-│       │   └── useExportToPng.test.ts
-│       ├── services/
-│       │   ├── storage.ts
-│       │   ├── storage.test.ts
-│       │   ├── export.ts
-│       │   └── export.test.ts
-│       ├── store/
-│       │   ├── tierListReducer.ts
-│       │   ├── tierListReducer.test.ts
-│       │   ├── tierListContext.tsx
-│       │   └── tierListContext.test.tsx
-│       ├── types/
-│       │   └── index.ts
-│       └── utils/
-│           ├── escapeHtml.ts
-│           ├── escapeHtml.test.ts
-│           ├── validation.ts
-│           └── validation.test.ts
-├── components/          # Shared components (if any)
-├── hooks/               # Shared hooks (if any)
-└── utils/               # Shared utilities (if any)
+├── components/
+│   ├── TierList/
+│   │   ├── TierList.tsx
+│   │   ├── TierList.types.ts
+│   │   ├── TierList.test.tsx
+│   │   └── index.ts
+│   ├── Tier/
+│   │   ├── Tier.tsx
+│   │   ├── Tier.types.ts
+│   │   ├── Tier.test.tsx
+│   │   └── index.ts
+│   ├── TierListItem/
+│   │   ├── TierListItem.tsx
+│   │   ├── TierListItem.types.ts
+│   │   ├── TierListItem.test.tsx
+│   │   └── index.ts
+│   ├── AddItemButton/
+│   │   ├── AddItemButton.tsx
+│   │   ├── AddItemButton.types.ts
+│   │   ├── AddItemButton.test.tsx
+│   │   └── index.ts
+│   ├── UndoRedoControls/
+│   │   ├── UndoRedoControls.tsx
+│   │   ├── UndoRedoControls.types.ts
+│   │   ├── UndoRedoControls.test.tsx
+│   │   └── index.ts
+│   └── ExportButton/
+│       ├── ExportButton.tsx
+│       ├── ExportButton.types.ts
+│       ├── ExportButton.test.tsx
+│       └── index.ts
+├── hooks/
+│   ├── useTierList.ts
+│   └── useTierList.test.ts
+├── services/
+│   ├── storage.ts
+│   └── storage.test.ts
+├── store/
+│   ├── tierListReducer.ts
+│   ├── tierListReducer.test.ts
+│   ├── tierListContext.tsx
+│   └── tierListContext.test.tsx
+└── utils/
+    ├── escapeHtml.ts
+    ├── escapeHtml.test.ts
+    ├── validation.ts
+    └── validation.test.ts
 ```
 
-**Structure Decision**: Single project with feature-based organization. The tier list feature is contained within `src/features/tier-list/` with components, hooks, services, store, types, and utilities subdirectories. Each component has its own directory containing the component file, types file, test file, and barrel export. This structure aligns with the project's existing conventions from AGENTS.md and supports future feature additions.
+**Structure Decision**: Flat structure without feature directories. Since this app has a single feature (the tier list), the extra nesting of `features/tier-list/` is unnecessary overhead. Components live in `src/components/`, with shared utilities in `src/hooks/`, `src/services/`, `src/store/`, and `src/utils/`. This matches the existing `src/components/App/` pattern and keeps navigation simple. Refactor to feature-based structure only if genuinely separate features are added later.
 
 ## Complexity Tracking
 
@@ -170,7 +155,6 @@ No violations detected. All constitution principles are satisfied by this plan.
 
 **Phase 2.1: Core Infrastructure**
 
-- Set up feature directory structure
 - Define TypeScript types
 - Implement tier list reducer
 - Create context provider
@@ -178,7 +162,7 @@ No violations detected. All constitution principles are satisfied by this plan.
 
 **Phase 2.2: Tier Components**
 
-- TierListCanvas component
+- TierList component
 - Tier component with drag-and-drop
 - Tier reordering, labeling, coloring
 - Tier deletion with item recovery

@@ -52,34 +52,23 @@ git branch --show-current
 
 ```
 src/
-├── features/
-│   └── tier-list/
-│       ├── components/      # React components
-│       │   ├── TierListCanvas/
-│       │   ├── Tier/
-│       │   ├── TierListItem/
-│       │   ├── AddItemButton/
-│       │   ├── UndoRedoControls/
-│       │   └── ExportButton/
-│       ├── hooks/           # Custom hooks
-│       │   ├── useTierList.ts
-│       │   ├── useDragAndDrop.ts
-│       │   ├── useIndexedDB.ts
-│       │   └── useExportToPng.ts
-│       ├── services/        # Business logic
-│       │   ├── storage.ts
-│       │   └── export.ts
-│       ├── store/           # State management
-│       │   ├── tierListReducer.ts
-│       │   └── TierListContext.tsx
-│       ├── types/           # TypeScript types
-│       │   └── index.ts
-│       └── utils/           # Utility functions
-│           ├── escapeHtml.ts
-│           └── validation.ts
-├── components/              # Shared components
-├── hooks/                   # Shared hooks
-└── utils/                   # Shared utilities
+├── components/
+│   ├── TierList/        # Main tier list canvas
+│   ├── Tier/            # Individual tier component
+│   ├── TierListItem/    # Individual item component
+│   ├── AddItemButton/   # File upload button
+│   ├── UndoRedoControls/# Undo/redo buttons
+│   └── ExportButton/    # Export to PNG button
+├── hooks/
+│   └── useTierList.ts   # Main hook for state management
+├── services/
+│   └── storage.ts       # IndexedDB operations
+├── store/
+│   ├── tierListReducer.ts    # Reducer for all actions
+│   └── tierListContext.tsx   # Context provider
+└── utils/
+    ├── escapeHtml.ts    # HTML entity escaping
+    └── validation.ts    # Validation helpers
 ```
 
 ---
@@ -224,7 +213,6 @@ export function useTierListContext() {
 
 ### Phase 1: Core Infrastructure
 
-- [ ] Set up feature directory structure
 - [ ] Define TypeScript types (from data-model.md)
 - [ ] Create tier list reducer
 - [ ] Create context provider
@@ -233,7 +221,7 @@ export function useTierListContext() {
 
 ### Phase 2: Tier Components
 
-- [ ] Create TierListCanvas component
+- [ ] Create TierList component
 - [ ] Create Tier component with drag-and-drop
 - [ ] Implement tier reordering
 - [ ] Implement tier label editing
