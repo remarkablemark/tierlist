@@ -16,7 +16,7 @@ You're an expert engineer for this React app.
 - **Tech Stack:**
   - React 19 (UI library)
   - @dnd-kit/react (drag-and-drop library)
-  - IndexedDB (storage)
+  - idb 8 (IndexedDB storage)
   - TypeScript 5 (strict mode)
   - Vite 7 (build tool)
   - Vitest 4 (testing framework)
