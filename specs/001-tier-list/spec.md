@@ -149,6 +149,13 @@ As a user, I want to export my tier list as an image so that I can share it on s
 - **FR-020**: System MUST escape HTML entities (`<`, `>`, `&`) in all user-provided text content (tier labels, item names) to prevent XSS attacks
 - **FR-021**: System MUST display a standardized error banner (“Export failed due to browser limits. Reduce the number of tiers/items and try again.”) when image export fails (e.g., canvas size exceeded, rendering error) without offering retry or fallback options and MUST log the failure in IndexedDB for later diagnostics
 
+### Non-Functional Requirements
+
+- **NFR-001 Performance**: Drag-and-drop interactions MUST respond within 100ms (matching SC-003) and maintain 60fps on modern browsers.
+- **NFR-002 Accessibility**: All interactive elements MUST be keyboard accessible with screen reader prompts per FR-015 and SC-011, including touch targets ≥44x44px.
+- **NFR-003 Persistence SLA**: Auto-save MUST limit potential data loss to ≤5 seconds, surface IndexedDB failures immediately, and log failures for diagnostics (ties to FR-009a, SC-007).
+- **NFR-004 Reliability**: Tier lists with up to 100 items and 10 tiers MUST remain responsive without layout degradation, showing a warning at 50+ items (aligns with FR-018, SC-004).
+
 ### Key Entities
 
 - **Tier List**: A collection of tiers arranged in ranked order, containing items to be categorized
@@ -166,7 +173,7 @@ As a user, I want to export my tier list as an image so that I can share it on s
 - **SC-002**: 95% of users successfully complete their first tier list without assistance or tutorial
 - **SC-003**: Drag-and-drop operations complete with visual feedback in under 100 milliseconds
 - **SC-004**: System supports tier lists with up to 100 items and 10 tiers without performance degradation; soft warning displayed at 50+ items
-- **SC-005**: 90% of users rate the tier list creation experience as "intuitive" or "very intuitive" in usability testing
+- **SC-005**: In moderated usability tests (n ≥ 20 participants) using a 5-point Likert scale, at least 90% of users rate the creation experience as "intuitive" or "very intuitive"
 - **SC-006**: Exported images render accurately at resolutions suitable for social media sharing (minimum 1080px width)
 - **SC-007**: Auto-save preserves work-in-progress with less than 5 seconds of potential data loss
 - **SC-008**: All interactive elements are accessible via keyboard with visible focus indicators

@@ -17,7 +17,7 @@
 
 - Source code: `src/`
 - Tests: Co-located with source files (`.test.tsx` or `.test.ts`)
-- Single-page React application with feature-based organization
+- Single-page React application with flat component directories per plan (each component keeps its own folder under `src/components`)
 
 ---
 
@@ -98,8 +98,8 @@
 
 - [ ] T031 [P] [US2] Component test: TierListItem renders with image and label in `src/components/TierListItem/TierListItem.test.tsx`
 - [ ] T032 [P] [US2] Component test: AddItemButton opens file picker in `src/components/AddItemButton/AddItemButton.test.tsx`
-- [ ] T033 [P] [US2] Integration test: Drag item from unassigned to tier in `src/components/TierList/TierList.test.tsx`
-- [ ] T034 [P] [US2] Integration test: Move item between tiers in `src/components/TierList/TierList.test.tsx`
+- [ ] T033 [P] [US2] Integration test: Drag item from unassigned to tier with hover/drop visual cues in `src/components/TierList/TierList.test.tsx`
+- [ ] T034 [P] [US2] Integration test: Move item between tiers and verify visual feedback persists in `src/components/TierList/TierList.test.tsx`
 
 ### Implementation for User Story 2
 
@@ -111,7 +111,7 @@
 - [ ] T040 [US2] Create AddItemButton types: `src/components/AddItemButton/AddItemButton.types.ts` with AddItemButtonProps interface
 - [ ] T041 [US2] Create barrel export: `src/components/AddItemButton/index.ts`
 - [ ] T042 [US2] Extend useTierList hook with item operations: addItem, deleteItem, moveItem, reorderItem, updateItemLabel
-- [ ] T043 [US2] Implement drag-and-drop handlers in TierList component using @dnd-kit onDragEnd
+- [ ] T043 [US2] Implement drag-and-drop handlers in TierList component using @dnd-kit onDragEnd with hover/drop zone styling hooks
 - [ ] T044 [US2] Add collision detection for item drops in tiers using @dnd-kit closestCenter
 - [ ] T045 [US2] Implement item reordering within tiers using @dnd-kit sortable
 
@@ -243,7 +243,7 @@
 ### Tests for Accessibility ⚠️
 
 - [ ] T087 [P] Accessibility test: Keyboard navigation for drag-and-drop in `src/components/TierList/TierList.test.tsx`
-- [ ] T088 [P] Accessibility test: Screen reader announcements in `src/components/TierList/TierList.test.tsx`
+- [ ] T088 [P] Accessibility test: Screen reader announcements for drag pickup/move/drop (covers FR-014/FR-015) in `src/components/TierList/TierList.test.tsx`
 - [ ] T089 [P] Accessibility test: Focus indicators visible in all components
 
 ### Implementation for Accessibility
@@ -313,7 +313,7 @@
 
 **Setup Phase**:
 
-- T004 (html2canvas) and T005 (fake-indexeddb) can install in parallel
+- T003 (html2canvas) and T004 (fake-indexeddb) can install in parallel
 
 **Foundational Phase**:
 
@@ -395,7 +395,7 @@ npm test -- src/components/TierList/TierList.test.tsx &
 
 ### MVP First (User Story 1 Only)
 
-1. Complete Phase 1: Setup (T001-T005)
+1. Complete Phase 1: Setup (T001-T004)
 2. Complete Phase 2: Foundational (T006-T015)
 3. Complete Phase 3: User Story 1 (T016-T030)
 4. **STOP and VALIDATE**: Test User Story 1 independently
@@ -435,7 +435,7 @@ With multiple developers:
 
 | Phase     | Description       | Task Count |
 | --------- | ----------------- | ---------- |
-| Phase 1   | Setup             | 5          |
+| Phase 1   | Setup             | 4          |
 | Phase 2   | Foundational      | 10         |
 | Phase 3   | User Story 1 (P1) | 15         |
 | Phase 4   | User Story 2 (P1) | 15         |
