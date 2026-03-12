@@ -109,7 +109,7 @@ export type TierListAction =
       payload: {
         itemId: string;
         sourceTierId: string;
-        targetTierId: string;
+        targetTierId: string | null;
         targetIndex: number;
       };
     }

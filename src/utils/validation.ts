@@ -32,7 +32,7 @@ export function isValidCssColor(color: string): boolean {
   if (!ctx) {
     return false;
   }
-  /* v8 ignore start */
+  /* v8 ignore stop */
   ctx.fillStyle = color;
   return ctx.fillStyle !== '' && ctx.fillStyle !== 'rgba(0, 0, 0, 0)';
 }

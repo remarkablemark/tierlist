@@ -1,0 +1,263 @@
+/**
+ * Tier component representing a single tier in the tier list.
+ * @packageDocumentation
+ */
+
+import { type KeyboardEvent, useState } from 'react';
+
+import { ColorPicker } from '../ColorPicker';
+import { type TierProps } from './Tier.types';
+
+/**
+ * Tier component that displays a single tier with its items.
+ */
+export function Tier({
+  tier,
+  index,
+  totalTiers,
+  isDragging = false,
+  isOver = false,
+  onLabelChange,
+  onColorChange,
+  onReset,
+  onDelete,
+  itemSize,
+  showLabels,
+}: TierProps): React.ReactElement {
+  const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
+  const [localLabel, setLocalLabel] = useState(tier.label);
+
+  const handleLabelBlur = () => {
+    if (localLabel !== tier.label) {
+      onLabelChange(localLabel);
+    }
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.currentTarget.blur();
+    }
+  };
+
+  const handleMoveUp = () => {
+    // Keyboard reordering would be handled by parent
+  };
+
+  const handleMoveDown = () => {
+    // Keyboard reordering would be handled by parent
+  };
+
+  const dropZoneClasses = isOver
+    ? 'ring-2 ring-slate-400 ring-inset'
+    : 'border-slate-200 dark:border-slate-700';
+
+  const draggingClasses = isDragging ? 'opacity-50' : 'opacity-100';
+
+  // Size classes for items
+  const sizeClasses = {
+    small: 'h-16 w-16',
+    medium: 'h-24 w-24',
+    large: 'h-32 w-32',
+  };
+
+  return (
+    <div
+      className={`relative mb-4 rounded-lg border-2 ${dropZoneClasses} ${draggingClasses} transition-all`}
+      style={{ backgroundColor: tier.color }}
+      role="region"
+      aria-label={`Tier ${tier.label}`}
+    >
+      {/* Tier Header */}
+      <div className="flex items-center justify-between border-b border-slate-200 bg-white/50 p-3 dark:border-slate-700 dark:bg-slate-900/50">
+        {/* Tier Label */}
+        {showLabels ? (
+          <input
+            type="text"
+            value={localLabel}
+            onChange={(e) => {
+              setLocalLabel(e.target.value);
+            }}
+            onBlur={handleLabelBlur}
+            onKeyDown={handleKeyDown}
+            className="w-32 rounded-md border border-slate-300 bg-white px-2 py-1 text-sm font-semibold text-slate-900 focus:border-slate-500 focus:ring-2 focus:ring-slate-500 focus:outline-none dark:border-slate-600 dark:bg-slate-800 dark:text-white"
+            aria-label="Tier label"
+          />
+        ) : (
+          <span className="text-lg font-bold text-slate-900 dark:text-white">
+            {tier.label}
+          </span>
+        )}
+
+        {/* Controls */}
+        <div className="flex items-center gap-2">
+          {/* Move Up */}
+          {index > 0 && (
+            <button
+              className="rounded-md p-1 text-slate-600 hover:bg-slate-200 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-white"
+              onClick={handleMoveUp}
+              aria-label="Move up"
+              type="button"
+            >
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 15l7-7 7 7"
+                />
+              </svg>
+            </button>
+          )}
+
+          {/* Move Down */}
+          {index < totalTiers - 1 && (
+            <button
+              className="rounded-md p-1 text-slate-600 hover:bg-slate-200 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-white"
+              onClick={handleMoveDown}
+              aria-label="Move down"
+              type="button"
+            >
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+          )}
+
+          {/* Color Picker */}
+          <div className="relative">
+            <button
+              className="rounded-md p-1 text-slate-600 hover:bg-slate-200 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-white"
+              onClick={() => {
+                setIsColorPickerOpen(!isColorPickerOpen);
+              }}
+              aria-label="Tier color"
+              type="button"
+            >
+              <div
+                className="h-5 w-5 rounded border border-slate-300"
+                style={{ backgroundColor: tier.color }}
+              />
+            </button>
+
+            {isColorPickerOpen && (
+              <ColorPicker
+                color={tier.color}
+                onColorSelect={onColorChange}
+                isOpen={isColorPickerOpen}
+                onToggle={() => {
+                  setIsColorPickerOpen(false);
+                }}
+              />
+            )}
+          </div>
+
+          {/* Reset */}
+          <button
+            className="rounded-md p-1 text-slate-600 hover:bg-slate-200 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-white"
+            onClick={onReset}
+            aria-label="Reset tier"
+            type="button"
+          >
+            <svg
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+              />
+            </svg>
+          </button>
+
+          {/* Delete */}
+          <button
+            className="rounded-md p-1 text-red-600 hover:bg-red-100 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-900/30 dark:hover:text-red-300"
+            onClick={onDelete}
+            aria-label="Delete tier"
+            type="button"
+          >
+            <svg
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* Items Drop Zone */}
+      <div
+        className="min-h-[100px] p-3"
+        role="list"
+        aria-label="Tier items"
+        onDragOver={(e) => {
+          e.preventDefault();
+        }}
+        onDrop={(e) => {
+          e.preventDefault();
+          // Handle drop logic
+        }}
+      >
+        {tier.items.length === 0 ? (
+          <div className="flex h-20 items-center justify-center text-slate-400 dark:text-slate-500">
+            <span className="text-sm">Drop items here</span>
+          </div>
+        ) : (
+          <div className="flex flex-wrap gap-2">
+            {tier.items.map((item) => (
+              <div
+                key={item.id}
+                className={`flex flex-col items-center rounded-md border border-slate-200 bg-white p-2 shadow-sm dark:border-slate-700 dark:bg-slate-800 ${sizeClasses[itemSize]}`}
+                role="listitem"
+              >
+                {item.imageUrl ? (
+                  <img
+                    src={item.imageUrl}
+                    alt={item.label}
+                    className="h-full w-full object-contain"
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center bg-slate-100 text-slate-400 dark:bg-slate-700 dark:text-slate-500">
+                    <span className="text-xs">No Image</span>
+                  </div>
+                )}
+                {showLabels && item.label && (
+                  <span className="mt-1 truncate text-xs text-slate-700 dark:text-slate-300">
+                    {item.label}
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

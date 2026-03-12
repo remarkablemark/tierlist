@@ -44,10 +44,11 @@
 - [x] T008 [P] Create utility: `src/utils/generateId.ts` with generateId function using crypto.randomUUID() and tests
 - [x] T009 Create IndexedDB service: `src/services/storage.ts` with openDB, saveTierList, loadTierList, deleteTierList, saveImage, loadImage, deleteImage functions
 - [x] T010 Write storage service tests: `src/services/storage.test.ts` mocking IndexedDB with fake-indexeddb
-- [ ] T011 Create tier list reducer: `src/store/tierListReducer.ts` implementing all TierListAction types (TIER_ADD, TIER_DELETE, TIER_REORDER, TIER_UPDATE_LABEL, TIER_UPDATE_COLOR, TIER_RESET, ITEM_ADD, ITEM_DELETE, ITEM_MOVE, ITEM_REORDER, ITEM_UPDATE_LABEL, DRAG_START, DRAG_MOVE, DRAG_END, UNDO, REDO, SETTINGS_UPDATE, LOAD, SAVE_REQUEST, SAVE_SUCCESS, SAVE_ERROR)
-- [ ] T012 Write reducer tests: `src/store/tierListReducer.test.ts` covering all action types
-- [ ] T013 Create context provider: `src/store/tierListContext.tsx` with TierListContext, TierListProvider, useTierListContext
-- [ ] T014 Write context tests: `src/store/tierListContext.test.tsx` testing provider and hook
+- [x] T011 Create tier list reducer: `src/store/tierListReducer.ts` implementing all TierListAction types (TIER_ADD, TIER_DELETE, TIER_REORDER, TIER_UPDATE_LABEL, TIER_UPDATE_COLOR, TIER_RESET, ITEM_ADD, ITEM_DELETE, ITEM_MOVE, ITEM_REORDER, ITEM_UPDATE_LABEL, DRAG_START, DRAG_MOVE, DRAG_END, UNDO, REDO, SETTINGS_UPDATE, LOAD, SAVE_REQUEST, SAVE_SUCCESS, SAVE_ERROR)
+- [x] T012 Write reducer tests: `src/store/tierListReducer.test.ts` covering all action types
+- [x] T013 Create context provider: `src/store/tierListContext.tsx` with TierListContext, TierListProvider, useTierListContext
+- [x] T014 Write context tests: `src/store/tierListContext.test.tsx` testing provider and hook
+- [x] T019 [P] [US1] Unit test: createDefaultTierList produces DEFAULT_TIERS baseline in `src/utils/createDefaultTierList.test.ts`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -63,24 +64,24 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation. Do not start T020-T030 while these tests are red.**
 
-- [ ] T015 [P] [US1] Component test: TierList renders with default tiers in `src/components/TierList/TierList.test.tsx`
-- [ ] T016 [P] [US1] Component test: Tier displays label and color in `src/components/Tier/Tier.test.tsx`
-- [ ] T017 [P] [US1] Integration test: Add tier flow in `src/components/TierList/TierList.test.tsx`
-- [ ] T018 [P] [US1] Integration test: Delete tier with items moves to unassigned in `src/components/TierList/TierList.test.tsx`
-- [ ] T019 [P] [US1] Unit test: createDefaultTierList produces DEFAULT_TIERS baseline in `src/utils/createDefaultTierList.test.ts`
+- [x] T015 [P] [US1] Component test: TierList renders with default tiers in `src/components/TierList/TierList.test.tsx`
+- [x] T016 [P] [US1] Component test: Tier displays label and color in `src/components/Tier/Tier.test.tsx`
+- [x] T017 [P] [US1] Integration test: Add tier flow in `src/components/TierList/TierList.test.tsx`
+- [x] T018 [P] [US1] Integration test: Delete tier with items moves to unassigned in `src/components/TierList/TierList.test.tsx`
+- [x] T019 [P] [US1] Unit test: createDefaultTierList produces DEFAULT_TIERS baseline in `src/utils/createDefaultTierList.test.ts`
 
 ### Implementation for User Story 1
 
-- [ ] T020 [P] [US1] Create default tier list factory: `src/utils/createDefaultTierList.ts` with createDefaultTierList function and DEFAULT_TIERS array
-- [ ] T021 [US1] Create TierList component: `src/components/TierList/TierList.tsx` with DndContext provider, renders tiers, handles tier add/delete/reorder
-- [ ] T022 [US1] Create TierList types: `src/components/TierList/TierList.types.ts` with TierListProps interface
-- [ ] T023 [US1] Create barrel export: `src/components/TierList/index.ts`
-- [ ] T024 [US1] Create Tier component: `src/components/Tier/Tier.tsx` with SortableContext, renders tier label, color, delete button, drop zone
-- [ ] T025 [US1] Create Tier types: `src/components/Tier/Tier.types.ts` with TierProps interface
-- [ ] T026 [US1] Create barrel export: `src/components/Tier/index.ts`
-- [ ] T027 [US1] Create useTierList hook: `src/hooks/useTierList.ts` wrapping context with tier operations (addTier, deleteTier, reorderTiers, updateTierLabel, updateTierColor, resetTier)
-- [ ] T028 [US1] Write useTierList hook tests: `src/hooks/useTierList.test.ts`
-- [ ] T029 [US1] Add unassigned items area UI in TierList component for items from deleted tiers
+- [x] T020 [P] [US1] Create default tier list factory: `src/utils/createDefaultTierList.ts` with createDefaultTierList function and DEFAULT_TIERS array
+- [x] T021 [US1] Create TierList component: `src/components/TierList/TierList.tsx` with DndContext provider, renders tiers, handles tier add/delete/reorder
+- [x] T022 [US1] Create TierList types: `src/components/TierList/TierList.types.ts` with TierListProps interface
+- [x] T023 [US1] Create barrel export: `src/components/TierList/index.ts`
+- [x] T024 [US1] Create Tier component: `src/components/Tier/Tier.tsx` with SortableContext, renders tier label, color, delete button, drop zone
+- [x] T025 [US1] Create Tier types: `src/components/Tier/Tier.types.ts` with TierProps interface
+- [x] T026 [US1] Create barrel export: `src/components/Tier/index.ts`
+- [x] T027 [US1] Create useTierList hook: `src/hooks/useTierList.ts` wrapping context with tier operations (addTier, deleteTier, reorderTiers, updateTierLabel, updateTierColor, resetTier)
+- [x] T028 [US1] Write useTierList hook tests: `src/hooks/useTierList.test.ts`
+- [x] T029 [US1] Add unassigned items area UI in TierList component for items from deleted tiers
 
 **Checkpoint**: User Story 1 complete - users can create, organize, and delete tiers independently
 
@@ -135,9 +136,9 @@
 
 ### Implementation for User Story 3
 
-- [ ] T048 [P] [US3] Create color picker component: `src/components/ColorPicker/ColorPicker.tsx` with predefined color palette, custom color input
-- [ ] T049 [US3] Create ColorPicker types: `src/components/ColorPicker/ColorPicker.types.ts`
-- [ ] T050 [US3] Create barrel export: `src/components/ColorPicker/index.ts`
+- [x] T048 [P] [US3] Create color picker component: `src/components/ColorPicker/ColorPicker.tsx` with predefined color palette, custom color input
+- [x] T049 [US3] Create ColorPicker types: `src/components/ColorPicker/ColorPicker.types.ts`
+- [x] T050 [US3] Create barrel export: `src/components/ColorPicker/index.ts`
 - [ ] T051 [US3] Add tier customization UI to Tier component: color picker button, label edit input, reset button
 - [ ] T052 [US3] Extend useTierList hook with customization operations: updateTierColor, updateTierLabel, resetTier
 - [ ] T053 [US3] Add tier customization actions to reducer: TIER_UPDATE_COLOR, TIER_UPDATE_LABEL, TIER_RESET with isCustomColor and isCustomLabel flags
