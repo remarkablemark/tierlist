@@ -113,6 +113,7 @@ export function TierListItem({
   };
 
   const draggingClasses = isDragging ? 'opacity-50' : 'opacity-100';
+  const cursorClasses = isDragging ? 'cursor-grabbing' : 'cursor-grab';
   const keyboardDragClasses = isKeyboardDragActive
     ? 'ring-2 ring-blue-500 ring-inset'
     : '';
@@ -122,7 +123,7 @@ export function TierListItem({
 
   return (
     <div
-      className={`group relative flex flex-col items-center rounded-md border border-slate-200 bg-white p-2 shadow-sm transition-all dark:border-slate-700 dark:bg-slate-800 ${sizeClasses[size]} ${draggingClasses} ${keyboardDragClasses} ${dropTargetClasses} min-h-11 min-w-11 focus-within:ring-2 focus-within:ring-blue-500`}
+      className={`group relative flex flex-col items-center rounded-md border border-slate-200 bg-white p-2 shadow-sm transition-all dark:border-slate-700 dark:bg-slate-800 ${sizeClasses[size]} ${draggingClasses} ${cursorClasses} ${keyboardDragClasses} ${dropTargetClasses} min-h-11 min-w-11 focus-within:ring-2 focus-within:ring-blue-500`}
       role="listitem"
       aria-label={item.label}
       data-grabbed={isDragging}
