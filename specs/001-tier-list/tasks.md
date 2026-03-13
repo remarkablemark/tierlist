@@ -112,9 +112,9 @@
 - [ ] T039 [US2] Create AddItemButton types: `src/components/AddItemButton/AddItemButton.types.ts` with AddItemButtonProps interface
 - [ ] T040 [US2] Create barrel export: `src/components/AddItemButton/index.ts`
 - [ ] T041 [US2] Extend useTierList hook with item operations: addItem, deleteItem, moveItem, reorderItem, updateItemLabel
-- [ ] T042 [US2] Implement drag-and-drop handlers in TierList component using @dnd-kit onDragEnd with hover/drop zone styling hooks
-- [ ] T043 [US2] Add collision detection for item drops in tiers using @dnd-kit closestCenter
-- [ ] T044 [US2] Implement item reordering within tiers using @dnd-kit sortable
+- [ ] T042 [US2] Implement drag-and-drop handlers in TierList component using @dnd-kit/react onDragEnd with hover/drop zone styling hooks
+- [ ] T043 [US2] Add collision detection for item drops in tiers using @dnd-kit/react closestCenter
+- [ ] T044 [US2] Implement item reordering within tiers using @dnd-kit/react sortable
 
 **Checkpoint**: User Stories 1 AND 2 complete - full tier list creation and item management functional
 
@@ -249,8 +249,8 @@
 
 ### Implementation for Accessibility
 
-- [ ] T093 [P] Configure @dnd-kit keyboard sensor in useTierList hook
-- [ ] T094 [P] Configure @dnd-kit touch sensor with activation constraint (distance: 5)
+- [ ] T093 [P] Configure @dnd-kit/react keyboard sensor in useTierList hook
+- [ ] T094 [P] Configure @dnd-kit/react touch sensor with activation constraint (distance: 5)
 - [ ] T095 Add ARIA labels to all interactive elements: TierList (role="application"), Tier (role="region"), TierListItem (role="listitem")
 - [ ] T096 Add aria-grabbed to draggable items, aria-dropeffect to drop zones
 - [ ] T097 Create live region for screen reader announcements during drag operations
