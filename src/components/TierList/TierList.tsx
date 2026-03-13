@@ -177,7 +177,7 @@ export function TierList({
     <DragDropProvider>
       <div
         ref={containerRef}
-        className={`mx-auto max-w-7xl p-4 ${className ?? ''}`}
+        className={`mx-auto max-w-6xl p-4 ${className ?? ''}`}
       >
         {/* Header */}
         <div className="mb-6 flex items-center justify-between">
