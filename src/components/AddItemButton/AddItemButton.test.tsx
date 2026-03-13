@@ -43,7 +43,7 @@ describe('AddItemButton', () => {
     expect(fileInput).toBeInTheDocument();
   });
 
-  it('should call onFileSelect when a file is selected', async () => {
+  it('should call onFileSelect when files are selected', async () => {
     const onFileSelect = vi.fn();
     render(
       <AddItemButton
@@ -61,7 +61,7 @@ describe('AddItemButton', () => {
     fireEvent.change(fileInput, { target: { files: [file] } });
 
     await waitFor(() => {
-      expect(onFileSelect).toHaveBeenCalledWith(file);
+      expect(onFileSelect).toHaveBeenCalledWith([file]);
     });
   });
 
@@ -153,6 +153,20 @@ describe('AddItemButton', () => {
     expect((fileInput as HTMLInputElement).accept).toBe('image/*');
   });
 
+  it('should allow selecting multiple image files', () => {
+    const onFileSelect = vi.fn();
+    render(
+      <AddItemButton
+        onFileSelect={onFileSelect}
+        itemCount={0}
+        maxItems={100}
+      />,
+    );
+
+    const fileInput = screen.getByTestId('file-input');
+    expect((fileInput as HTMLInputElement).multiple).toBe(true);
+  });
+
   it('should show maximum items reached message when disabled', () => {
     const onFileSelect = vi.fn();
     render(
@@ -228,7 +242,7 @@ describe('AddItemButton', () => {
     fireEvent.change(fileInput, { target: { files: [file] } });
 
     await waitFor(() => {
-      expect(onFileSelect).toHaveBeenCalledWith(file);
+      expect(onFileSelect).toHaveBeenCalledWith([file]);
     });
 
     // File input should be cleared after selection
@@ -253,13 +267,34 @@ describe('AddItemButton', () => {
     // First file
     fireEvent.change(fileInput, { target: { files: [file1] } });
     await waitFor(() => {
-      expect(onFileSelect).toHaveBeenCalledWith(file1);
+      expect(onFileSelect).toHaveBeenCalledWith([file1]);
     });
 
     // Second file
     fireEvent.change(fileInput, { target: { files: [file2] } });
     await waitFor(() => {
-      expect(onFileSelect).toHaveBeenCalledWith(file2);
+      expect(onFileSelect).toHaveBeenCalledWith([file2]);
+    });
+  });
+
+  it('should pass all selected files in a single callback', async () => {
+    const onFileSelect = vi.fn();
+    render(
+      <AddItemButton
+        onFileSelect={onFileSelect}
+        itemCount={0}
+        maxItems={100}
+      />,
+    );
+
+    const file1 = new File(['content1'], 'image1.png', { type: 'image/png' });
+    const file2 = new File(['content2'], 'image2.png', { type: 'image/png' });
+
+    const fileInput = screen.getByTestId('file-input');
+    fireEvent.change(fileInput, { target: { files: [file1, file2] } });
+
+    await waitFor(() => {
+      expect(onFileSelect).toHaveBeenCalledWith([file1, file2]);
     });
   });
 
@@ -410,6 +445,22 @@ describe('AddItemButton', () => {
 
     const fileInput = screen.getByTestId('file-input');
     fireEvent.change(fileInput, { target: { files: [] } });
+
+    expect(onFileSelect).not.toHaveBeenCalled();
+  });
+
+  it('should not call onFileSelect when the file list is missing', () => {
+    const onFileSelect = vi.fn();
+    render(
+      <AddItemButton
+        onFileSelect={onFileSelect}
+        itemCount={0}
+        maxItems={100}
+      />,
+    );
+
+    const fileInput = screen.getByTestId('file-input');
+    fireEvent.change(fileInput, { target: { files: undefined } });
 
     expect(onFileSelect).not.toHaveBeenCalled();
   });

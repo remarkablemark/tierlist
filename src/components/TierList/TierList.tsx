@@ -14,6 +14,8 @@ import {
   type TierListItem as TierItemType,
 } from 'src/types/tierList.types';
 import { exportTierListToPng } from 'src/utils/exportToPng';
+import { generateId } from 'src/utils/generateId';
+import { fileToDataUrl } from 'src/utils/imageUpload';
 
 import { AddItemButton } from '../AddItemButton';
 import { ExportButton } from '../ExportButton';
@@ -204,26 +206,30 @@ export function TierList({
     // Reorder within unassigned area (not implemented yet)
   };
 
-  const handleFileSelect = (file: File) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const imageUrl = e.target?.result as string;
-      const newItem: TierItemType = {
-        id: crypto.randomUUID(),
-        label: file.name.split('.')[0] || 'Item',
-        imageUrl,
-        imageBlobId: null,
-        createdAt: Date.now(),
-        metadata: {
-          originalFileName: file.name,
-          fileType: file.type,
-          fileSize: file.size,
-          uploadedAt: Date.now(),
-        },
-      };
-      addItem(newItem);
-    };
-    reader.readAsDataURL(file);
+  const handleFileSelect = (files: File[]) => {
+    void (async () => {
+      const availableSlots = Math.max(0, 100 - totalItems);
+      const filesToAdd = files.slice(0, availableSlots);
+
+      for (const file of filesToAdd) {
+        const imageUrl = await fileToDataUrl(file);
+        const uploadedAt = Date.now();
+        const newItem: TierItemType = {
+          id: generateId(),
+          label: file.name.split('.')[0] || 'Item',
+          imageUrl,
+          imageBlobId: null,
+          createdAt: uploadedAt,
+          metadata: {
+            originalFileName: file.name,
+            fileType: file.type,
+            fileSize: file.size,
+            uploadedAt,
+          },
+        };
+        addItem(newItem);
+      }
+    })();
   };
 
   const handleExport = async () => {

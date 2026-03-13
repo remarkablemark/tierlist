@@ -214,6 +214,65 @@ describe('TierList', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('should add multiple uploaded images to the unassigned area', async () => {
+    render(<TierList />, { wrapper: TestWrapper });
+
+    const fileInput = screen.getByTestId('file-input');
+    const firstFile = new File(['first image'], 'first-image.png', {
+      type: 'image/png',
+    });
+    const secondFile = new File(['second image'], 'second-image.png', {
+      type: 'image/png',
+    });
+
+    fireEvent.change(fileInput, {
+      target: { files: [firstFile, secondFile] },
+    });
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('listitem', { name: 'first-image' }),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole('listitem', { name: 'second-image' }),
+      ).toBeInTheDocument();
+    });
+  });
+
+  it('should only add files up to the remaining item limit', async () => {
+    const mockTierList = createMockTierListWithUnassignedItems(99);
+    render(<TierList />, {
+      wrapper: (props) => (
+        <TestWrapper {...props} initialTierList={mockTierList} />
+      ),
+    });
+
+    const fileInput = screen.getByTestId('file-input');
+    const allowedFile = new File(['allowed image'], 'allowed-image.png', {
+      type: 'image/png',
+    });
+    const ignoredFile = new File(['ignored image'], 'ignored-image.png', {
+      type: 'image/png',
+    });
+
+    fireEvent.change(fileInput, {
+      target: { files: [allowedFile, ignoredFile] },
+    });
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('listitem', { name: 'allowed-image' }),
+      ).toBeInTheDocument();
+    });
+
+    expect(
+      screen.queryByRole('listitem', { name: 'ignored-image' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getAllByText(/maximum 100 items reached/i).length,
+    ).toBeGreaterThan(0);
+  });
+
   describe('drag and drop - item to tier', () => {
     it('should show visual feedback when item is being dragged', () => {
       const mockTierList = createMockTierListWithUnassignedItems(5);

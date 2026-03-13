@@ -8,9 +8,9 @@
  */
 export interface AddItemButtonProps {
   /**
-   * Callback when a file is selected.
+   * Callback when one or more files are selected.
    */
-  onFileSelect: (file: File) => void;
+  onFileSelect: (files: File[]) => void;
   /**
    * Current number of items in the tier list.
    */
