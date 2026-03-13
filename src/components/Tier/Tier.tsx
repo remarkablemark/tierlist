@@ -63,13 +63,13 @@ export function Tier({
 
   return (
     <div
-      className={`relative rounded-lg border-2 ${dropZoneClasses} ${draggingClasses} transition-all`}
+      className={`relative ${dropZoneClasses} ${draggingClasses} transition-all`}
       style={{ backgroundColor: tier.color }}
       role="region"
       aria-label={`Tier ${tier.label}`}
     >
       {/* Tier Header */}
-      <div className="flex items-center justify-between border-b border-slate-200 bg-white/50 p-3 dark:border-slate-700 dark:bg-slate-900/50">
+      <div className="flex items-center justify-between bg-white/50 p-3 dark:bg-slate-900/50">
         {/* Tier Label */}
         {showLabels ? (
           <input
