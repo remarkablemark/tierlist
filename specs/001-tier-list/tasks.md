@@ -76,6 +76,7 @@
 - [x] T021 [US1] Create TierList component: `src/components/TierList/TierList.tsx` with DragDropProvider provider, renders tiers, handles tier add/delete/reorder
 - [x] T022 [US1] Create TierList types: `src/components/TierList/TierList.types.ts` with TierListProps interface
 - [x] T023 [US1] Create barrel export: `src/components/TierList/index.ts`
+- [x] T023A [US1] Integrate tier list into app shell: update `src/components/App/App.tsx` to render `TierList` within `TierListProvider`
 - [x] T024 [US1] Create Tier component: `src/components/Tier/Tier.tsx` with SortableContext, renders tier label, color, delete button, drop zone
 - [x] T025 [US1] Create Tier types: `src/components/Tier/Tier.types.ts` with TierProps interface
 - [x] T026 [US1] Create barrel export: `src/components/Tier/index.ts`
