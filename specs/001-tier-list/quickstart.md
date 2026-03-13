@@ -87,13 +87,13 @@ Drag-and-drop library for tier and item interactions.
 
 ```bash
 # Install if not already present
-npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/touch-sensor @dnd-kit/accessibility
+npm install @dnd-kit/react @dnd-kit/sortable @dnd-kit/touch-sensor @dnd-kit/accessibility
 ```
 
 **Basic Setup**:
 
 ```typescript
-import { DndContext, MouseSensor, TouchSensor, KeyboardSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { DragDropProvider, MouseSensor, TouchSensor, KeyboardSensor, useSensor, useSensors } from '@dnd-kit/react';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 const sensors = useSensors(
@@ -104,15 +104,15 @@ const sensors = useSensors(
 
 function App() {
   return (
-    <DndContext
+    <DragDropProvider
       sensors={sensors}
       collisionDetection={closestCenter}
-      onDragEnd={handleDragEnd}
+      onDrop={handleDrop}
     >
       <SortableContext items={itemIds} strategy={verticalListSortingStrategy}>
         {/* Sortable items */}
       </SortableContext>
-    </DndContext>
+    </DragDropProvider>
   );
 }
 ```

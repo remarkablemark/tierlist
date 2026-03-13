@@ -44,7 +44,7 @@
 
 **Best Practices**:
 
-- Use `@dnd-kit/core` for DndContext provider
+- Use `DragDropProvider` from `@dnd-kit/react` for drag-and-drop context
 - Use `@dnd-kit/sortable` for sortable lists (tiers and items)
 - Use `@dnd-kit/touch-sensor` for mobile touch support
 - Use `@dnd-kit/accessibility` for screen reader announcements
@@ -235,15 +235,15 @@ src/
 
 ```typescript
 // Top-level provider
-<DndContext
+<DragDropProvider
   sensors={[mouseSensor, touchSensor, keyboardSensor]}
   collisionDetection={closestCenter}
-  onDragEnd={handleDragEnd}
+  onDrop={handleDrop}
 >
   <SortableContext items={tierIds} strategy={verticalListStrategy}>
     {tiers.map(tier => <SortableTier key={tier.id} {...tier} />)}
   </SortableContext>
-</DndContext>
+</DragDropProvider>
 ```
 
 **Accessibility**:
