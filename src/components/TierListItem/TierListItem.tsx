@@ -19,14 +19,16 @@ export function TierListItem({
   onMove,
   onDelete,
   onLabelEdit,
+  onPointerDragStart,
+  onPointerDragEnd,
   size,
   showLabel,
 }: TierListItemComponentProps): React.ReactElement {
   const [isEditing, setIsEditing] = useState(false);
   const [localLabel, setLocalLabel] = useState(item.label);
 
-  const handleDragStart = () => {
-    onDragStart();
+  const handleDragStart = (source: 'keyboard' | 'pointer') => {
+    onDragStart(source);
   };
 
   const handleDragEnd = (dropped: boolean) => {
@@ -34,6 +36,10 @@ export function TierListItem({
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.target !== event.currentTarget) {
+      return;
+    }
+
     if (isKeyboardDragActive) {
       switch (event.key) {
         case 'ArrowUp':
@@ -67,6 +73,9 @@ export function TierListItem({
           onDelete();
           break;
       }
+    } else if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleDragStart('keyboard');
     } else if (event.key === 'Delete' || event.key === 'Backspace') {
       onDelete();
     }
@@ -116,6 +125,9 @@ export function TierListItem({
       aria-describedby={`item-instructions-${item.id}`}
       tabIndex={0}
       onKeyDown={handleKeyDown}
+      draggable
+      onDragStart={onPointerDragStart}
+      onDragEnd={onPointerDragEnd}
     >
       {/* Hidden instructions for screen readers */}
       <span id={`item-instructions-${item.id}`} className="sr-only">
@@ -172,7 +184,9 @@ export function TierListItem({
       {/* Drag Handle */}
       <button
         className="absolute -top-1 -right-1 rounded-full bg-slate-200 p-1 text-slate-600 opacity-0 transition-opacity hover:bg-slate-300 hover:text-slate-900 focus:opacity-100 dark:bg-slate-600 dark:text-slate-300 dark:hover:bg-slate-500 dark:hover:text-white"
-        onClick={handleDragStart}
+        onClick={() => {
+          handleDragStart('keyboard');
+        }}
         aria-label="Drag handle"
         tabIndex={0}
         type="button"

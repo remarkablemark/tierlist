@@ -21,8 +21,14 @@ export function Tier({
   onColorChange,
   onReset,
   onDelete,
+  onItemDrop,
+  activeItemId = null,
+  onItemDragEnter,
+  onItemDragLeave,
+  onItemDragOver,
   itemSize,
   showLabels,
+  children,
 }: TierProps): React.ReactElement {
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
   const labelRef = useRef<HTMLInputElement>(null);
@@ -217,12 +223,21 @@ export function Tier({
         className="min-h-[100px] p-3"
         role="list"
         aria-label="Tier items"
-        onDragOver={(e) => {
-          e.preventDefault();
+        onDragEnter={() => {
+          onItemDragEnter?.();
+        }}
+        onDragLeave={() => {
+          onItemDragLeave?.();
+        }}
+        onDragOver={(event) => {
+          event.preventDefault();
+          onItemDragOver?.(event);
         }}
         onDrop={(e) => {
           e.preventDefault();
-          // Handle drop logic
+          if (activeItemId) {
+            onItemDrop(activeItemId, tier.items.length);
+          }
         }}
       >
         {tier.items.length === 0 ? (
@@ -231,30 +246,31 @@ export function Tier({
           </div>
         ) : (
           <div className="flex flex-wrap gap-2">
-            {tier.items.map((item) => (
-              <div
-                key={item.id}
-                className={`flex flex-col items-center rounded-md border border-slate-200 bg-white p-2 shadow-sm dark:border-slate-700 dark:bg-slate-800 ${sizeClasses[itemSize]}`}
-                role="listitem"
-              >
-                {item.imageUrl ? (
-                  <img
-                    src={item.imageUrl}
-                    alt={item.label}
-                    className="h-full w-full object-contain"
-                  />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-slate-100 text-slate-400 dark:bg-slate-700 dark:text-slate-500">
-                    <span className="text-xs">No Image</span>
-                  </div>
-                )}
-                {showLabels && item.label && (
-                  <span className="mt-1 truncate text-xs text-slate-700 dark:text-slate-300">
-                    {item.label}
-                  </span>
-                )}
-              </div>
-            ))}
+            {children ??
+              tier.items.map((item) => (
+                <div
+                  key={item.id}
+                  className={`flex flex-col items-center rounded-md border border-slate-200 bg-white p-2 shadow-sm dark:border-slate-700 dark:bg-slate-800 ${sizeClasses[itemSize]}`}
+                  role="listitem"
+                >
+                  {item.imageUrl ? (
+                    <img
+                      src={item.imageUrl}
+                      alt={item.label}
+                      className="h-full w-full object-contain"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center bg-slate-100 text-slate-400 dark:bg-slate-700 dark:text-slate-500">
+                      <span className="text-xs">No Image</span>
+                    </div>
+                  )}
+                  {showLabels && item.label && (
+                    <span className="mt-1 truncate text-xs text-slate-700 dark:text-slate-300">
+                      {item.label}
+                    </span>
+                  )}
+                </div>
+              ))}
           </div>
         )}
       </div>

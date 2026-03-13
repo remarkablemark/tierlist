@@ -171,7 +171,19 @@ describe('TierListItem', () => {
       const dragHandle = screen.getByLabelText('Drag handle');
       await user.click(dragHandle);
 
-      expect(onDragStart).toHaveBeenCalledTimes(1);
+      expect(onDragStart).toHaveBeenCalledWith('keyboard');
+    });
+
+    it('calls onDragStart when Enter is pressed before keyboard drag is active', async () => {
+      const user = userEvent.setup();
+      const onDragStart = vi.fn();
+      render(<TierListItem {...defaultProps} onDragStart={onDragStart} />);
+
+      const element = screen.getByRole('listitem');
+      element.focus();
+      await user.keyboard('{Enter}');
+
+      expect(onDragStart).toHaveBeenCalledWith('keyboard');
     });
 
     it('calls onDragEnd with dropped=true when Enter is pressed during keyboard drag', async () => {

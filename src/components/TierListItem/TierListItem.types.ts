@@ -3,6 +3,8 @@
  * @packageDocumentation
  */
 
+import { type DragEventHandler } from 'react';
+
 import { type TierListItem as TierItemType } from '../../types/tierList.types';
 
 /**
@@ -24,7 +26,7 @@ export interface TierListItemComponentProps {
   /**
    * Callback when drag starts.
    */
-  onDragStart: () => void;
+  onDragStart: (source: 'keyboard' | 'pointer') => void;
   /**
    * Callback when drag ends.
    */
@@ -41,6 +43,14 @@ export interface TierListItemComponentProps {
    * Callback when item label is edited.
    */
   onLabelEdit: (label: string) => void;
+  /**
+   * Callback for native drag start events.
+   */
+  onPointerDragStart?: DragEventHandler<HTMLDivElement>;
+  /**
+   * Callback for native drag end events.
+   */
+  onPointerDragEnd?: DragEventHandler<HTMLDivElement>;
   /**
    * Size of the item display.
    */

@@ -6,7 +6,7 @@
 /* v8 ignore file -- @preserve */
 
 import { DragDropProvider } from '@dnd-kit/react';
-import { useRef, useState } from 'react';
+import { type DragEvent, useRef, useState } from 'react';
 import { useAutoSave } from 'src/hooks/useAutoSave';
 import { useTierList } from 'src/hooks/useTierList';
 import {
@@ -70,9 +70,43 @@ export function TierList({
   >([]);
 
   const [draggedItem, setDraggedItem] = useState<TierItemType | null>(null);
+  const [keyboardDraggedItemId, setKeyboardDraggedItemId] = useState<
+    string | null
+  >(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_draggedTier, _setDraggedTier] = useState<TierType | null>(null);
   const [overTierId, setOverTierId] = useState<string | null>(null);
+
+  const findItemTierId = (itemId: string): string | null => {
+    const sourceTier = tierList.tiers.find((tier) =>
+      tier.items.some((item) => item.id === itemId),
+    );
+
+    return sourceTier?.id ?? null;
+  };
+
+  const clearDragState = () => {
+    setDraggedItem(null);
+    setKeyboardDraggedItemId(null);
+    setOverTierId(null);
+  };
+
+  const moveDraggedItem = (itemId: string, targetTierId: string | null) => {
+    const sourceTierId = findItemTierId(itemId);
+
+    if (sourceTierId === targetTierId) {
+      clearDragState();
+      return;
+    }
+
+    const targetIndex = targetTierId
+      ? (tierList.tiers.find((tier) => tier.id === targetTierId)?.items
+          .length ?? 0)
+      : tierList.unassignedItems.length;
+
+    moveItem(itemId, targetTierId, targetIndex);
+    clearDragState();
+  };
 
   const handleAddTier = () => {
     addTier();
@@ -94,14 +128,15 @@ export function TierList({
     resetTier(tierId);
   };
 
-  const handleItemDrop = (
+  const handleItemDropToUnassigned = (
     itemId: string,
     /* eslint-disable-line @typescript-eslint/no-unused-vars */ _index: number,
   ) => {
-    // Drop into unassigned area (index not used for unassigned)
-    moveItem(itemId, null, 0);
-    setDraggedItem(null);
-    setOverTierId(null);
+    moveDraggedItem(itemId, null);
+  };
+
+  const handleItemDropToTier = (itemId: string, targetTierId: string) => {
+    moveDraggedItem(itemId, targetTierId);
   };
 
   const handleItemReorder = (
@@ -172,6 +207,94 @@ export function TierList({
   const handleCreateNewClick = (name?: string): void => {
     createNew(name);
   };
+
+  const handlePointerDragStart = (
+    event: DragEvent<HTMLDivElement>,
+    item: TierItemType,
+  ) => {
+    const dataTransfer = event.dataTransfer as DataTransfer | undefined;
+
+    if (typeof dataTransfer !== 'undefined') {
+      dataTransfer.effectAllowed = 'move';
+      dataTransfer.setData('text/plain', item.id);
+    }
+    setDraggedItem(item);
+    setKeyboardDraggedItemId(null);
+  };
+
+  const handlePointerDragEnd = () => {
+    if (!keyboardDraggedItemId) {
+      clearDragState();
+    }
+  };
+
+  const handleKeyboardDragStart = (item: TierItemType) => {
+    setDraggedItem(item);
+    setKeyboardDraggedItemId(item.id);
+    setOverTierId(findItemTierId(item.id));
+  };
+
+  const handleKeyboardMove = (direction: 'up' | 'down' | 'left' | 'right') => {
+    if (!draggedItem || !keyboardDraggedItemId) {
+      return;
+    }
+
+    if (direction === 'left' || direction === 'right') {
+      return;
+    }
+
+    const targets = [null, ...tierList.tiers.map((tier) => tier.id)];
+    const currentIndex = targets.findIndex((tierId) => tierId === overTierId);
+    const nextIndex =
+      direction === 'down' ? currentIndex + 1 : currentIndex - 1;
+
+    if (nextIndex < 0 || nextIndex >= targets.length) {
+      return;
+    }
+
+    setOverTierId(targets[nextIndex]);
+  };
+
+  const handleKeyboardDrop = (dropped: boolean) => {
+    if (!draggedItem || !keyboardDraggedItemId) {
+      return;
+    }
+
+    if (!dropped) {
+      clearDragState();
+      return;
+    }
+
+    moveDraggedItem(draggedItem.id, overTierId);
+  };
+
+  const renderItem = (item: TierItemType) => (
+    <TierListItem
+      key={item.id}
+      item={item}
+      isDragging={draggedItem?.id === item.id}
+      isKeyboardDragActive={keyboardDraggedItemId === item.id}
+      onDragStart={(source) => {
+        if (source === 'keyboard') {
+          handleKeyboardDragStart(item);
+        }
+      }}
+      onDragEnd={handleKeyboardDrop}
+      onMove={handleKeyboardMove}
+      onDelete={() => {
+        deleteItem(item.id);
+      }}
+      onLabelEdit={(label) => {
+        updateItemLabel(item.id, label);
+      }}
+      onPointerDragStart={(event) => {
+        handlePointerDragStart(event, item);
+      }}
+      onPointerDragEnd={handlePointerDragEnd}
+      size={tierList.settings.itemSize}
+      showLabel={tierList.settings.showItemLabels}
+    />
+  );
 
   return (
     <DragDropProvider>
@@ -291,11 +414,28 @@ export function TierList({
             onDelete={() => {
               handleDeleteTier(tier.id);
             }}
-            onItemDrop={handleItemDrop}
+            onItemDrop={(itemId) => {
+              handleItemDropToTier(itemId, tier.id);
+            }}
+            activeItemId={draggedItem?.id ?? null}
+            onItemDragEnter={() => {
+              setOverTierId(tier.id);
+            }}
+            onItemDragLeave={() => {
+              setOverTierId((currentTierId) =>
+                currentTierId === tier.id ? null : currentTierId,
+              );
+            }}
+            onItemDragOver={(event) => {
+              event.preventDefault();
+              setOverTierId(tier.id);
+            }}
             onItemReorder={handleItemReorder}
             itemSize={tierList.settings.itemSize}
             showLabels={tierList.settings.showItemLabels}
-          />
+          >
+            {tier.items.map((item) => renderItem(item))}
+          </Tier>
         ))}
 
         {/* Unassigned Items Area */}
@@ -314,40 +454,32 @@ export function TierList({
           </div>
 
           {/* Unassigned Items Grid */}
-          <div className="flex min-h-[100px] flex-wrap gap-2">
+          <div
+            className={`flex min-h-[100px] flex-wrap gap-2 rounded-md p-2 transition-all ${
+              overTierId === null && draggedItem
+                ? 'ring-2 ring-slate-400 ring-inset'
+                : ''
+            }`}
+            onDragOver={(event) => {
+              event.preventDefault();
+              setOverTierId(null);
+            }}
+            onDrop={(event) => {
+              event.preventDefault();
+              if (draggedItem) {
+                handleItemDropToUnassigned(
+                  draggedItem.id,
+                  tierList.unassignedItems.length,
+                );
+              }
+            }}
+          >
             {tierList.unassignedItems.length === 0 ? (
               <div className="flex items-center justify-center text-slate-400 dark:text-slate-500">
                 <span className="text-sm">No unassigned items</span>
               </div>
             ) : (
-              tierList.unassignedItems.map((item) => (
-                <div key={item.id}>
-                  <TierListItem
-                    item={item}
-                    isDragging={draggedItem?.id === item.id}
-                    isKeyboardDragActive={false}
-                    onDragStart={() => {
-                      setDraggedItem(item);
-                    }}
-                    onDragEnd={(dropped) => {
-                      if (!dropped) {
-                        setDraggedItem(null);
-                      }
-                    }}
-                    onMove={() => {
-                      // Keyboard move handled separately
-                    }}
-                    onDelete={() => {
-                      deleteItem(item.id);
-                    }}
-                    onLabelEdit={(label) => {
-                      updateItemLabel(item.id, label);
-                    }}
-                    size={tierList.settings.itemSize}
-                    showLabel={tierList.settings.showItemLabels}
-                  />
-                </div>
-              ))
+              tierList.unassignedItems.map((item) => renderItem(item))
             )}
           </div>
         </div>

@@ -3,7 +3,7 @@
  * @packageDocumentation
  */
 
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { TierListProvider } from 'src/store/tierListContext';
 import {
@@ -54,6 +54,38 @@ function createMockTierListWithItems(itemCount: number): TierListData {
     updatedAt: now,
     tiers,
     unassignedItems: [],
+    settings: DEFAULT_SETTINGS,
+    version: 1,
+  };
+}
+
+/**
+ * Creates a mock tier list with all items in the unassigned area.
+ */
+function createMockTierListWithUnassignedItems(
+  itemCount: number,
+): TierListData {
+  const now = Date.now();
+  const items = Array.from({ length: itemCount }, (_, i) => ({
+    id: generateId(),
+    label: `Item ${String(i + 1)}`,
+    imageUrl: null,
+    imageBlobId: null,
+    createdAt: now,
+    metadata: {},
+  }));
+
+  return {
+    id: generateId(),
+    name: 'Test Tier List',
+    createdAt: now,
+    updatedAt: now,
+    tiers: DEFAULT_TIERS.map((t) => ({
+      ...t,
+      id: generateId(),
+      items: [],
+    })),
+    unassignedItems: items,
     settings: DEFAULT_SETTINGS,
     version: 1,
   };
@@ -184,7 +216,7 @@ describe('TierList', () => {
 
   describe('drag and drop - item to tier', () => {
     it('should show visual feedback when item is being dragged', () => {
-      const mockTierList = createMockTierListWithItems(5);
+      const mockTierList = createMockTierListWithUnassignedItems(5);
       render(<TierList />, {
         wrapper: (props) => (
           <TestWrapper {...props} initialTierList={mockTierList} />
@@ -203,7 +235,7 @@ describe('TierList', () => {
 
     it('should drop item into tier when Enter is pressed after moving to tier', async () => {
       const user = userEvent.setup();
-      const mockTierList = createMockTierListWithItems(3);
+      const mockTierList = createMockTierListWithUnassignedItems(3);
 
       render(<TierList />, {
         wrapper: (props) => (
@@ -238,7 +270,7 @@ describe('TierList', () => {
 
     it('should cancel drag operation when Escape is pressed', async () => {
       const user = userEvent.setup();
-      const mockTierList = createMockTierListWithItems(3);
+      const mockTierList = createMockTierListWithUnassignedItems(3);
       render(<TierList />, {
         wrapper: (props) => (
           <TestWrapper {...props} initialTierList={mockTierList} />
@@ -261,6 +293,30 @@ describe('TierList', () => {
 
       // Item should still be in unassigned area (drag cancelled)
       expect(firstItem).toBeInTheDocument();
+    });
+
+    it('should drop item into tier when dragged with the pointer', () => {
+      const mockTierList = createMockTierListWithUnassignedItems(1);
+      render(<TierList />, {
+        wrapper: (props) => (
+          <TestWrapper {...props} initialTierList={mockTierList} />
+        ),
+      });
+
+      const unassignedItem = screen.getByRole('listitem', { name: 'Item 1' });
+      const firstTier = screen.getAllByRole('region')[0];
+      const tierDropZone = firstTier.querySelector('[role="list"]');
+
+      expect(tierDropZone).not.toBeNull();
+
+      fireEvent.dragStart(unassignedItem);
+      fireEvent.dragOver(tierDropZone as HTMLElement);
+      fireEvent.drop(tierDropZone as HTMLElement);
+
+      expect(screen.getByText('No unassigned items')).toBeInTheDocument();
+      expect(
+        firstTier.querySelector('[aria-label="Item 1"]'),
+      ).toBeInTheDocument();
     });
   });
 

@@ -152,11 +152,18 @@ describe('Tier', () => {
 
   it('should call onItemDrop when item is dropped', () => {
     const onItemDrop = vi.fn();
-    render(<Tier {...mockProps} onItemDrop={onItemDrop} />);
+    render(
+      <Tier
+        {...mockProps}
+        onItemDrop={onItemDrop}
+        activeItemId="dragged-item-id"
+      />,
+    );
 
-    // Verify drop zone exists
     const dropZone = screen.getByRole('list', { name: /tier items/i });
-    expect(dropZone).toBeInTheDocument();
+    fireEvent.drop(dropZone);
+
+    expect(onItemDrop).toHaveBeenCalledWith('dragged-item-id', 0);
   });
 
   it('should show move up button when not first tier', () => {
@@ -345,6 +352,27 @@ describe('Tier', () => {
 
     // Drop should be prevented (event handled)
     expect(dropZone).toBeInTheDocument();
+  });
+
+  it('should call drag enter and leave callbacks for the drop zone', () => {
+    const onItemDragEnter = vi.fn();
+    const onItemDragLeave = vi.fn();
+
+    render(
+      <Tier
+        {...mockProps}
+        onItemDragEnter={onItemDragEnter}
+        onItemDragLeave={onItemDragLeave}
+      />,
+    );
+
+    const dropZone = screen.getByRole('list', { name: /tier items/i });
+
+    fireEvent.dragEnter(dropZone);
+    fireEvent.dragLeave(dropZone);
+
+    expect(onItemDragEnter).toHaveBeenCalledTimes(1);
+    expect(onItemDragLeave).toHaveBeenCalledTimes(1);
   });
 
   it('should prevent default on drag over', () => {
