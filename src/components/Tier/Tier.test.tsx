@@ -3,7 +3,7 @@
  * @packageDocumentation
  */
 
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { type Tier as TierType } from 'src/types/tierList.types';
 import { generateId } from 'src/utils/generateId';
@@ -109,6 +109,12 @@ describe('Tier', () => {
     const labelInput = screen.getByRole('textbox', { name: /tier label/i });
     await user.clear(labelInput);
     await user.type(labelInput, 'New Label');
+
+    // Wait for React to process state updates
+    await waitFor(() => {
+      expect(labelInput).toHaveValue('New Label');
+    });
+
     await user.tab(); // Blur to trigger change
 
     expect(onLabelChange).toHaveBeenCalledWith('New Label');
@@ -282,6 +288,12 @@ describe('Tier', () => {
     const labelInput = screen.getByRole('textbox', { name: /tier label/i });
     await user.clear(labelInput);
     await user.type(labelInput, 'Changed');
+
+    // Wait for React to process state updates
+    await waitFor(() => {
+      expect(labelInput).toHaveValue('Changed');
+    });
+
     await user.tab();
 
     expect(onLabelChange).toHaveBeenCalledWith('Changed');

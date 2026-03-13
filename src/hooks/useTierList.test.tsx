@@ -9,6 +9,17 @@ import { useTierList } from 'src/hooks/useTierList';
 import { TierListContext, TierListProvider } from 'src/store/tierListContext';
 import { generateId } from 'src/utils/generateId';
 
+// Mock storage module for persistence tests
+vi.mock('../services/storage', async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...(actual as object),
+    saveTierList: vi.fn().mockResolvedValue(undefined),
+    loadTierList: vi.fn().mockResolvedValue(null),
+    getAllTierLists: vi.fn().mockResolvedValue([]),
+  } as unknown as typeof import('../services/storage');
+});
+
 /**
  * Test wrapper with provider.
  */
@@ -701,6 +712,106 @@ describe('useTierList', () => {
       });
 
       expect(result.current.tierList.totalItems).toBe(2);
+    });
+  });
+
+  describe('persistence', () => {
+    it('should save tier list to storage', async () => {
+      const { saveTierList } = await import('../services/storage');
+      const { result } = renderHook(() => useTierList(), { wrapper });
+
+      await act(async () => {
+        await result.current.save();
+      });
+
+      expect(saveTierList).toHaveBeenCalledTimes(1);
+    });
+
+    it('should load tier list from storage', async () => {
+      const { loadTierList } = await import('../services/storage');
+      const mockTierList = {
+        id: generateId(),
+        name: 'Loaded Tier List',
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+        tiers: [],
+        unassignedItems: [],
+        settings: {
+          theme: 'system' as const,
+          tierHeight: 120,
+          itemSize: 'medium' as const,
+          showItemLabels: true,
+          enableAnimations: true,
+          snapToGrid: false,
+        },
+        version: 1,
+      };
+      vi.mocked(loadTierList).mockResolvedValueOnce(mockTierList);
+
+      const { result } = renderHook(() => useTierList(), { wrapper });
+
+      await act(async () => {
+        await result.current.load(mockTierList.id);
+      });
+
+      expect(loadTierList).toHaveBeenCalledWith(mockTierList.id);
+    });
+
+    it('should handle load when tier list not found', async () => {
+      const { loadTierList } = await import('../services/storage');
+      vi.mocked(loadTierList).mockResolvedValueOnce(undefined);
+
+      const { result } = renderHook(() => useTierList(), { wrapper });
+
+      await result.current.load('non-existent-id');
+
+      expect(loadTierList).toHaveBeenCalledWith('non-existent-id');
+    });
+
+    it('should create new tier list with default name', () => {
+      const { result } = renderHook(() => useTierList(), { wrapper });
+
+      act(() => {
+        result.current.createNew();
+      });
+
+      expect(result.current.tierList.name).toBe('Untitled Tier List');
+      expect(result.current.tierList.tiers).toEqual([]);
+      expect(result.current.tierList.unassignedItems).toEqual([]);
+    });
+
+    it('should create new tier list with custom name', () => {
+      const { result } = renderHook(() => useTierList(), { wrapper });
+
+      act(() => {
+        result.current.createNew('My Custom Tier List');
+      });
+
+      expect(result.current.tierList.name).toBe('My Custom Tier List');
+    });
+
+    it('should get all saved tier lists', async () => {
+      const { getAllTierLists } = await import('../services/storage');
+      const savedLists = [
+        {
+          id: generateId(),
+          name: 'Saved List 1',
+          updatedAt: Date.now(),
+        },
+        {
+          id: generateId(),
+          name: 'Saved List 2',
+          updatedAt: Date.now(),
+        },
+      ];
+      vi.mocked(getAllTierLists).mockResolvedValueOnce(savedLists);
+
+      const { result } = renderHook(() => useTierList(), { wrapper });
+
+      const tierLists = await result.current.getAllSaved();
+
+      expect(getAllTierLists).toHaveBeenCalledTimes(1);
+      expect(tierLists).toEqual(savedLists);
     });
   });
 });

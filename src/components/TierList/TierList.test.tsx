@@ -3,7 +3,7 @@
  * @packageDocumentation
  */
 
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { TierListProvider } from 'src/store/tierListContext';
 import {
@@ -333,6 +333,94 @@ describe('TierList', () => {
       await user.keyboard('{ArrowUp}');
       expect(firstItem).toBeInTheDocument();
     });
+  });
+
+  it('should customize tier color and persist the change', async () => {
+    const user = userEvent.setup();
+    const mockTierList = createMockTierListWithItems(0);
+    render(<TierList />, {
+      wrapper: (props) => (
+        <TestWrapper {...props} initialTierList={mockTierList} />
+      ),
+    });
+
+    // Find color picker button for first tier
+    const colorPickerButton = screen.getAllByRole('button', {
+      name: /tier color/i,
+    })[0];
+    await user.click(colorPickerButton);
+
+    // Select a different color from palette
+    const colorOption = screen.getByRole('button', {
+      name: /#ff0000/i,
+    });
+    await user.click(colorOption);
+
+    // Tier should have new background color
+    const tier = screen.getAllByRole('region')[0];
+    expect(tier).toHaveStyle('background-color: #ff0000');
+  });
+
+  it('should customize tier label and persist the change', async () => {
+    const user = userEvent.setup();
+    const mockTierList = createMockTierListWithItems(0);
+    render(<TierList />, {
+      wrapper: (props) => (
+        <TestWrapper {...props} initialTierList={mockTierList} />
+      ),
+    });
+
+    // Find label input for first tier
+    const labelInputs = screen.getAllByRole('textbox', { name: /tier label/i });
+    const firstLabelInput = labelInputs[0];
+
+    // Change the label
+    await user.clear(firstLabelInput);
+    await user.type(firstLabelInput, 'Custom Tier');
+
+    // Wait for React to process state updates
+    await waitFor(() => {
+      expect(firstLabelInput).toHaveValue('Custom Tier');
+    });
+
+    await user.tab(); // Blur to trigger change
+
+    // Label should be updated
+    expect(firstLabelInput).toHaveValue('Custom Tier');
+  });
+
+  it('should reset tier to default values', async () => {
+    const user = userEvent.setup();
+    const mockTierList = createMockTierListWithItems(0);
+    // Start with custom tier - modify the first tier's label and color
+    const originalFirstTier = mockTierList.tiers[0];
+    originalFirstTier.label = 'Custom';
+    originalFirstTier.color = '#00ff00';
+    originalFirstTier.isCustomLabel = true;
+    originalFirstTier.isCustomColor = true;
+
+    render(<TierList />, {
+      wrapper: (props) => (
+        <TestWrapper {...props} initialTierList={mockTierList} />
+      ),
+    });
+
+    // Verify initial custom values
+    const labelInputs = screen.getAllByRole('textbox', { name: /tier label/i });
+    expect(labelInputs[0]).toHaveValue('Custom');
+
+    // Find reset button for first tier
+    const resetButtons = screen.getAllByRole('button', { name: /reset tier/i });
+    const firstResetButton = resetButtons[0];
+    await user.click(firstResetButton);
+
+    // After reset, the tier should use default label from DEFAULT_TIERS
+    // The component re-renders with updated tier data
+    const updatedLabelInputs = screen.getAllByRole('textbox', {
+      name: /tier label/i,
+    });
+    // Label should be reset to default (S for first tier)
+    expect(updatedLabelInputs[0]).toHaveValue('S');
   });
 });
 

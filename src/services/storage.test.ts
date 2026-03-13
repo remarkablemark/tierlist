@@ -2,9 +2,6 @@
  * Tests for the IndexedDB storage service.
  */
 
-// Import fake-indexeddb
-import 'fake-indexeddb/auto';
-
 import type { TierList } from '../types/tierList.types';
 import {
   clearDatabase,

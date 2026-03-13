@@ -5,8 +5,23 @@
 
 import { useCallback } from 'react';
 
+import {
+  getAllTierLists,
+  loadTierList as loadTierListFromStorage,
+  saveTierList as saveTierListToStorage,
+} from '../services/storage';
 import { useTierListContext } from '../store/tierListContext';
 import { type TierList, type TierListItem } from '../types/tierList.types';
+import { generateId } from '../utils/generateId';
+
+/**
+ * Summary information about a saved tier list.
+ */
+export interface SavedTierListSummary {
+  id: string;
+  name: string;
+  updatedAt: number;
+}
 
 /**
  * Return type for the useTierList hook.
@@ -42,6 +57,12 @@ export interface UseTierListReturn {
   // Undo/redo
   undo: () => void;
   redo: () => void;
+
+  // Persistence
+  save: () => Promise<void>;
+  load: (id: string) => Promise<void>;
+  createNew: (name?: string) => void;
+  getAllSaved: () => Promise<SavedTierListSummary[]>;
 }
 
 /**
@@ -210,6 +231,50 @@ export function useTierList(): UseTierListReturn {
     dispatch({ type: 'REDO' });
   }, [dispatch]);
 
+  // Persistence
+  const save = useCallback(async () => {
+    await saveTierListToStorage(state.present);
+  }, [state.present]);
+
+  const load = useCallback(
+    async (id: string) => {
+      const tierList = await loadTierListFromStorage(id);
+      if (tierList) {
+        dispatch({ type: 'LOAD', payload: tierList });
+      }
+    },
+    [dispatch],
+  );
+
+  const createNew = useCallback(
+    (name?: string) => {
+      const now = Date.now();
+      const newTierList: TierList = {
+        id: generateId(),
+        name: name ?? 'Untitled Tier List',
+        createdAt: now,
+        updatedAt: now,
+        tiers: [],
+        unassignedItems: [],
+        settings: {
+          theme: 'system',
+          tierHeight: 120,
+          itemSize: 'medium',
+          showItemLabels: true,
+          enableAnimations: true,
+          snapToGrid: false,
+        },
+        version: 1,
+      };
+      dispatch({ type: 'LOAD', payload: newTierList });
+    },
+    [dispatch],
+  );
+
+  const getAllSaved = useCallback(async (): Promise<SavedTierListSummary[]> => {
+    return getAllTierLists();
+  }, []);
+
   return {
     tierList,
     canUndo,
@@ -230,5 +295,9 @@ export function useTierList(): UseTierListReturn {
     updateItemLabel,
     undo,
     redo,
+    save,
+    load,
+    createNew,
+    getAllSaved,
   };
 }

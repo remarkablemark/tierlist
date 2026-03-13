@@ -3,7 +3,7 @@
  * @packageDocumentation
  */
 
-import { type KeyboardEvent, useState } from 'react';
+import { type KeyboardEvent, useRef, useState } from 'react';
 
 import { ColorPicker } from '../ColorPicker';
 import { type TierProps } from './Tier.types';
@@ -25,11 +25,12 @@ export function Tier({
   showLabels,
 }: TierProps): React.ReactElement {
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
-  const [localLabel, setLocalLabel] = useState(tier.label);
+  const labelRef = useRef<HTMLInputElement>(null);
 
   const handleLabelBlur = () => {
-    if (localLabel !== tier.label) {
-      onLabelChange(localLabel);
+    const input = labelRef.current;
+    if (input && input.value !== tier.label) {
+      onLabelChange(input.value);
     }
   };
 
@@ -72,11 +73,10 @@ export function Tier({
         {/* Tier Label */}
         {showLabels ? (
           <input
+            ref={labelRef}
+            key={`${tier.id}-${tier.label}`}
             type="text"
-            value={localLabel}
-            onChange={(e) => {
-              setLocalLabel(e.target.value);
-            }}
+            defaultValue={tier.label}
             onBlur={handleLabelBlur}
             onKeyDown={handleKeyDown}
             className="w-32 rounded-md border border-slate-300 bg-white px-2 py-1 text-sm font-semibold text-slate-900 focus:border-slate-500 focus:ring-2 focus:ring-slate-500 focus:outline-none dark:border-slate-600 dark:bg-slate-800 dark:text-white"

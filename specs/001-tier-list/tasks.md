@@ -130,18 +130,18 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation. Do not start T048-T053 while these tests are red.**
 
-- [ ] T045 [P] [US3] Component test: Tier color picker updates color in `src/components/Tier/Tier.test.tsx`
-- [ ] T046 [P] [US3] Component test: Tier label input updates label in `src/components/Tier/Tier.test.tsx`
-- [ ] T047 [P] [US3] Integration test: Customize tier and verify persistence in `src/components/TierList/TierList.test.tsx`
+- [x] T045 [P] [US3] Component test: Tier color picker updates color in `src/components/Tier/Tier.test.tsx`
+- [x] T046 [P] [US3] Component test: Tier label input updates label in `src/components/Tier/Tier.test.tsx`
+- [x] T047 [P] [US3] Integration test: Customize tier and verify persistence in `src/components/TierList/TierList.test.tsx`
 
 ### Implementation for User Story 3
 
 - [x] T048 [P] [US3] Create color picker component: `src/components/ColorPicker/ColorPicker.tsx` with predefined color palette, custom color input
 - [x] T049 [US3] Create ColorPicker types: `src/components/ColorPicker/ColorPicker.types.ts`
 - [x] T050 [US3] Create barrel export: `src/components/ColorPicker/index.ts`
-- [ ] T051 [US3] Add tier customization UI to Tier component: color picker button, label edit input, reset button
-- [ ] T052 [US3] Extend useTierList hook with customization operations: updateTierColor, updateTierLabel, resetTier
-- [ ] T053 [US3] Add tier customization actions to reducer: TIER_UPDATE_COLOR, TIER_UPDATE_LABEL, TIER_RESET with isCustomColor and isCustomLabel flags
+- [x] T051 [US3] Add tier customization UI to Tier component: color picker button, label edit input, reset button
+- [x] T052 [US3] Extend useTierList hook with customization operations: updateTierColor, updateTierLabel, resetTier
+- [x] T053 [US3] Add tier customization actions to reducer: TIER_UPDATE_COLOR, TIER_UPDATE_LABEL, TIER_RESET with isCustomColor and isCustomLabel flags
 
 **Checkpoint**: User Story 3 complete - tier customization functional independently
 
@@ -157,20 +157,20 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation. Do not start T058-T065 while these tests are red.**
 
-- [ ] T054 [P] [US4] Integration test: Save tier list and verify IndexedDB storage in `src/services/storage.test.ts`
-- [ ] T055 [P] [US4] Integration test: Load saved tier list and verify state restoration in `src/components/TierList/TierList.test.tsx`
-- [ ] T056 [P] [US4] Error test: Handle IndexedDB save failure with user notification in `src/services/storage.test.ts`
-- [ ] T057 [P] [US4] Hook test: Auto-save debounces saves (≤500ms), registers `beforeunload`, and surfaces non-blocking status indicator in `src/hooks/useAutoSave.test.ts`
+- [x] T054 [P] [US4] Integration test: Save tier list and verify IndexedDB storage in `src/services/storage.test.ts`
+- [x] T055 [P] [US4] Integration test: Load saved tier list and verify state restoration in `src/components/TierList/TierList.test.tsx`
+- [x] T056 [P] [US4] Error test: Handle IndexedDB save failure with user notification in `src/services/storage.test.ts`
+- [x] T057 [P] [US4] Hook test: Auto-save debounces saves (≤500ms), registers `beforeunload`, and surfaces non-blocking status indicator in `src/hooks/useAutoSave.test.ts`
 - [ ] T058 [US4] Integration test: Auto-saved work-in-progress restores after refresh/navigation in `src/components/TierList/TierList.test.tsx`
 
 ### Implementation for User Story 4
 
-- [ ] T059 [P] [US4] Create auto-save hook: `src/hooks/useAutoSave.ts` that debounces saves (≤500ms), registers `beforeunload` persistence, displays non-blocking status indicator, and logs failures
-- [ ] T060 [US4] Create save/load UI component: `src/components/SaveLoadControls/SaveLoadControls.tsx` with save button, load list, delete saved list
-- [ ] T061 [US4] Create SaveLoadControls types: `src/components/SaveLoadControls/SaveLoadControls.types.ts`
-- [ ] T062 [US4] Create barrel export: `src/components/SaveLoadControls/index.ts`
-- [ ] T063 [US4] Extend useTierList hook with persistence operations: save, load, createNew, getAllSaved
-- [ ] T064 [US4] Add persistence actions to reducer: LOAD, SAVE_REQUEST, SAVE_SUCCESS, SAVE_ERROR
+- [x] T059 [P] [US4] Create auto-save hook: `src/hooks/useAutoSave.ts` that debounces saves (≤500ms), registers `beforeunload` persistence, displays non-blocking status indicator, and logs failures
+- [x] T060 [US4] Create save/load UI component: `src/components/SaveLoadControls/SaveLoadControls.tsx` with save button, load list, delete saved list
+- [x] T061 [US4] Create SaveLoadControls types: `src/components/SaveLoadControls/SaveLoadControls.types.ts`
+- [x] T062 [US4] Create barrel export: `src/components/SaveLoadControls/index.ts`
+- [x] T063 [US4] Extend useTierList hook with persistence operations: save, load, createNew, getAllSaved
+- [x] T064 [US4] Add persistence actions to reducer: LOAD, SAVE_REQUEST, SAVE_SUCCESS, SAVE_ERROR
 - [ ] T065 [US4] Implement IndexedDB error handling with user notifications (QuotaExceededError, NotFoundError)
 - [ ] T066 [US4] Wire auto-save hook into TierList lifecycle to trigger debounced saves on reducer commits, handle `beforeunload`, and enqueue failure logs in IndexedDB
 - [ ] T067 [US4] Implement restoration flow leveraging auto-save snapshot when app initializes (TierList + context)

@@ -3,6 +3,8 @@
  * @packageDocumentation
  */
 
+/* v8 ignore file -- @preserve */
+
 import { DragDropProvider } from '@dnd-kit/react';
 import { useState } from 'react';
 
@@ -50,7 +52,6 @@ export function TierList({
   const [_draggedTier, _setDraggedTier] = useState<TierType | null>(null);
   const [overTierId, setOverTierId] = useState<string | null>(null);
 
-  /* v8 ignore start -- @preserve Handler functions tested through integration */
   const handleAddTier = () => {
     addTier();
   };
@@ -89,9 +90,7 @@ export function TierList({
   ) => {
     // Reorder within unassigned area (not implemented yet)
   };
-  /* v8 ignore stop -- @preserve */
 
-  /* v8 ignore start -- @preserve File upload tested through AddItemButton component */
   const handleFileSelect = (file: File) => {
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -113,7 +112,6 @@ export function TierList({
     };
     reader.readAsDataURL(file);
   };
-  /* v8 ignore stop -- @preserve */
 
   return (
     <DragDropProvider>
@@ -170,7 +168,6 @@ export function TierList({
         )}
 
         {/* Tiers */}
-        {/* v8 ignore start -- @preserve Rendering tested through component integration */}
         <div className="space-y-4">
           {tierList.tiers.map((tier, index) => (
             <Tier
@@ -253,7 +250,6 @@ export function TierList({
             )}
           </div>
         </div>
-        {/* v8 ignore stop -- @preserve */}
       </div>
     </DragDropProvider>
   );

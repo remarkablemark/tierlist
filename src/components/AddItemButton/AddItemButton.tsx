@@ -23,10 +23,11 @@ export function AddItemButton({
   const isDisabled = disabled || hasReachedLimit;
 
   const handleClick = () => {
-    /* v8 ignore next 2 -- @preserve */
+    /* v8 ignore start */
     if (!isDisabled && fileInputRef.current) {
       fileInputRef.current.click();
     }
+    /* v8 ignore stop */
   };
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -34,10 +35,11 @@ export function AddItemButton({
     if (file) {
       onFileSelect(file);
       // Clear the input so the same file can be selected again
-      /* v8 ignore next 3 -- @preserve */
+      /* v8 ignore start */
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
       }
+      /* v8 ignore stop */
     }
   };
 
