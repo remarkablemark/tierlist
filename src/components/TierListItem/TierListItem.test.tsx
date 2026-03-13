@@ -136,11 +136,6 @@ describe('TierListItem', () => {
     it('configures corner controls to appear when the item is hovered or focused', () => {
       render(<TierListItem {...defaultProps} />);
 
-      expect(screen.getByLabelText('Drag handle')).toHaveClass(
-        'opacity-0',
-        'group-hover:opacity-100',
-        'group-focus-within:opacity-100',
-      );
       expect(screen.getByLabelText('Delete item')).toHaveClass(
         'opacity-0',
         'group-hover:opacity-100',
@@ -192,11 +187,6 @@ describe('TierListItem', () => {
       expect(screen.getByRole('listitem')).toHaveAttribute('tabIndex', '0');
     });
 
-    it('has drag handle button with aria-label', () => {
-      render(<TierListItem {...defaultProps} />);
-      expect(screen.getByLabelText('Drag handle')).toBeInTheDocument();
-    });
-
     it('has delete button with aria-label', () => {
       render(<TierListItem {...defaultProps} />);
       expect(screen.getByLabelText('Delete item')).toBeInTheDocument();
@@ -204,17 +194,6 @@ describe('TierListItem', () => {
   });
 
   describe('interactions', () => {
-    it('calls onDragStart when drag handle is clicked', async () => {
-      const user = userEvent.setup();
-      const onDragStart = vi.fn();
-      render(<TierListItem {...defaultProps} onDragStart={onDragStart} />);
-
-      const dragHandle = screen.getByLabelText('Drag handle');
-      await user.click(dragHandle);
-
-      expect(onDragStart).toHaveBeenCalledWith('keyboard');
-    });
-
     it('calls onDragStart when Enter is pressed before keyboard drag is active', async () => {
       const user = userEvent.setup();
       const onDragStart = vi.fn();

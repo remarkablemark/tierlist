@@ -187,31 +187,6 @@ export function TierListItem({
         </div>
       )}
 
-      {/* Drag Handle */}
-      <button
-        className="absolute -top-2 -right-2 rounded-full bg-slate-200 p-1.5 text-slate-600 opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100 hover:bg-slate-300 hover:text-slate-900 focus:opacity-100 dark:bg-slate-600 dark:text-slate-300 dark:hover:bg-slate-500 dark:hover:text-white"
-        onClick={() => {
-          handleDragStart('keyboard');
-        }}
-        aria-label="Drag handle"
-        tabIndex={0}
-        type="button"
-      >
-        <svg
-          className="h-3 w-3"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M4 8h16M4 16h16"
-          />
-        </svg>
-      </button>
-
       {/* Delete Button */}
       <button
         className="absolute -top-2 -left-2 rounded-full bg-red-100 p-1.5 text-red-600 opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100 hover:bg-red-200 hover:text-red-700 focus:opacity-100 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50 dark:hover:text-red-300"
