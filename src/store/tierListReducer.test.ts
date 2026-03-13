@@ -43,7 +43,7 @@ function createMockState(): TierListState {
 
 describe('tierListReducer', () => {
   describe('TIER_ADD', () => {
-    it('should add a new tier with default label and color', () => {
+    it('adds a new tier with default label and color', () => {
       const state = createMockState();
       const initialTierCount = state.present.tiers.length;
 
@@ -63,7 +63,7 @@ describe('tierListReducer', () => {
       });
     });
 
-    it('should add a new tier with custom label and color', () => {
+    it('adds a new tier with custom label and color', () => {
       const state = createMockState();
       const initialTierCount = state.present.tiers.length;
 
@@ -83,7 +83,7 @@ describe('tierListReducer', () => {
       });
     });
 
-    it('should add to past for undo support', () => {
+    it('adds to past for undo support', () => {
       const state = createMockState();
 
       const newState = tierListReducer(state, {
@@ -97,7 +97,7 @@ describe('tierListReducer', () => {
   });
 
   describe('TIER_DELETE', () => {
-    it('should delete a tier and move items to unassigned', () => {
+    it('deletes a tier and move items to unassigned', () => {
       const state = createMockState();
       const tierToDelete = state.present.tiers[0];
 
@@ -128,7 +128,7 @@ describe('tierListReducer', () => {
       expect(newState.present.unassignedItems).toHaveLength(1);
     });
 
-    it('should add to past for undo support', () => {
+    it('adds to past for undo support', () => {
       const state = createMockState();
       const tierToDelete = state.present.tiers[0];
 
@@ -141,7 +141,7 @@ describe('tierListReducer', () => {
       expect(newState.future).toHaveLength(0);
     });
 
-    it('should not delete when tier is not found', () => {
+    it('does not delete when tier is not found', () => {
       const state = createMockState();
 
       const newState = tierListReducer(state, {
@@ -154,7 +154,7 @@ describe('tierListReducer', () => {
   });
 
   describe('TIER_REORDER', () => {
-    it('should reorder a tier up', () => {
+    it('reorders a tier up', () => {
       const state = createMockState();
       const tierToMove = state.present.tiers[2];
 
@@ -166,7 +166,7 @@ describe('tierListReducer', () => {
       expect(newState.present.tiers[1].id).toBe(tierToMove.id);
     });
 
-    it('should not reorder the first tier up', () => {
+    it('does not reorder the first tier up', () => {
       const state = createMockState();
       const firstTier = state.present.tiers[0];
 
@@ -178,7 +178,7 @@ describe('tierListReducer', () => {
       expect(newState.present.tiers[0].id).toBe(firstTier.id);
     });
 
-    it('should reorder a tier down', () => {
+    it('reorders a tier down', () => {
       const state = createMockState();
       const tierToMove = state.present.tiers[0];
 
@@ -190,7 +190,7 @@ describe('tierListReducer', () => {
       expect(newState.present.tiers[1].id).toBe(tierToMove.id);
     });
 
-    it('should not reorder the last tier down', () => {
+    it('does not reorder the last tier down', () => {
       const state = createMockState();
       const lastTier = state.present.tiers[state.present.tiers.length - 1];
 
@@ -204,7 +204,7 @@ describe('tierListReducer', () => {
       );
     });
 
-    it('should return state unchanged when tier ID not found', () => {
+    it('returns state unchanged when tier ID not found', () => {
       const state = createMockState();
 
       const newState = tierListReducer(state, {
@@ -217,7 +217,7 @@ describe('tierListReducer', () => {
   });
 
   describe('TIER_UPDATE_LABEL', () => {
-    it('should update a tier label and set isCustomLabel to true', () => {
+    it('updates a tier label and set isCustomLabel to true', () => {
       const state = createMockState();
       const tierToUpdate = state.present.tiers[0];
 
@@ -232,7 +232,7 @@ describe('tierListReducer', () => {
   });
 
   describe('TIER_UPDATE_COLOR', () => {
-    it('should update a tier color and set isCustomColor to true', () => {
+    it('updates a tier color and set isCustomColor to true', () => {
       const state = createMockState();
       const tierToUpdate = state.present.tiers[0];
 
@@ -247,7 +247,7 @@ describe('tierListReducer', () => {
   });
 
   describe('TIER_RESET', () => {
-    it('should reset a tier to default label and color', () => {
+    it('resets a tier to default label and color', () => {
       const state = createMockState();
       const tierToReset = state.present.tiers[0];
 
@@ -268,7 +268,7 @@ describe('tierListReducer', () => {
       expect(newState.present.tiers[0].isCustomColor).toBe(false);
     });
 
-    it('should not reset when tier is not found', () => {
+    it('does not reset when tier is not found', () => {
       const state = createMockState();
 
       const newState = tierListReducer(state, {
@@ -281,7 +281,7 @@ describe('tierListReducer', () => {
   });
 
   describe('ITEM_ADD', () => {
-    it('should add an item to unassigned when no target tier', () => {
+    it('adds an item to unassigned when no target tier', () => {
       const state = createMockState();
       const item = {
         id: generateId(),
@@ -301,7 +301,7 @@ describe('tierListReducer', () => {
       expect(newState.present.unassignedItems[0]).toEqual(item);
     });
 
-    it('should add an item to a specific tier', () => {
+    it('adds an item to a specific tier', () => {
       const state = createMockState();
       const targetTier = state.present.tiers[0];
       const item = {
@@ -324,7 +324,7 @@ describe('tierListReducer', () => {
   });
 
   describe('ITEM_DELETE', () => {
-    it('should delete an item from unassigned', () => {
+    it('deletes an item from unassigned', () => {
       const state = createMockState();
       const item = {
         id: generateId(),
@@ -349,7 +349,7 @@ describe('tierListReducer', () => {
       expect(newState.present.unassignedItems).toHaveLength(0);
     });
 
-    it('should delete an item from a tier', () => {
+    it('deletes an item from a tier', () => {
       const state = createMockState();
       const targetTier = state.present.tiers[0];
       const item = {
@@ -375,7 +375,7 @@ describe('tierListReducer', () => {
       expect(newState.present.tiers[0].items).toHaveLength(0);
     });
 
-    it('should not delete when item is not found', () => {
+    it('does not delete when item is not found', () => {
       const state = createMockState();
 
       const newState = tierListReducer(state, {
@@ -388,7 +388,7 @@ describe('tierListReducer', () => {
   });
 
   describe('ITEM_MOVE', () => {
-    it('should move an item from one tier to another', () => {
+    it('moves an item from one tier to another', () => {
       const state = createMockState();
       const sourceTier = state.present.tiers[0];
       const targetTier = state.present.tiers[1];
@@ -421,7 +421,7 @@ describe('tierListReducer', () => {
       expect(newState.present.tiers[1].items).toHaveLength(1);
     });
 
-    it('should move an item from tier to unassigned', () => {
+    it('moves an item from tier to unassigned', () => {
       const state = createMockState();
       const sourceTier = state.present.tiers[0];
       const item = {
@@ -453,7 +453,7 @@ describe('tierListReducer', () => {
       expect(newState.present.unassignedItems).toHaveLength(1);
     });
 
-    it('should not move when item is not found', () => {
+    it('does not move when item is not found', () => {
       const state = createMockState();
       const sourceTier = state.present.tiers[0];
       const targetTier = state.present.tiers[1];
@@ -473,7 +473,7 @@ describe('tierListReducer', () => {
   });
 
   describe('ITEM_REORDER', () => {
-    it('should reorder an item up within a tier', () => {
+    it('reorders an item up within a tier', () => {
       const state = createMockState();
       const tier = state.present.tiers[0];
       const item1 = {
@@ -514,7 +514,7 @@ describe('tierListReducer', () => {
       expect(newState.present.tiers[0].items[1].id).toBe(item1.id);
     });
 
-    it('should not reorder the first item up', () => {
+    it('does not reorder the first item up', () => {
       const state = createMockState();
       const tier = state.present.tiers[0];
       const item = {
@@ -540,7 +540,7 @@ describe('tierListReducer', () => {
       expect(newState.present.tiers[0].items[0].id).toBe(item.id);
     });
 
-    it('should not reorder when tier is not found', () => {
+    it('does not reorder when tier is not found', () => {
       const state = createMockState();
 
       const newState = tierListReducer(state, {
@@ -555,7 +555,7 @@ describe('tierListReducer', () => {
       expect(newState).toBe(state);
     });
 
-    it('should not reorder when item is not found in tier', () => {
+    it('does not reorder when item is not found in tier', () => {
       const state = createMockState();
       const tier = state.present.tiers[0];
 
@@ -573,7 +573,7 @@ describe('tierListReducer', () => {
   });
 
   describe('ITEM_UPDATE_LABEL', () => {
-    it('should update an item label in unassigned', () => {
+    it('updates an item label in unassigned', () => {
       const state = createMockState();
       const item = {
         id: generateId(),
@@ -598,7 +598,7 @@ describe('tierListReducer', () => {
       expect(newState.present.unassignedItems[0].label).toBe('Updated');
     });
 
-    it('should update an item label in a tier', () => {
+    it('updates an item label in a tier', () => {
       const state = createMockState();
       const tierId = state.present.tiers[0].id;
       const item = {
@@ -624,7 +624,7 @@ describe('tierListReducer', () => {
       expect(newState.present.tiers[0].items[0].label).toBe('Updated');
     });
 
-    it('should not update when item is not found', () => {
+    it('does not update when item is not found', () => {
       const state = createMockState();
 
       const newState = tierListReducer(state, {
@@ -637,7 +637,7 @@ describe('tierListReducer', () => {
   });
 
   describe('UNDO', () => {
-    it('should restore previous state from past', () => {
+    it('restores previous state from past', () => {
       const state = createMockState();
       const initialTierCount = state.present.tiers.length;
 
@@ -655,7 +655,7 @@ describe('tierListReducer', () => {
       expect(newState.future).toHaveLength(1);
     });
 
-    it('should do nothing when past is empty', () => {
+    it('does nothing when past is empty', () => {
       const state = createMockState();
 
       const newState = tierListReducer(state, { type: 'UNDO' });
@@ -665,7 +665,7 @@ describe('tierListReducer', () => {
   });
 
   describe('REDO', () => {
-    it('should restore future state', () => {
+    it('restores future state', () => {
       const state = createMockState();
       const initialTierCount = state.present.tiers.length;
 
@@ -686,7 +686,7 @@ describe('tierListReducer', () => {
       expect(newState.future).toHaveLength(0);
     });
 
-    it('should do nothing when future is empty', () => {
+    it('does nothing when future is empty', () => {
       const state = createMockState();
 
       const newState = tierListReducer(state, { type: 'REDO' });
@@ -696,7 +696,7 @@ describe('tierListReducer', () => {
   });
 
   describe('SETTINGS_UPDATE', () => {
-    it('should update settings', () => {
+    it('updates settings', () => {
       const state = createMockState();
 
       const newState = tierListReducer(state, {
@@ -710,7 +710,7 @@ describe('tierListReducer', () => {
   });
 
   describe('LOAD', () => {
-    it('should load a tier list', () => {
+    it('loads a tier list', () => {
       const state = createMockState();
       const newTierList = createMockTierList();
       newTierList.name = 'Loaded Tier List';
@@ -725,7 +725,7 @@ describe('tierListReducer', () => {
   });
 
   describe('SAVE_REQUEST', () => {
-    it('should handle save request (no state change)', () => {
+    it('handles save request (no state change)', () => {
       const state = createMockState();
 
       const newState = tierListReducer(state, { type: 'SAVE_REQUEST' });
@@ -735,7 +735,7 @@ describe('tierListReducer', () => {
   });
 
   describe('SAVE_SUCCESS', () => {
-    it('should handle save success (no state change)', () => {
+    it('handles save success (no state change)', () => {
       const state = createMockState();
 
       const newState = tierListReducer(state, { type: 'SAVE_SUCCESS' });
@@ -745,7 +745,7 @@ describe('tierListReducer', () => {
   });
 
   describe('SAVE_ERROR', () => {
-    it('should handle save error (no state change)', () => {
+    it('handles save error (no state change)', () => {
       const state = createMockState();
 
       const newState = tierListReducer(state, {
@@ -758,7 +758,7 @@ describe('tierListReducer', () => {
   });
 
   describe('DRAG_START', () => {
-    it('should not modify state on drag start', () => {
+    it('does not modify state on drag start', () => {
       const state = createMockState();
 
       const newState = tierListReducer(state, {
@@ -771,7 +771,7 @@ describe('tierListReducer', () => {
   });
 
   describe('DRAG_MOVE', () => {
-    it('should not modify state on drag move', () => {
+    it('does not modify state on drag move', () => {
       const state = createMockState();
 
       const newState = tierListReducer(state, {
@@ -784,7 +784,7 @@ describe('tierListReducer', () => {
   });
 
   describe('DRAG_END', () => {
-    it('should not modify state on drag end', () => {
+    it('does not modify state on drag end', () => {
       const state = createMockState();
 
       const newState = tierListReducer(state, {
@@ -797,7 +797,7 @@ describe('tierListReducer', () => {
   });
 
   describe('SETTINGS_UPDATE', () => {
-    it('should update settings', () => {
+    it('updates settings', () => {
       const state = createMockState();
 
       const newState = tierListReducer(state, {
@@ -811,7 +811,7 @@ describe('tierListReducer', () => {
   });
 
   describe('SAVE_REQUEST', () => {
-    it('should handle save request (no state change)', () => {
+    it('handles save request (no state change)', () => {
       const state = createMockState();
 
       const newState = tierListReducer(state, { type: 'SAVE_REQUEST' });
@@ -821,7 +821,7 @@ describe('tierListReducer', () => {
   });
 
   describe('SAVE_SUCCESS', () => {
-    it('should handle save success (no state change)', () => {
+    it('handles save success (no state change)', () => {
       const state = createMockState();
 
       const newState = tierListReducer(state, { type: 'SAVE_SUCCESS' });
@@ -831,7 +831,7 @@ describe('tierListReducer', () => {
   });
 
   describe('50-action limit', () => {
-    it('should enforce 50-action limit with circular buffer', () => {
+    it('enforces 50-action limit with circular buffer', () => {
       let state = createMockState();
 
       // Perform 51 actions
@@ -845,7 +845,7 @@ describe('tierListReducer', () => {
       expect(state.past).toHaveLength(50);
     });
 
-    it('should clear future on new action', () => {
+    it('clears future on new action', () => {
       const state = createMockState();
 
       // Add a tier
@@ -869,7 +869,7 @@ describe('tierListReducer', () => {
   });
 
   describe('default case', () => {
-    it('should handle exhaustive check pattern', () => {
+    it('handles exhaustive check pattern', () => {
       const state = createMockState();
       const unknownAction = {
         type: 'UNKNOWN_ACTION',

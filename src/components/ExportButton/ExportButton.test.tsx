@@ -15,7 +15,7 @@ describe('ExportButton', () => {
     vi.clearAllMocks();
   });
 
-  it('should render with default state', () => {
+  it('renders with default state', () => {
     render(<ExportButton onExport={mockOnExport} />);
 
     const button = screen.getByRole('button', { name: /export as png/i });
@@ -24,7 +24,7 @@ describe('ExportButton', () => {
     expect(button).not.toBeDisabled();
   });
 
-  it('should show loading state when isLoading is true', () => {
+  it('shows loading state when isLoading is true', () => {
     render(<ExportButton onExport={mockOnExport} isLoading />);
 
     const button = screen.getByRole('button', { name: /export as png/i });
@@ -32,14 +32,14 @@ describe('ExportButton', () => {
     expect(button).toBeDisabled();
   });
 
-  it('should be disabled when disabled prop is true', () => {
+  it('is disabled when disabled prop is true', () => {
     render(<ExportButton onExport={mockOnExport} disabled />);
 
     const button = screen.getByRole('button', { name: /export as png/i });
     expect(button).toBeDisabled();
   });
 
-  it('should call onExport when clicked', async () => {
+  it('calls onExport when clicked', async () => {
     const user = userEvent.setup();
     mockOnExport.mockResolvedValue(undefined);
 
@@ -51,7 +51,7 @@ describe('ExportButton', () => {
     expect(mockOnExport).toHaveBeenCalledTimes(1);
   });
 
-  it('should show error message when export fails', async () => {
+  it('shows error message when export fails', async () => {
     const user = userEvent.setup();
     mockOnExport.mockRejectedValue(new Error('Export failed'));
 
@@ -67,7 +67,7 @@ describe('ExportButton', () => {
     });
   });
 
-  it('should show standardized error message when error has no message', async () => {
+  it('shows standardized error message when error has no message', async () => {
     const user = userEvent.setup();
     mockOnExport.mockRejectedValue(new Error());
 
@@ -85,7 +85,7 @@ describe('ExportButton', () => {
     });
   });
 
-  it('should clear error when export succeeds after previous failure', async () => {
+  it('clears error when export succeeds after previous failure', async () => {
     const user = userEvent.setup();
 
     // First click fails
@@ -109,7 +109,7 @@ describe('ExportButton', () => {
     });
   });
 
-  it('should have proper accessibility attributes', () => {
+  it('has proper accessibility attributes', () => {
     render(<ExportButton onExport={mockOnExport} />);
 
     const button = screen.getByRole('button', { name: /export as png/i });
@@ -117,7 +117,7 @@ describe('ExportButton', () => {
     expect(button).toHaveAttribute('aria-label', 'Export as PNG');
   });
 
-  it('should apply Tailwind CSS classes for styling', () => {
+  it('applies Tailwind CSS classes for styling', () => {
     render(<ExportButton onExport={mockOnExport} />);
 
     const button = screen.getByRole('button', { name: /export as png/i });

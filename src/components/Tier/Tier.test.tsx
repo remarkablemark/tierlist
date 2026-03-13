@@ -45,21 +45,21 @@ const mockProps = {
 };
 
 describe('Tier', () => {
-  it('should render tier with label in input', () => {
+  it('renders tier with label in input', () => {
     render(<Tier {...mockProps} />);
 
     const labelInput = screen.getByRole('textbox', { name: /tier label/i });
     expect(labelInput).toHaveValue('S');
   });
 
-  it('should render tier with correct background color', () => {
+  it('renders tier with correct background color', () => {
     render(<Tier {...mockProps} />);
 
     const tier = screen.getByRole('region');
     expect(tier).toHaveStyle('background-color: #ff7f7f');
   });
 
-  it('should render tier items', () => {
+  it('renders tier items', () => {
     const tierWithItems = {
       ...mockProps,
       tier: createMockTier({
@@ -90,7 +90,7 @@ describe('Tier', () => {
     expect(screen.getByText('Item 2')).toBeInTheDocument();
   });
 
-  it('should call onDelete when delete button is clicked', async () => {
+  it('calls onDelete when delete button is clicked', async () => {
     const user = userEvent.setup();
     const onDelete = vi.fn();
     render(<Tier {...mockProps} onDelete={onDelete} />);
@@ -101,7 +101,7 @@ describe('Tier', () => {
     expect(onDelete).toHaveBeenCalledTimes(1);
   });
 
-  it('should call onLabelChange when label is edited', async () => {
+  it('calls onLabelChange when label is edited', async () => {
     const user = userEvent.setup();
     const onLabelChange = vi.fn();
     render(<Tier {...mockProps} onLabelChange={onLabelChange} />);
@@ -120,7 +120,7 @@ describe('Tier', () => {
     expect(onLabelChange).toHaveBeenCalledWith('New Label');
   });
 
-  it('should call onColorChange when color picker is used', async () => {
+  it('calls onColorChange when color picker is used', async () => {
     const user = userEvent.setup();
     const onColorChange = vi.fn();
     render(<Tier {...mockProps} onColorChange={onColorChange} />);
@@ -139,7 +139,7 @@ describe('Tier', () => {
     expect(onColorChange).toHaveBeenCalledWith('#ff0000');
   });
 
-  it('should call onReset when reset button is clicked', async () => {
+  it('calls onReset when reset button is clicked', async () => {
     const user = userEvent.setup();
     const onReset = vi.fn();
     render(<Tier {...mockProps} onReset={onReset} />);
@@ -150,7 +150,7 @@ describe('Tier', () => {
     expect(onReset).toHaveBeenCalledTimes(1);
   });
 
-  it('should call onItemDrop when item is dropped', () => {
+  it('calls onItemDrop when item is dropped', () => {
     const onItemDrop = vi.fn();
     render(
       <Tier
@@ -166,7 +166,7 @@ describe('Tier', () => {
     expect(onItemDrop).toHaveBeenCalledWith('dragged-item-id', 0);
   });
 
-  it('should show move up button when not first tier', () => {
+  it('shows move up button when not first tier', () => {
     render(<Tier {...mockProps} index={1} />);
 
     expect(
@@ -174,7 +174,7 @@ describe('Tier', () => {
     ).toBeInTheDocument();
   });
 
-  it('should not show move up button when first tier', () => {
+  it('does not show move up button when first tier', () => {
     render(<Tier {...mockProps} index={0} />);
 
     expect(
@@ -182,7 +182,7 @@ describe('Tier', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('should show move down button when not last tier', () => {
+  it('shows move down button when not last tier', () => {
     render(<Tier {...mockProps} index={0} totalTiers={7} />);
 
     expect(
@@ -190,7 +190,7 @@ describe('Tier', () => {
     ).toBeInTheDocument();
   });
 
-  it('should not show move down button when last tier', () => {
+  it('does not show move down button when last tier', () => {
     render(<Tier {...mockProps} index={6} totalTiers={7} />);
 
     expect(
@@ -198,21 +198,21 @@ describe('Tier', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('should have correct ARIA attributes', () => {
+  it('has correct ARIA attributes', () => {
     render(<Tier {...mockProps} />);
 
     const tier = screen.getByRole('region');
     expect(tier).toHaveAttribute('aria-label', 'Tier S');
   });
 
-  it('should have correct ARIA attributes for items list', () => {
+  it('has correct ARIA attributes for items list', () => {
     render(<Tier {...mockProps} />);
 
     const itemList = screen.getByRole('list', { name: /tier items/i });
     expect(itemList).toBeInTheDocument();
   });
 
-  it('should apply custom color when isCustomColor is true', () => {
+  it('applies custom color when isCustomColor is true', () => {
     const customTier = createMockTier({
       color: '#00ff00',
       isCustomColor: true,
@@ -223,7 +223,7 @@ describe('Tier', () => {
     expect(tier).toHaveStyle('background-color: #00ff00');
   });
 
-  it('should apply custom label in input when isCustomLabel is true', () => {
+  it('applies custom label in input when isCustomLabel is true', () => {
     const customTier = createMockTier({
       label: 'Custom',
       isCustomLabel: true,
@@ -234,14 +234,14 @@ describe('Tier', () => {
     expect(labelInput).toHaveValue('Custom');
   });
 
-  it('should hide labels when showLabels is false', () => {
+  it('hides labels when showLabels is false', () => {
     render(<Tier {...mockProps} showLabels={false} />);
 
     const labelInput = screen.queryByRole('textbox', { name: /tier label/i });
     expect(labelInput).not.toBeInTheDocument();
   });
 
-  it('should render items with correct size', () => {
+  it('renders items with correct size', () => {
     const tierWithItems = {
       ...mockProps,
       tier: createMockTier({
@@ -265,7 +265,7 @@ describe('Tier', () => {
     expect(screen.getByText('Item 1')).toBeInTheDocument();
   });
 
-  it('should have drop zone styling when isOver is true', () => {
+  it('has drop zone styling when isOver is true', () => {
     render(<Tier {...mockProps} isOver />);
 
     const tier = screen.getByRole('region');
@@ -273,7 +273,7 @@ describe('Tier', () => {
     expect(tier).toHaveClass('ring-2');
   });
 
-  it('should have dragging styling when isDragging is true', () => {
+  it('has dragging styling when isDragging is true', () => {
     render(<Tier {...mockProps} isDragging />);
 
     const tier = screen.getByRole('region');
@@ -281,13 +281,13 @@ describe('Tier', () => {
     expect(tier).toHaveClass('opacity-50');
   });
 
-  it('should show "Drop items here" when tier has no items', () => {
+  it('shows "Drop items here" when tier has no items', () => {
     render(<Tier {...mockProps} />);
 
     expect(screen.getByText('Drop items here')).toBeInTheDocument();
   });
 
-  it('should call onLabelChange on blur when label changes', async () => {
+  it('calls onLabelChange on blur when label changes', async () => {
     const user = userEvent.setup();
     const onLabelChange = vi.fn();
     render(<Tier {...mockProps} onLabelChange={onLabelChange} />);
@@ -306,7 +306,7 @@ describe('Tier', () => {
     expect(onLabelChange).toHaveBeenCalledWith('Changed');
   });
 
-  it('should not call onLabelChange on blur when label is unchanged', async () => {
+  it('does not call onLabelChange on blur when label is unchanged', async () => {
     const user = userEvent.setup();
     const onLabelChange = vi.fn();
     render(<Tier {...mockProps} onLabelChange={onLabelChange} />);
@@ -318,7 +318,7 @@ describe('Tier', () => {
     expect(onLabelChange).not.toHaveBeenCalled();
   });
 
-  it('should blur input on Enter key press', async () => {
+  it('blurs input on Enter key press', async () => {
     const user = userEvent.setup();
     const onLabelChange = vi.fn();
     render(<Tier {...mockProps} onLabelChange={onLabelChange} />);
@@ -330,7 +330,7 @@ describe('Tier', () => {
     expect(labelInput).not.toHaveFocus();
   });
 
-  it('should call onItemDrop when item is dropped on drop zone', () => {
+  it('calls onItemDrop when item is dropped on drop zone', () => {
     const onItemDrop = vi.fn();
     render(<Tier {...mockProps} onItemDrop={onItemDrop} />);
 
@@ -354,7 +354,7 @@ describe('Tier', () => {
     expect(dropZone).toBeInTheDocument();
   });
 
-  it('should call drag enter and leave callbacks for the drop zone', () => {
+  it('calls drag enter and leave callbacks for the drop zone', () => {
     const onItemDragEnter = vi.fn();
     const onItemDragLeave = vi.fn();
 
@@ -375,7 +375,7 @@ describe('Tier', () => {
     expect(onItemDragLeave).toHaveBeenCalledTimes(1);
   });
 
-  it('should prevent default on drag over', () => {
+  it('prevents default on drag over', () => {
     const onItemDrop = vi.fn();
     render(<Tier {...mockProps} onItemDrop={onItemDrop} />);
 
@@ -391,7 +391,7 @@ describe('Tier', () => {
     expect(preventDefaultSpy).toHaveBeenCalled();
   });
 
-  it('should call handleMoveUp when move up button is clicked', async () => {
+  it('calls handleMoveUp when move up button is clicked', async () => {
     const user = userEvent.setup();
     render(<Tier {...mockProps} index={1} />);
 
@@ -402,7 +402,7 @@ describe('Tier', () => {
     expect(moveUpButton).toBeInTheDocument();
   });
 
-  it('should call handleMoveDown when move down button is clicked', async () => {
+  it('calls handleMoveDown when move down button is clicked', async () => {
     const user = userEvent.setup();
     render(<Tier {...mockProps} index={0} totalTiers={7} />);
 
@@ -413,7 +413,7 @@ describe('Tier', () => {
     expect(moveDownButton).toBeInTheDocument();
   });
 
-  it('should render item with image when imageUrl is provided', () => {
+  it('renders item with image when imageUrl is provided', () => {
     const tierWithImageItem = {
       ...mockProps,
       tier: createMockTier({

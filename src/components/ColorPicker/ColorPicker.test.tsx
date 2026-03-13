@@ -15,7 +15,7 @@ const mockProps = {
 };
 
 describe('ColorPicker', () => {
-  it('should render color palette', () => {
+  it('renders color palette', () => {
     render(<ColorPicker {...mockProps} />);
 
     // Check that color buttons are rendered
@@ -25,7 +25,7 @@ describe('ColorPicker', () => {
     expect(colorButtons.length).toBeGreaterThan(0);
   });
 
-  it('should call onColorSelect when a color is clicked', async () => {
+  it('calls onColorSelect when a color is clicked', async () => {
     const user = userEvent.setup();
     const onColorSelect = vi.fn();
     render(<ColorPicker {...mockProps} onColorSelect={onColorSelect} />);
@@ -36,7 +36,7 @@ describe('ColorPicker', () => {
     expect(onColorSelect).toHaveBeenCalledWith('#ff0000');
   });
 
-  it('should call onToggle when a color is clicked', async () => {
+  it('calls onToggle when a color is clicked', async () => {
     const user = userEvent.setup();
     const onToggle = vi.fn();
     render(<ColorPicker {...mockProps} onToggle={onToggle} />);
@@ -47,7 +47,7 @@ describe('ColorPicker', () => {
     expect(onToggle).toHaveBeenCalledTimes(1);
   });
 
-  it('should update custom color when color input changes', () => {
+  it('updates custom color when color input changes', () => {
     render(<ColorPicker {...mockProps} />);
 
     // Color inputs are queried by aria-label
@@ -57,7 +57,7 @@ describe('ColorPicker', () => {
     expect(colorInput).toHaveAttribute('type', 'color');
   });
 
-  it('should call onColorSelect with updated custom color', async () => {
+  it('calls onColorSelect with updated custom color', async () => {
     const user = userEvent.setup();
     const onColorSelect = vi.fn();
     render(<ColorPicker {...mockProps} onColorSelect={onColorSelect} />);
@@ -69,7 +69,7 @@ describe('ColorPicker', () => {
     expect(onColorSelect).toHaveBeenCalledWith('#ff7f7f');
   });
 
-  it('should call onColorSelect with custom color when Apply is clicked', async () => {
+  it('calls onColorSelect with custom color when Apply is clicked', async () => {
     const user = userEvent.setup();
     const onColorSelect = vi.fn();
     render(<ColorPicker {...mockProps} onColorSelect={onColorSelect} />);
@@ -80,7 +80,7 @@ describe('ColorPicker', () => {
     expect(onColorSelect).toHaveBeenCalledWith('#ff7f7f');
   });
 
-  it('should call onToggle when Apply is clicked', async () => {
+  it('calls onToggle when Apply is clicked', async () => {
     const user = userEvent.setup();
     const onToggle = vi.fn();
     render(<ColorPicker {...mockProps} onToggle={onToggle} />);
@@ -91,7 +91,7 @@ describe('ColorPicker', () => {
     expect(onToggle).toHaveBeenCalledTimes(1);
   });
 
-  it('should highlight the currently selected color', () => {
+  it('highlights the currently selected color', () => {
     render(<ColorPicker {...mockProps} />);
 
     // The selected color should have a border
@@ -101,7 +101,7 @@ describe('ColorPicker', () => {
     expect(selectedButton).toHaveClass('border-slate-900');
   });
 
-  it('should call onColorSelect with updated custom color when Apply is clicked', async () => {
+  it('calls onColorSelect with updated custom color when Apply is clicked', async () => {
     const user = userEvent.setup();
     const onColorSelect = vi.fn();
     render(<ColorPicker {...mockProps} onColorSelect={onColorSelect} />);

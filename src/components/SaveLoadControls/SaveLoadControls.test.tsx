@@ -38,14 +38,14 @@ const mockProps = {
 };
 
 describe('SaveLoadControls', () => {
-  it('should render save status indicator', () => {
+  it('renders save status indicator', () => {
     render(<SaveLoadControls {...mockProps} />);
 
     expect(screen.getByText('Save')).toBeInTheDocument();
     expect(screen.getByText('Load')).toBeInTheDocument();
   });
 
-  it('should call onSave when save button is clicked', async () => {
+  it('calls onSave when save button is clicked', async () => {
     const user = userEvent.setup();
     const onSave = vi.fn();
     render(<SaveLoadControls {...mockProps} onSave={onSave} />);
@@ -56,20 +56,20 @@ describe('SaveLoadControls', () => {
     expect(onSave).toHaveBeenCalledTimes(1);
   });
 
-  it('should disable save button when saving', () => {
+  it('disables save button when saving', () => {
     render(<SaveLoadControls {...mockProps} autoSaveStatus="saving" />);
 
     const saveButton = screen.getByText('Save');
     expect(saveButton).toBeDisabled();
   });
 
-  it('should show saving status', () => {
+  it('shows saving status', () => {
     render(<SaveLoadControls {...mockProps} autoSaveStatus="saving" />);
 
     expect(screen.getByText('Saving...')).toBeInTheDocument();
   });
 
-  it('should show saved status with timestamp', () => {
+  it('shows saved status with timestamp', () => {
     const now = Date.now();
     render(
       <SaveLoadControls
@@ -82,7 +82,7 @@ describe('SaveLoadControls', () => {
     expect(screen.getByText(/Saved/)).toBeInTheDocument();
   });
 
-  it('should show error status', () => {
+  it('shows error status', () => {
     render(
       <SaveLoadControls
         {...mockProps}
@@ -94,7 +94,7 @@ describe('SaveLoadControls', () => {
     expect(screen.getByText('Error: Test error')).toBeInTheDocument();
   });
 
-  it('should show quota exceeded status', () => {
+  it('shows quota exceeded status', () => {
     render(
       <SaveLoadControls
         {...mockProps}
@@ -106,7 +106,7 @@ describe('SaveLoadControls', () => {
     expect(screen.getByText('Storage full: Storage full')).toBeInTheDocument();
   });
 
-  it('should open load dropdown when load button is clicked', async () => {
+  it('opens load dropdown when load button is clicked', async () => {
     const user = userEvent.setup();
     render(<SaveLoadControls {...mockProps} />);
 
@@ -116,7 +116,7 @@ describe('SaveLoadControls', () => {
     expect(screen.getByText('Saved Tier Lists')).toBeInTheDocument();
   });
 
-  it('should show new button in load dropdown', async () => {
+  it('shows new button in load dropdown', async () => {
     const user = userEvent.setup();
     render(<SaveLoadControls {...mockProps} />);
 
@@ -126,7 +126,7 @@ describe('SaveLoadControls', () => {
     expect(screen.getByText('New')).toBeInTheDocument();
   });
 
-  it('should call onCreateNew when new button is clicked', async () => {
+  it('calls onCreateNew when new button is clicked', async () => {
     const user = userEvent.setup();
     const onCreateNew = vi.fn();
     render(<SaveLoadControls {...mockProps} onCreateNew={onCreateNew} />);
@@ -140,7 +140,7 @@ describe('SaveLoadControls', () => {
     expect(onCreateNew).toHaveBeenCalledTimes(1);
   });
 
-  it('should display saved tier lists', async () => {
+  it('displays saved tier lists', async () => {
     const user = userEvent.setup();
     const savedTierLists = [
       {
@@ -166,7 +166,7 @@ describe('SaveLoadControls', () => {
     expect(screen.getByText('Tier List 2')).toBeInTheDocument();
   });
 
-  it('should call onLoad when selecting a tier list', async () => {
+  it('calls onLoad when selecting a tier list', async () => {
     const user = userEvent.setup();
     const onLoad = vi.fn();
     const savedTierLists = [
@@ -195,7 +195,7 @@ describe('SaveLoadControls', () => {
     expect(onLoad).toHaveBeenCalledWith(savedTierLists[0].id);
   });
 
-  it('should call onDelete when delete button is clicked', async () => {
+  it('calls onDelete when delete button is clicked', async () => {
     const user = userEvent.setup();
     const onDelete = vi.fn();
     const savedTierLists = [
@@ -226,7 +226,7 @@ describe('SaveLoadControls', () => {
     expect(onDelete).toHaveBeenCalledWith(savedTierLists[0].id);
   });
 
-  it('should close dropdown after selecting a tier list', async () => {
+  it('closes dropdown after selecting a tier list', async () => {
     const user = userEvent.setup();
     const onLoad = vi.fn();
     const savedTierLists = [
@@ -258,7 +258,7 @@ describe('SaveLoadControls', () => {
     });
   });
 
-  it('should close dropdown after creating new tier list', async () => {
+  it('closes dropdown after creating new tier list', async () => {
     const user = userEvent.setup();
     const onCreateNew = vi.fn();
     render(<SaveLoadControls {...mockProps} onCreateNew={onCreateNew} />);
@@ -275,7 +275,7 @@ describe('SaveLoadControls', () => {
     });
   });
 
-  it('should show "No saved tier lists" when list is empty', async () => {
+  it('shows "No saved tier lists" when list is empty', async () => {
     const user = userEvent.setup();
     render(<SaveLoadControls {...mockProps} />);
 
@@ -285,7 +285,7 @@ describe('SaveLoadControls', () => {
     expect(screen.getByText('No saved tier lists')).toBeInTheDocument();
   });
 
-  it('should truncate long tier list names', async () => {
+  it('truncates long tier list names', async () => {
     const user = userEvent.setup();
     const savedTierLists = [
       {
@@ -307,7 +307,7 @@ describe('SaveLoadControls', () => {
     expect(longName).toHaveClass('truncate');
   });
 
-  it('should have delete button for each saved tier list', async () => {
+  it('has delete button for each saved tier list', async () => {
     const user = userEvent.setup();
     const savedTierLists = [
       {
@@ -329,7 +329,7 @@ describe('SaveLoadControls', () => {
     expect(deleteButton).toBeInTheDocument();
   });
 
-  it('should not close dropdown when clicking delete button', async () => {
+  it('does not close dropdown when clicking delete button', async () => {
     const user = userEvent.setup();
     const savedTierLists = [
       {
@@ -354,7 +354,7 @@ describe('SaveLoadControls', () => {
     expect(screen.getByText('Saved Tier Lists')).toBeInTheDocument();
   });
 
-  it('should not show status message when status is idle', () => {
+  it('does not show status message when status is idle', () => {
     render(<SaveLoadControls {...mockProps} autoSaveStatus="idle" />);
 
     // No status message should be displayed for idle status
@@ -364,7 +364,7 @@ describe('SaveLoadControls', () => {
     expect(screen.queryByText(/Storage full/)).not.toBeInTheDocument();
   });
 
-  it('should format timestamp correctly when null', () => {
+  it('formats timestamp correctly when null', () => {
     // This tests the formatTimestamp function with null timestamp
     // When status is 'saved' but lastSavedAt is null, it should show "Saved "
     render(
@@ -379,7 +379,7 @@ describe('SaveLoadControls', () => {
     expect(screen.getByText('Saved')).toBeInTheDocument();
   });
 
-  it('should handle unknown auto-save status with default case', () => {
+  it('handles unknown auto-save status with default case', () => {
     // This tests the default case in getStatusMessage switch
     // We need to pass an invalid status to trigger the default case
     render(
@@ -396,7 +396,7 @@ describe('SaveLoadControls', () => {
     expect(screen.queryByText(/Storage full/)).not.toBeInTheDocument();
   });
 
-  it('should apply red text color for error status', () => {
+  it('applies red text color for error status', () => {
     render(
       <SaveLoadControls
         {...mockProps}
@@ -410,7 +410,7 @@ describe('SaveLoadControls', () => {
     expect(errorMessage).toHaveClass('text-red-600 dark:text-red-400');
   });
 
-  it('should apply red text color for quota-exceeded status', () => {
+  it('applies red text color for quota-exceeded status', () => {
     render(
       <SaveLoadControls
         {...mockProps}
@@ -424,7 +424,7 @@ describe('SaveLoadControls', () => {
     expect(errorMessage).toHaveClass('text-red-600 dark:text-red-400');
   });
 
-  it('should not apply red text color for saving status', () => {
+  it('does not apply red text color for saving status', () => {
     render(<SaveLoadControls {...mockProps} autoSaveStatus="saving" />);
 
     // Find the status message span and verify it does NOT have the error class
@@ -432,7 +432,7 @@ describe('SaveLoadControls', () => {
     expect(savingMessage).not.toHaveClass('text-red-600 dark:text-red-400');
   });
 
-  it('should not apply red text color for saved status', () => {
+  it('does not apply red text color for saved status', () => {
     const now = Date.now();
     render(
       <SaveLoadControls
@@ -449,25 +449,25 @@ describe('SaveLoadControls', () => {
 });
 
 describe('getStatusClassName', () => {
-  it('should return error class for error status', () => {
+  it('returns error class for error status', () => {
     expect(getStatusClassName('error')).toBe('text-red-600 dark:text-red-400');
   });
 
-  it('should return error class for quota-exceeded status', () => {
+  it('returns error class for quota-exceeded status', () => {
     expect(getStatusClassName('quota-exceeded')).toBe(
       'text-red-600 dark:text-red-400',
     );
   });
 
-  it('should return empty string for saving status', () => {
+  it('returns empty string for saving status', () => {
     expect(getStatusClassName('saving')).toBe('');
   });
 
-  it('should return empty string for saved status', () => {
+  it('returns empty string for saved status', () => {
     expect(getStatusClassName('saved')).toBe('');
   });
 
-  it('should return empty string for idle status', () => {
+  it('returns empty string for idle status', () => {
     expect(getStatusClassName('idle')).toBe('');
   });
 });

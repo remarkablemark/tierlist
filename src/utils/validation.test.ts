@@ -43,23 +43,23 @@ beforeEach(() => {
 });
 
 describe('isValidCssColor', () => {
-  it('should return true for valid hex colors', () => {
+  it('returns true for valid hex colors', () => {
     expect(isValidCssColor('#ff0000')).toBe(true);
     expect(isValidCssColor('#f00')).toBe(true);
     expect(isValidCssColor('#FF0000')).toBe(true);
   });
 
-  it('should return true for valid rgb colors', () => {
+  it('returns true for valid rgb colors', () => {
     expect(isValidCssColor('rgb(255, 0, 0)')).toBe(true);
     expect(isValidCssColor('rgba(255, 0, 0, 0.5)')).toBe(true);
   });
 
-  it('should return true for valid named colors', () => {
+  it('returns true for valid named colors', () => {
     expect(isValidCssColor('red')).toBe(true);
     expect(isValidCssColor('blue')).toBe(true);
   });
 
-  it('should return false for invalid colors', () => {
+  it('returns false for invalid colors', () => {
     expect(isValidCssColor('notacolor')).toBe(false);
     expect(isValidCssColor('#gggggg')).toBe(false);
     expect(isValidCssColor('')).toBe(false);
@@ -76,26 +76,26 @@ describe('validateItem', () => {
     metadata: {},
   });
 
-  it('should return no errors for valid item', () => {
+  it('returns no errors for valid item', () => {
     const item = createValidItem();
     const result = validateItem(item);
     expect(result.errors).toHaveLength(0);
     expect(result.warnings).toHaveLength(0);
   });
 
-  it('should error on empty label', () => {
+  it('errors on empty label', () => {
     const item = { ...createValidItem(), label: '' };
     const result = validateItem(item);
     expect(result.errors).toContain('Item label must be 1-100 characters');
   });
 
-  it('should error on label too long', () => {
+  it('errors on label too long', () => {
     const item = { ...createValidItem(), label: 'a'.repeat(101) };
     const result = validateItem(item);
     expect(result.errors).toContain('Item label must be 1-100 characters');
   });
 
-  it('should error on label with HTML entities', () => {
+  it('errors on label with HTML entities', () => {
     const item = {
       ...createValidItem(),
       label: '<script>alert("xss")</script>',
@@ -106,7 +106,7 @@ describe('validateItem', () => {
     );
   });
 
-  it('should warn on temporary URL without blob', () => {
+  it('warns on temporary URL without blob', () => {
     const item = {
       ...createValidItem(),
       imageUrl: 'http://example.com/image.png',
@@ -127,25 +127,25 @@ describe('validateTier', () => {
     isCustomLabel: false,
   });
 
-  it('should return no errors for valid tier', () => {
+  it('returns no errors for valid tier', () => {
     const tier = createValidTier();
     const result = validateTier(tier);
     expect(result.errors).toHaveLength(0);
   });
 
-  it('should error on empty label', () => {
+  it('errors on empty label', () => {
     const tier = { ...createValidTier(), label: '' };
     const result = validateTier(tier);
     expect(result.errors).toContain('Tier label must be 1-10 characters');
   });
 
-  it('should error on label too long', () => {
+  it('errors on label too long', () => {
     const tier = { ...createValidTier(), label: 'Super Tier!' };
     const result = validateTier(tier);
     expect(result.errors).toContain('Tier label must be 1-10 characters');
   });
 
-  it('should error on label with HTML entities', () => {
+  it('errors on label with HTML entities', () => {
     const tier = {
       ...createValidTier(),
       label: '<script>alert("xss")</script>',
@@ -156,13 +156,13 @@ describe('validateTier', () => {
     );
   });
 
-  it('should error on invalid color', () => {
+  it('errors on invalid color', () => {
     const tier = { ...createValidTier(), color: 'notacolor' };
     const result = validateTier(tier);
     expect(result.errors).toContain('Invalid tier color format');
   });
 
-  it('should error on duplicate item IDs in tier', () => {
+  it('errors on duplicate item IDs in tier', () => {
     const duplicateItem = {
       id: 'item-1',
       label: 'Item',
@@ -216,13 +216,13 @@ describe('validateTierList', () => {
     version: 1,
   });
 
-  it('should return no errors for valid tier list', () => {
+  it('returns no errors for valid tier list', () => {
     const tierList = createValidTierList();
     const result = validateTierList(tierList);
     expect(result.errors).toHaveLength(0);
   });
 
-  it('should error when exceeding maximum items', () => {
+  it('errors when exceeding maximum items', () => {
     const tierList = createValidTierList();
     const items: TierListItem[] = Array.from(
       { length: MAX_ITEMS + 1 },
@@ -242,7 +242,7 @@ describe('validateTierList', () => {
     );
   });
 
-  it('should warn when approaching maximum items', () => {
+  it('warns when approaching maximum items', () => {
     const tierList = createValidTierList();
     const items: TierListItem[] = Array.from(
       { length: WARNING_THRESHOLD },
@@ -262,14 +262,14 @@ describe('validateTierList', () => {
     );
   });
 
-  it('should error on duplicate tier IDs', () => {
+  it('errors on duplicate tier IDs', () => {
     const tierList = createValidTierList();
     tierList.tiers[1].id = tierList.tiers[0].id;
     const result = validateTierList(tierList);
     expect(result.errors).toContain('Duplicate tier IDs detected');
   });
 
-  it('should error on duplicate item IDs across locations', () => {
+  it('errors on duplicate item IDs across locations', () => {
     const tierList = createValidTierList();
     const duplicateItem = {
       id: 'item-1',
@@ -285,7 +285,7 @@ describe('validateTierList', () => {
     expect(result.errors).toContain('Duplicate item IDs detected');
   });
 
-  it('should error when item is in multiple locations', () => {
+  it('errors when item is in multiple locations', () => {
     const tierList = createValidTierList();
     const duplicateItem = {
       id: 'item-1',
@@ -307,7 +307,7 @@ describe('validateTierList', () => {
 });
 
 describe('getTotalItemCount', () => {
-  it('should count items in unassigned and tiers', () => {
+  it('counts items in unassigned and tiers', () => {
     const tierList: TierList = {
       id: 'tierlist-1',
       name: 'Test',
@@ -363,7 +363,7 @@ describe('getTotalItemCount', () => {
     expect(getTotalItemCount(tierList)).toBe(3);
   });
 
-  it('should return 0 for empty tier list', () => {
+  it('returns 0 for empty tier list', () => {
     const tierList: TierList = {
       id: 'tierlist-1',
       name: 'Test',
@@ -431,19 +431,19 @@ describe('findItemLocation', () => {
     version: 1,
   });
 
-  it('should find item in tier', () => {
+  it('finds item in tier', () => {
     const tierList = createTierList();
     const location = findItemLocation(tierList, 'item-1');
     expect(location).toEqual({ type: 'tier', tierId: 'tier-1', index: 0 });
   });
 
-  it('should find item in unassigned', () => {
+  it('finds item in unassigned', () => {
     const tierList = createTierList();
     const location = findItemLocation(tierList, 'item-2');
     expect(location).toEqual({ type: 'unassigned', index: 0 });
   });
 
-  it('should return null for non-existent item', () => {
+  it('returns null for non-existent item', () => {
     const tierList = createTierList();
     const location = findItemLocation(tierList, 'item-999');
     expect(location).toBeNull();
@@ -451,25 +451,25 @@ describe('findItemLocation', () => {
 });
 
 describe('validateItemCount', () => {
-  it('should return valid for low count', () => {
+  it('returns valid for low count', () => {
     const result = validateItemCount(10);
     expect(result.valid).toBe(true);
     expect(result.warning).toBeUndefined();
   });
 
-  it('should return valid with warning at threshold', () => {
+  it('returns valid with warning at threshold', () => {
     const result = validateItemCount(WARNING_THRESHOLD);
     expect(result.valid).toBe(true);
     expect(result.warning).toContain('Warning');
   });
 
-  it('should return invalid at maximum', () => {
+  it('returns invalid at maximum', () => {
     const result = validateItemCount(MAX_ITEMS);
     expect(result.valid).toBe(false);
     expect(result.warning).toContain('Maximum');
   });
 
-  it('should return invalid above maximum', () => {
+  it('returns invalid above maximum', () => {
     const result = validateItemCount(MAX_ITEMS + 1);
     expect(result.valid).toBe(false);
     expect(result.warning).toContain('Maximum');

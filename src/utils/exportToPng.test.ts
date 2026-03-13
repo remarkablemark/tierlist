@@ -70,7 +70,7 @@ describe('exportTierListToPng', () => {
     vi.restoreAllMocks();
   });
 
-  it('should export successfully with default options', async () => {
+  it('exports successfully with default options', async () => {
     mockContainer.getBoundingClientRect = () => ({
       width: 960,
       height: 540,
@@ -102,7 +102,7 @@ describe('exportTierListToPng', () => {
     });
   });
 
-  it('should use custom options when provided', async () => {
+  it('uses custom options when provided', async () => {
     mockContainer.getBoundingClientRect = () => ({
       width: 960,
       height: 540,
@@ -136,7 +136,7 @@ describe('exportTierListToPng', () => {
     });
   });
 
-  it('should calculate scale to ensure minimum width', async () => {
+  it('calculates scale to ensure minimum width', async () => {
     mockContainer.getBoundingClientRect = () => ({
       width: 500,
       height: 300,
@@ -156,7 +156,7 @@ describe('exportTierListToPng', () => {
     expect(callArgs?.scale).toBeGreaterThan(2);
   });
 
-  it('should return error when container is not provided', async () => {
+  it('returns error when container is not provided', async () => {
     const result = await exportTierListToPng(null as unknown as HTMLDivElement);
 
     expect(result.success).toBe(false);
@@ -165,7 +165,7 @@ describe('exportTierListToPng', () => {
     expect(result.height).toBe(0);
   });
 
-  it('should return error when canvas width is less than minWidth', async () => {
+  it('returns error when canvas width is less than minWidth', async () => {
     mockContainer.getBoundingClientRect = () => ({
       width: 960,
       height: 540,
@@ -191,7 +191,7 @@ describe('exportTierListToPng', () => {
     expect(result.height).toBe(300);
   });
 
-  it('should return error when blob generation fails', async () => {
+  it('returns error when blob generation fails', async () => {
     mockContainer.getBoundingClientRect = () => ({
       width: 960,
       height: 540,
@@ -216,7 +216,7 @@ describe('exportTierListToPng', () => {
     expect(result.error).toBe(EXPORT_ERRORS.IMAGE_GENERATION_FAILED);
   });
 
-  it('should return error when html2canvas throws', async () => {
+  it('returns error when html2canvas throws', async () => {
     mockContainer.getBoundingClientRect = () => ({
       width: 960,
       height: 540,
@@ -237,7 +237,7 @@ describe('exportTierListToPng', () => {
     expect(result.error).toBe('Render failed');
   });
 
-  it('should trigger download with correct filename', async () => {
+  it('triggers download with correct filename', async () => {
     mockContainer.getBoundingClientRect = () => ({
       width: 960,
       height: 540,
@@ -271,7 +271,7 @@ describe('exportTierListToPng', () => {
     createElementSpy.mockRestore();
   });
 
-  it('should ignore elements with data-export-ignore attribute', async () => {
+  it('ignores elements with data-export-ignore attribute', async () => {
     mockContainer.getBoundingClientRect = () => ({
       width: 960,
       height: 540,
@@ -302,11 +302,11 @@ describe('exportTierListToPng', () => {
 });
 
 describe('isExportSupported', () => {
-  it('should return true when all features are supported', () => {
+  it('returns true when all features are supported', () => {
     expect(isExportSupported()).toBe(true);
   });
 
-  it('should return false when canvas getContext is not supported', () => {
+  it('returns false when canvas getContext is not supported', () => {
     // eslint-disable-next-line @typescript-eslint/no-deprecated
     const originalCreateElement = document.createElement.bind(document);
 
@@ -328,7 +328,7 @@ describe('isExportSupported', () => {
     createElementSpy.mockRestore();
   });
 
-  it('should return false when canvas toBlob is not supported', () => {
+  it('returns false when canvas toBlob is not supported', () => {
     // eslint-disable-next-line @typescript-eslint/no-deprecated
     const originalCreateElement = document.createElement.bind(document);
 
@@ -350,7 +350,7 @@ describe('isExportSupported', () => {
     createElementSpy.mockRestore();
   });
 
-  it('should return false when download attribute is not supported', () => {
+  it('returns false when download attribute is not supported', () => {
     // eslint-disable-next-line @typescript-eslint/no-deprecated
     const originalCreateElement = document.createElement.bind(document);
 

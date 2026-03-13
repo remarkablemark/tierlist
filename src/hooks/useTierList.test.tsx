@@ -40,20 +40,20 @@ function useTierIds(): string[] {
 
 describe('useTierList', () => {
   describe('initial state', () => {
-    it('should provide canUndo and canRedo flags', () => {
+    it('provides canUndo and canRedo flags', () => {
       const { result } = renderHook(() => useTierList(), { wrapper });
 
       expect(result.current.canUndo).toBe(false);
       expect(result.current.canRedo).toBe(false);
     });
 
-    it('should provide totalItems count', () => {
+    it('provides totalItems count', () => {
       const { result } = renderHook(() => useTierList(), { wrapper });
 
       expect(result.current.totalItems).toBe(0);
     });
 
-    it('should provide item limit flags', () => {
+    it('provides item limit flags', () => {
       const { result } = renderHook(() => useTierList(), { wrapper });
 
       expect(result.current.hasReachedItemLimit).toBe(false);
@@ -62,7 +62,7 @@ describe('useTierList', () => {
   });
 
   describe('tier operations', () => {
-    it('should add a tier', () => {
+    it('adds a tier', () => {
       const { result } = renderHook(() => useTierList(), { wrapper });
 
       act(() => {
@@ -73,7 +73,7 @@ describe('useTierList', () => {
       expect(result.current.totalItems).toBe(0);
     });
 
-    it('should delete a tier', () => {
+    it('deletes a tier', () => {
       const { result } = renderHook(() => useTierList(), { wrapper });
 
       // First add a tier to delete
@@ -89,7 +89,7 @@ describe('useTierList', () => {
       expect(result.current.canUndo).toBe(true);
     });
 
-    it('should update tier label', () => {
+    it('updates tier label', () => {
       const { result } = renderHook(() => useTierList(), { wrapper });
 
       act(() => {
@@ -99,7 +99,7 @@ describe('useTierList', () => {
       expect(result.current.canUndo).toBe(true);
     });
 
-    it('should update tier color', () => {
+    it('updates tier color', () => {
       const { result } = renderHook(() => useTierList(), { wrapper });
 
       act(() => {
@@ -109,7 +109,7 @@ describe('useTierList', () => {
       expect(result.current.canUndo).toBe(true);
     });
 
-    it('should reset tier', () => {
+    it('resets tier', () => {
       const { result } = renderHook(() => useTierList(), { wrapper });
 
       // First add a tier
@@ -128,7 +128,7 @@ describe('useTierList', () => {
   });
 
   describe('item operations', () => {
-    it('should add an item', () => {
+    it('adds an item', () => {
       const { result } = renderHook(() => useTierList(), { wrapper });
 
       const item = {
@@ -147,7 +147,7 @@ describe('useTierList', () => {
       expect(result.current.totalItems).toBe(1);
     });
 
-    it('should add an item to a specific tier', () => {
+    it('adds an item to a specific tier', () => {
       const { result } = renderHook(() => useTierList(), { wrapper });
 
       const item = {
@@ -167,7 +167,7 @@ describe('useTierList', () => {
       expect(result.current.totalItems).toBe(1);
     });
 
-    it('should delete an item from unassigned', () => {
+    it('deletes an item from unassigned', () => {
       const { result } = renderHook(() => useTierList(), { wrapper });
 
       const item = {
@@ -190,7 +190,7 @@ describe('useTierList', () => {
       expect(result.current.totalItems).toBe(0);
     });
 
-    it('should move an item', () => {
+    it('moves an item', () => {
       const { result } = renderHook(() => useTierList(), { wrapper });
 
       const item = {
@@ -213,7 +213,7 @@ describe('useTierList', () => {
       expect(result.current.totalItems).toBe(1);
     });
 
-    it('should update item label', () => {
+    it('updates item label', () => {
       const { result } = renderHook(() => useTierList(), { wrapper });
 
       const item = {
@@ -235,7 +235,7 @@ describe('useTierList', () => {
   });
 
   describe('undo/redo', () => {
-    it('should undo an action', () => {
+    it('undoes an action', () => {
       const { result } = renderHook(() => useTierList(), { wrapper });
 
       act(() => {
@@ -252,7 +252,7 @@ describe('useTierList', () => {
       expect(result.current.canRedo).toBe(true);
     });
 
-    it('should redo an action', () => {
+    it('redoes an action', () => {
       const { result } = renderHook(() => useTierList(), { wrapper });
 
       act(() => {
@@ -267,7 +267,7 @@ describe('useTierList', () => {
   });
 
   describe('item limit', () => {
-    it('should show warning at 50 items', () => {
+    it('shows warning at 50 items', () => {
       const { result } = renderHook(() => useTierList(), { wrapper });
 
       // Add 50 items
@@ -288,7 +288,7 @@ describe('useTierList', () => {
       expect(result.current.hasReachedItemLimit).toBe(false);
     });
 
-    it('should prevent adding items at 100', () => {
+    it('prevents adding items at 100', () => {
       const { result } = renderHook(() => useTierList(), { wrapper });
 
       // Add 100 items
@@ -310,7 +310,7 @@ describe('useTierList', () => {
   });
 
   describe('moveItem', () => {
-    it('should move item from unassigned to tier', () => {
+    it('moves item from unassigned to tier', () => {
       const { result } = renderHook(() => useTierList(), { wrapper });
 
       const item = {
@@ -334,7 +334,7 @@ describe('useTierList', () => {
       expect(result.current.totalItems).toBe(1);
     });
 
-    it('should move item from tier to unassigned', () => {
+    it('moves item from tier to unassigned', () => {
       const { result } = renderHook(() => useTierList(), { wrapper });
 
       const item = {
@@ -358,7 +358,7 @@ describe('useTierList', () => {
       expect(result.current.totalItems).toBe(1);
     });
 
-    it('should handle moveItem when item is not found in tiers', () => {
+    it('handles moveItem when item is not found in tiers', () => {
       const { result } = renderHook(() => useTierList(), { wrapper });
 
       const item = {
@@ -385,7 +385,7 @@ describe('useTierList', () => {
   });
 
   describe('reorderItem', () => {
-    it('should reorder item within tier - moving down', () => {
+    it('reorders item within tier - moving down', () => {
       const { result } = renderHook(() => useTierList(), { wrapper });
 
       const item1 = {
@@ -415,7 +415,7 @@ describe('useTierList', () => {
       expect(result.current.totalItems).toBe(2);
     });
 
-    it('should reorder item within tier - moving up', () => {
+    it('reorders item within tier - moving up', () => {
       const { result } = renderHook(() => useTierList(), { wrapper });
 
       const item1 = {
@@ -445,7 +445,7 @@ describe('useTierList', () => {
       expect(result.current.totalItems).toBe(2);
     });
 
-    it('should handle reorderItem when tier is not found', () => {
+    it('handles reorderItem when tier is not found', () => {
       const { result } = renderHook(() => useTierList(), { wrapper });
 
       const item = {
@@ -468,7 +468,7 @@ describe('useTierList', () => {
   });
 
   describe('updateItemLabel', () => {
-    it('should update item label', () => {
+    it('updates item label', () => {
       const { result } = renderHook(() => useTierList(), { wrapper });
 
       const item = {
@@ -490,7 +490,7 @@ describe('useTierList', () => {
   });
 
   describe('reorderTiers', () => {
-    it('should reorder tiers - direction up', () => {
+    it('reorders tiers - direction up', () => {
       const { result } = renderHook(
         () => {
           const tierList = useTierList();
@@ -518,7 +518,7 @@ describe('useTierList', () => {
       expect(result.current.tierList.canUndo).toBe(true);
     });
 
-    it('should reorder tiers - direction down', () => {
+    it('reorders tiers - direction down', () => {
       const { result } = renderHook(
         () => {
           const tierList = useTierList();
@@ -549,7 +549,7 @@ describe('useTierList', () => {
   });
 
   describe('moveItem with items in tiers', () => {
-    it('should move item from tier to unassigned - tests item found in tier', () => {
+    it('moves item from tier to unassigned - tests item found in tier', () => {
       const { result } = renderHook(
         () => {
           const tierList = useTierList();
@@ -585,7 +585,7 @@ describe('useTierList', () => {
       expect(result.current.tierList.totalItems).toBe(1);
     });
 
-    it('should move item between tiers - tests item found in tier', () => {
+    it('moves item between tiers - tests item found in tier', () => {
       const { result } = renderHook(
         () => {
           const tierList = useTierList();
@@ -624,7 +624,7 @@ describe('useTierList', () => {
   });
 
   describe('reorderItem with items in tiers', () => {
-    it('should reorder item within tier - direction up', () => {
+    it('reorders item within tier - direction up', () => {
       const { result } = renderHook(
         () => {
           const tierList = useTierList();
@@ -669,7 +669,7 @@ describe('useTierList', () => {
       expect(result.current.tierList.totalItems).toBe(2);
     });
 
-    it('should reorder item within tier - direction down', () => {
+    it('reorders item within tier - direction down', () => {
       const { result } = renderHook(
         () => {
           const tierList = useTierList();
@@ -716,7 +716,7 @@ describe('useTierList', () => {
   });
 
   describe('persistence', () => {
-    it('should save tier list to storage', async () => {
+    it('saves tier list to storage', async () => {
       const { saveTierList } = await import('../services/storage');
       const { result } = renderHook(() => useTierList(), { wrapper });
 
@@ -727,7 +727,7 @@ describe('useTierList', () => {
       expect(saveTierList).toHaveBeenCalledTimes(1);
     });
 
-    it('should load tier list from storage', async () => {
+    it('loads tier list from storage', async () => {
       const { loadTierList } = await import('../services/storage');
       const mockTierList = {
         id: generateId(),
@@ -757,7 +757,7 @@ describe('useTierList', () => {
       expect(loadTierList).toHaveBeenCalledWith(mockTierList.id);
     });
 
-    it('should handle load when tier list not found', async () => {
+    it('handles load when tier list not found', async () => {
       const { loadTierList } = await import('../services/storage');
       vi.mocked(loadTierList).mockResolvedValueOnce(undefined);
 
@@ -768,7 +768,7 @@ describe('useTierList', () => {
       expect(loadTierList).toHaveBeenCalledWith('non-existent-id');
     });
 
-    it('should create new tier list with default name', () => {
+    it('creates new tier list with default name', () => {
       const { result } = renderHook(() => useTierList(), { wrapper });
 
       act(() => {
@@ -780,7 +780,7 @@ describe('useTierList', () => {
       expect(result.current.tierList.unassignedItems).toEqual([]);
     });
 
-    it('should create new tier list with custom name', () => {
+    it('creates new tier list with custom name', () => {
       const { result } = renderHook(() => useTierList(), { wrapper });
 
       act(() => {
@@ -790,7 +790,7 @@ describe('useTierList', () => {
       expect(result.current.tierList.name).toBe('My Custom Tier List');
     });
 
-    it('should get all saved tier lists', async () => {
+    it('gets all saved tier lists', async () => {
       const { getAllTierLists } = await import('../services/storage');
       const savedLists = [
         {

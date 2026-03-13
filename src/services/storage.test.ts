@@ -32,13 +32,13 @@ describe('storage', () => {
   });
 
   describe('openDatabase', () => {
-    it('should open the database successfully', async () => {
+    it('opens the database successfully', async () => {
       const db = await openDatabase();
       expect(db).toBeDefined();
       expect(db.name).toBe(DB_NAME);
     });
 
-    it('should create object stores on upgrade', async () => {
+    it('creates object stores on upgrade', async () => {
       const db = await openDatabase();
       expect(db.objectStoreNames).toContain('tierLists');
       expect(db.objectStoreNames).toContain('images');
@@ -74,7 +74,7 @@ describe('storage', () => {
       version: 1,
     });
 
-    it('should save and load a tier list', async () => {
+    it('saves and load a tier list', async () => {
       const tierList = createTestTierList();
       await saveTierList(tierList);
 
@@ -85,12 +85,12 @@ describe('storage', () => {
       expect(loaded?.tiers).toHaveLength(1);
     });
 
-    it('should return undefined for non-existent tier list', async () => {
+    it('returns undefined for non-existent tier list', async () => {
       const loaded = await loadTierList('non-existent-id');
       expect(loaded).toBeUndefined();
     });
 
-    it('should update lastAccessedAt on load', async () => {
+    it('updates lastAccessedAt on load', async () => {
       const tierList = createTestTierList();
       await saveTierList(tierList);
 
@@ -109,7 +109,7 @@ describe('storage', () => {
       );
     });
 
-    it('should update tier list on subsequent saves', async () => {
+    it('updates tier list on subsequent saves', async () => {
       const tierList = createTestTierList();
       await saveTierList(tierList);
 
@@ -126,7 +126,7 @@ describe('storage', () => {
   });
 
   describe('deleteTierList', () => {
-    it('should delete a tier list', async () => {
+    it('deletes a tier list', async () => {
       const tierList: TierList = {
         id: 'test-id',
         name: 'Test',
@@ -152,18 +152,18 @@ describe('storage', () => {
       expect(loaded).toBeUndefined();
     });
 
-    it('should not error when deleting non-existent tier list', async () => {
+    it('does not error when deleting non-existent tier list', async () => {
       await expect(deleteTierList('non-existent-id')).resolves.not.toThrow();
     });
   });
 
   describe('getAllTierLists', () => {
-    it('should return empty array when no tier lists exist', async () => {
+    it('returns empty array when no tier lists exist', async () => {
       const lists = await getAllTierLists();
       expect(lists).toEqual([]);
     });
 
-    it('should return all tier lists sorted by updatedAt', async () => {
+    it('returns all tier lists sorted by updatedAt', async () => {
       const baseTime = Date.now();
       const tierLists: TierList[] = [
         {
@@ -218,7 +218,7 @@ describe('storage', () => {
   });
 
   describe('saveImage and loadImage', () => {
-    it('should save and load an image blob', async () => {
+    it('saves and load an image blob', async () => {
       const blob = new Blob(['test image data'], { type: 'image/png' });
       await saveImage('item-1', blob, 'image/png');
 
@@ -226,12 +226,12 @@ describe('storage', () => {
       expect(loaded).toBeDefined();
     });
 
-    it('should return undefined for non-existent image', async () => {
+    it('returns undefined for non-existent image', async () => {
       const loaded = await loadImage('non-existent-id');
       expect(loaded).toBeUndefined();
     });
 
-    it('should update image on subsequent saves', async () => {
+    it('updates image on subsequent saves', async () => {
       const blob1 = new Blob(['image 1'], { type: 'image/png' });
       const blob2 = new Blob(['image 2'], { type: 'image/jpeg' });
 
@@ -244,7 +244,7 @@ describe('storage', () => {
   });
 
   describe('deleteImage', () => {
-    it('should delete an image', async () => {
+    it('deletes an image', async () => {
       const blob = new Blob(['test'], { type: 'image/png' });
       await saveImage('item-1', blob, 'image/png');
 
@@ -254,25 +254,25 @@ describe('storage', () => {
       expect(loaded).toBeUndefined();
     });
 
-    it('should not error when deleting non-existent image', async () => {
+    it('does not error when deleting non-existent image', async () => {
       await expect(deleteImage('non-existent-id')).resolves.not.toThrow();
     });
   });
 
   describe('saveMetadata and getMetadata', () => {
-    it('should save and retrieve metadata', async () => {
+    it('saves and retrieve metadata', async () => {
       await saveMetadata('test-key', { foo: 'bar' });
 
       const value = await getMetadata('test-key');
       expect(value).toEqual({ foo: 'bar' });
     });
 
-    it('should return undefined for non-existent metadata', async () => {
+    it('returns undefined for non-existent metadata', async () => {
       const value = await getMetadata('non-existent-key');
       expect(value).toBeUndefined();
     });
 
-    it('should update metadata on subsequent saves', async () => {
+    it('updates metadata on subsequent saves', async () => {
       await saveMetadata('key', { version: 1 });
       await saveMetadata('key', { version: 2 });
 
@@ -280,7 +280,7 @@ describe('storage', () => {
       expect(value).toEqual({ version: 2 });
     });
 
-    it('should handle different value types', async () => {
+    it('handles different value types', async () => {
       await saveMetadata('string-key', 'test string');
       await saveMetadata('number-key', 42);
       await saveMetadata('boolean-key', true);
@@ -294,7 +294,7 @@ describe('storage', () => {
   });
 
   describe('clearDatabase', () => {
-    it('should clear all data from the database', async () => {
+    it('clears all data from the database', async () => {
       // Add some data
       const tierList: TierList = {
         id: 'test-id',
@@ -334,7 +334,7 @@ describe('storage', () => {
   });
 
   describe('getStorageUsage', () => {
-    it('should return zero counts for empty database', async () => {
+    it('returns zero counts for empty database', async () => {
       const usage = await getStorageUsage();
       expect(usage).toEqual({
         tierLists: 0,
@@ -343,7 +343,7 @@ describe('storage', () => {
       });
     });
 
-    it('should return correct counts after adding data', async () => {
+    it('returns correct counts after adding data', async () => {
       const tierList: TierList = {
         id: 'test-id',
         name: 'Test',

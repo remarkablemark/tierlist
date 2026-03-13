@@ -39,7 +39,7 @@ function wrapper({ children }: { children: React.ReactNode }) {
 
 describe('TierListContext', () => {
   describe('useTierListContext', () => {
-    it('should throw error when used outside provider', () => {
+    it('throws error when used outside provider', () => {
       // Suppress console.error for this test
       const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {
         // noop
@@ -52,7 +52,7 @@ describe('TierListContext', () => {
       consoleSpy.mockRestore();
     });
 
-    it('should provide initial state with default tier list', () => {
+    it('provides initial state with default tier list', () => {
       const { result } = renderHook(() => useTierListContext(), { wrapper });
 
       expect(result.current.state.present.tiers).toHaveLength(
@@ -61,7 +61,7 @@ describe('TierListContext', () => {
       expect(result.current.state.present.unassignedItems).toHaveLength(0);
     });
 
-    it('should provide dispatch function', () => {
+    it('provides dispatch function', () => {
       const { result } = renderHook(() => useTierListContext(), { wrapper });
 
       expect(result.current.dispatch).toBeDefined();
@@ -70,7 +70,7 @@ describe('TierListContext', () => {
   });
 
   describe('TierListProvider', () => {
-    it('should initialize with default tier list', () => {
+    it('initializes with default tier list', () => {
       const { result } = renderHook(() => useTierListContext(), { wrapper });
 
       const tierList = result.current.state.present;
@@ -79,7 +79,7 @@ describe('TierListContext', () => {
       expect(tierList.settings).toEqual(DEFAULT_SETTINGS);
     });
 
-    it('should allow dispatching actions', () => {
+    it('allows dispatching actions', () => {
       const { result } = renderHook(() => useTierListContext(), { wrapper });
 
       act(() => {
@@ -94,7 +94,7 @@ describe('TierListContext', () => {
       );
     });
 
-    it('should support undo/redo', () => {
+    it('supports undo/redo', () => {
       const { result } = renderHook(() => useTierListContext(), { wrapper });
       const initialTierCount = result.current.state.present.tiers.length;
 
@@ -129,7 +129,7 @@ describe('TierListContext', () => {
       );
     });
 
-    it('should update tier list on item operations', () => {
+    it('updates tier list on item operations', () => {
       const { result } = renderHook(() => useTierListContext(), { wrapper });
       const tierId = result.current.state.present.tiers[0].id;
 
@@ -165,7 +165,7 @@ describe('TierListContext', () => {
       expect(result.current.state.present.tiers[0].items).toHaveLength(0);
     });
 
-    it('should update settings', () => {
+    it('updates settings', () => {
       const { result } = renderHook(() => useTierListContext(), { wrapper });
 
       act(() => {
@@ -179,7 +179,7 @@ describe('TierListContext', () => {
       expect(result.current.state.present.settings.itemSize).toBe('large');
     });
 
-    it('should handle load action', () => {
+    it('handles load action', () => {
       const { result } = renderHook(() => useTierListContext(), { wrapper });
       const newTierList = createMockTierList();
       newTierList.name = 'Loaded Tier List';
@@ -199,7 +199,7 @@ describe('TierListContext', () => {
 });
 
 describe('TierListProvider with custom initial state', () => {
-  it('should accept custom initial tier list', () => {
+  it('accepts custom initial tier list', () => {
     const customTierList = createMockTierList();
     customTierList.name = 'Custom Tier List';
 

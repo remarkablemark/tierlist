@@ -109,19 +109,19 @@ function TestWrapper({
 }
 
 describe('TierList', () => {
-  it('should render with header', () => {
+  it('renders with header', () => {
     render(<TierList />, { wrapper: TestWrapper });
 
     expect(screen.getByText('Untitled Tier List')).toBeInTheDocument();
   });
 
-  it('should render unassigned items area', () => {
+  it('renders unassigned items area', () => {
     render(<TierList />, { wrapper: TestWrapper });
 
     expect(screen.getByText('Unassigned Items')).toBeInTheDocument();
   });
 
-  it('should render uploaded items inside the unassigned items section', async () => {
+  it('renders uploaded items inside the unassigned items section', async () => {
     render(<TierList />, { wrapper: TestWrapper });
 
     const fileInput = screen.getByTestId('file-input');
@@ -143,14 +143,14 @@ describe('TierList', () => {
     expect(unassignedSection).toContainElement(uploadedItem);
   });
 
-  it('should have undo/redo buttons', () => {
+  it('has undo/redo buttons', () => {
     render(<TierList />, { wrapper: TestWrapper });
 
     expect(screen.getByRole('button', { name: /undo/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /redo/i })).toBeInTheDocument();
   });
 
-  it('should have add tier button', () => {
+  it('has add tier button', () => {
     render(<TierList />, { wrapper: TestWrapper });
 
     expect(
@@ -158,7 +158,7 @@ describe('TierList', () => {
     ).toBeInTheDocument();
   });
 
-  it('should allow adding a new tier', async () => {
+  it('allows adding a new tier', async () => {
     const user = userEvent.setup();
     render(<TierList />, { wrapper: TestWrapper });
 
@@ -170,7 +170,7 @@ describe('TierList', () => {
     expect(undoButton).toBeEnabled();
   });
 
-  it('should support undo/redo', async () => {
+  it('supports undo/redo', async () => {
     const user = userEvent.setup();
     render(<TierList />, { wrapper: TestWrapper });
 
@@ -190,7 +190,7 @@ describe('TierList', () => {
     expect(redoButton).toBeEnabled();
   });
 
-  it('should show item limit warning when 50+ items', () => {
+  it('shows item limit warning when 50+ items', () => {
     const mockTierList = createMockTierListWithItems(50);
     render(<TierList />, {
       wrapper: (props) => (
@@ -203,7 +203,7 @@ describe('TierList', () => {
     ).toBeInTheDocument();
   });
 
-  it('should show maximum items reached warning when 100+ items', () => {
+  it('shows maximum items reached warning when 100+ items', () => {
     const mockTierList = createMockTierListWithItems(100);
     render(<TierList />, {
       wrapper: (props) => (
@@ -218,7 +218,7 @@ describe('TierList', () => {
     ).toBeInTheDocument();
   });
 
-  it('should not show warnings when under 50 items', () => {
+  it('does not show warnings when under 50 items', () => {
     const mockTierList = createMockTierListWithItems(25);
     render(<TierList />, {
       wrapper: (props) => (
@@ -236,7 +236,7 @@ describe('TierList', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('should add multiple uploaded images to the unassigned area', async () => {
+  it('adds multiple uploaded images to the unassigned area', async () => {
     render(<TierList />, { wrapper: TestWrapper });
 
     const fileInput = screen.getByTestId('file-input');
@@ -261,7 +261,7 @@ describe('TierList', () => {
     });
   });
 
-  it('should only add files up to the remaining item limit', async () => {
+  it('only add files up to the remaining item limit', async () => {
     const mockTierList = createMockTierListWithUnassignedItems(99);
     render(<TierList />, {
       wrapper: (props) => (
@@ -296,7 +296,7 @@ describe('TierList', () => {
   });
 
   describe('drag and drop - item to tier', () => {
-    it('should show visual feedback when item is being dragged', () => {
+    it('shows visual feedback when item is being dragged', () => {
       const mockTierList = createMockTierListWithUnassignedItems(5);
       render(<TierList />, {
         wrapper: (props) => (
@@ -314,7 +314,7 @@ describe('TierList', () => {
       expect(firstItem.getAttribute('data-grabbed')).not.toBe('true');
     });
 
-    it('should drop item into tier when Enter is pressed after moving to tier', async () => {
+    it('drops item into tier when Enter is pressed after moving to tier', async () => {
       const user = userEvent.setup();
       const mockTierList = createMockTierListWithUnassignedItems(3);
 
@@ -349,7 +349,7 @@ describe('TierList', () => {
       }
     });
 
-    it('should cancel drag operation when Escape is pressed', async () => {
+    it('cancels drag operation when Escape is pressed', async () => {
       const user = userEvent.setup();
       const mockTierList = createMockTierListWithUnassignedItems(3);
       render(<TierList />, {
@@ -376,7 +376,7 @@ describe('TierList', () => {
       expect(firstItem).toBeInTheDocument();
     });
 
-    it('should drop item into tier when dragged with the pointer', () => {
+    it('drops item into tier when dragged with the pointer', () => {
       const mockTierList = createMockTierListWithUnassignedItems(1);
       render(<TierList />, {
         wrapper: (props) => (
@@ -402,7 +402,7 @@ describe('TierList', () => {
   });
 
   describe('move item between tiers', () => {
-    it('should move item from one tier to another with visual feedback', async () => {
+    it('moves item from one tier to another with visual feedback', async () => {
       const user = userEvent.setup();
       // Create tier list with items in first tier
       const mockTierList = createMockTierListWithItems(10);
@@ -443,7 +443,7 @@ describe('TierList', () => {
       }
     });
 
-    it('should maintain item visibility during keyboard drag', async () => {
+    it('maintain item visibility during keyboard drag', async () => {
       const user = userEvent.setup();
       const mockTierList = createMockTierListWithItems(5);
       render(<TierList />, {
@@ -471,7 +471,7 @@ describe('TierList', () => {
       expect(firstItem).toBeInTheDocument();
     });
 
-    it('should reorder items within the same tier when dragged with the pointer', () => {
+    it('reorders items within the same tier when dragged with the pointer', () => {
       const mockTierList = createMockTierListWithItems(10);
       render(<TierList />, {
         wrapper: (props) => (
@@ -500,7 +500,7 @@ describe('TierList', () => {
       expect(itemsAfterReorder).toEqual(['Item 2', 'Item 1']);
     });
 
-    it('should show a reorder target indicator when hovering another item in the same tier', async () => {
+    it('shows a reorder target indicator when hovering another item in the same tier', async () => {
       const mockTierList = createMockTierListWithItems(10);
       render(<TierList />, {
         wrapper: (props) => (
@@ -529,7 +529,7 @@ describe('TierList', () => {
       });
     });
 
-    it('should reorder items within the same tier with keyboard controls', async () => {
+    it('reorders items within the same tier with keyboard controls', async () => {
       const user = userEvent.setup();
       const mockTierList = createMockTierListWithItems(10);
       render(<TierList />, {
@@ -553,7 +553,7 @@ describe('TierList', () => {
     });
   });
 
-  it('should customize tier color and persist the change', async () => {
+  it('customizes tier color and persist the change', async () => {
     const user = userEvent.setup();
     const mockTierList = createMockTierListWithItems(0);
     render(<TierList />, {
@@ -579,7 +579,7 @@ describe('TierList', () => {
     expect(tier).toHaveStyle('background-color: #ff0000');
   });
 
-  it('should customize tier label and persist the change', async () => {
+  it('customizes tier label and persist the change', async () => {
     const user = userEvent.setup();
     const mockTierList = createMockTierListWithItems(0);
     render(<TierList />, {
@@ -607,7 +607,7 @@ describe('TierList', () => {
     expect(firstLabelInput).toHaveValue('Custom Tier');
   });
 
-  it('should reset tier to default values', async () => {
+  it('resets tier to default values', async () => {
     const user = userEvent.setup();
     const mockTierList = createMockTierListWithItems(0);
     // Start with custom tier - modify the first tier's label and color

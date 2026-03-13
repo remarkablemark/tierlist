@@ -9,7 +9,7 @@ import { userEvent } from '@testing-library/user-event';
 import { AddItemButton } from './AddItemButton';
 
 describe('AddItemButton', () => {
-  it('should render add item button', () => {
+  it('renders add item button', () => {
     const onFileSelect = vi.fn();
     render(
       <AddItemButton
@@ -24,7 +24,7 @@ describe('AddItemButton', () => {
     ).toBeInTheDocument();
   });
 
-  it('should open file picker when button is clicked', async () => {
+  it('opens file picker when button is clicked', async () => {
     const user = userEvent.setup();
     const onFileSelect = vi.fn();
     render(
@@ -43,7 +43,7 @@ describe('AddItemButton', () => {
     expect(fileInput).toBeInTheDocument();
   });
 
-  it('should call onFileSelect when files are selected', async () => {
+  it('calls onFileSelect when files are selected', async () => {
     const onFileSelect = vi.fn();
     render(
       <AddItemButton
@@ -65,7 +65,7 @@ describe('AddItemButton', () => {
     });
   });
 
-  it('should show item count when items are present', () => {
+  it('shows item count when items are present', () => {
     const onFileSelect = vi.fn();
     const { container } = render(
       <AddItemButton
@@ -81,7 +81,7 @@ describe('AddItemButton', () => {
     expect(container.textContent).toContain('items');
   });
 
-  it('should show warning message when item count >= 50', () => {
+  it('shows warning message when item count >= 50', () => {
     const onFileSelect = vi.fn();
     render(
       <AddItemButton
@@ -96,7 +96,7 @@ describe('AddItemButton', () => {
     ).toBeInTheDocument();
   });
 
-  it('should not show warning when item count < 50', () => {
+  it('does not show warning when item count < 50', () => {
     const onFileSelect = vi.fn();
     render(
       <AddItemButton
@@ -111,7 +111,7 @@ describe('AddItemButton', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('should be disabled when item count >= 100', () => {
+  it('is disabled when item count >= 100', () => {
     const onFileSelect = vi.fn();
     render(
       <AddItemButton
@@ -125,7 +125,7 @@ describe('AddItemButton', () => {
     expect(button).toBeDisabled();
   });
 
-  it('should be enabled when item count < 100', () => {
+  it('is enabled when item count < 100', () => {
     const onFileSelect = vi.fn();
     render(
       <AddItemButton
@@ -139,7 +139,7 @@ describe('AddItemButton', () => {
     expect(button).toBeEnabled();
   });
 
-  it('should accept only image files', () => {
+  it('accepts only image files', () => {
     const onFileSelect = vi.fn();
     render(
       <AddItemButton
@@ -153,7 +153,7 @@ describe('AddItemButton', () => {
     expect((fileInput as HTMLInputElement).accept).toBe('image/*');
   });
 
-  it('should allow selecting multiple image files', () => {
+  it('allows selecting multiple image files', () => {
     const onFileSelect = vi.fn();
     render(
       <AddItemButton
@@ -167,7 +167,7 @@ describe('AddItemButton', () => {
     expect((fileInput as HTMLInputElement).multiple).toBe(true);
   });
 
-  it('should show maximum items reached message when disabled', () => {
+  it('shows maximum items reached message when disabled', () => {
     const onFileSelect = vi.fn();
     render(
       <AddItemButton
@@ -180,7 +180,7 @@ describe('AddItemButton', () => {
     expect(screen.getByText(/maximum 100 items reached/i)).toBeInTheDocument();
   });
 
-  it('should not show maximum items message when under limit', () => {
+  it('does not show maximum items message when under limit', () => {
     const onFileSelect = vi.fn();
     render(
       <AddItemButton
@@ -195,7 +195,7 @@ describe('AddItemButton', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('should have proper ARIA labels', () => {
+  it('has proper ARIA labels', () => {
     const onFileSelect = vi.fn();
     render(
       <AddItemButton
@@ -209,7 +209,7 @@ describe('AddItemButton', () => {
     expect(button).toHaveAttribute('aria-label', 'Add item');
   });
 
-  it('should have proper aria-describedby when warning is shown', () => {
+  it('has proper aria-describedby when warning is shown', () => {
     const onFileSelect = vi.fn();
     render(
       <AddItemButton
@@ -224,7 +224,7 @@ describe('AddItemButton', () => {
     expect(describedBy).toBeDefined();
   });
 
-  it('should clear file input after selection', async () => {
+  it('clears file input after selection', async () => {
     const onFileSelect = vi.fn();
     render(
       <AddItemButton
@@ -249,7 +249,7 @@ describe('AddItemButton', () => {
     expect((fileInput as HTMLInputElement).value).toBe('');
   });
 
-  it('should handle multiple file selections sequentially', async () => {
+  it('handles multiple file selections sequentially', async () => {
     const onFileSelect = vi.fn();
     render(
       <AddItemButton
@@ -277,7 +277,7 @@ describe('AddItemButton', () => {
     });
   });
 
-  it('should pass all selected files in a single callback', async () => {
+  it('passes all selected files in a single callback', async () => {
     const onFileSelect = vi.fn();
     render(
       <AddItemButton
@@ -298,7 +298,7 @@ describe('AddItemButton', () => {
     });
   });
 
-  it('should show correct item count format', () => {
+  it('shows correct item count format', () => {
     const onFileSelect = vi.fn();
     const { container, rerender } = render(
       <AddItemButton
@@ -323,7 +323,7 @@ describe('AddItemButton', () => {
     expect(container.textContent).toContain('100');
   });
 
-  it('should have plus icon', () => {
+  it('has plus icon', () => {
     const onFileSelect = vi.fn();
     render(
       <AddItemButton
@@ -338,7 +338,7 @@ describe('AddItemButton', () => {
     expect(icon).toBeInTheDocument();
   });
 
-  it('should apply disabled styling when max items reached', () => {
+  it('applies disabled styling when max items reached', () => {
     const onFileSelect = vi.fn();
     render(
       <AddItemButton
@@ -357,7 +357,7 @@ describe('AddItemButton', () => {
     );
   });
 
-  it('should apply warning styling when item count >= 50', () => {
+  it('applies warning styling when item count >= 50', () => {
     const onFileSelect = vi.fn();
     render(
       <AddItemButton
@@ -371,7 +371,7 @@ describe('AddItemButton', () => {
     expect(container).toHaveClass('border-yellow-500');
   });
 
-  it('should not have warning styling when item count < 50', () => {
+  it('does not have warning styling when item count < 50', () => {
     const onFileSelect = vi.fn();
     render(
       <AddItemButton
@@ -385,7 +385,7 @@ describe('AddItemButton', () => {
     expect(container).not.toHaveClass('border-yellow-500');
   });
 
-  it('should have hidden file input', () => {
+  it('has hidden file input', () => {
     const onFileSelect = vi.fn();
     render(
       <AddItemButton
@@ -399,7 +399,7 @@ describe('AddItemButton', () => {
     expect(fileInput).toHaveClass('hidden');
   });
 
-  it('should trigger file input click when button is clicked', async () => {
+  it('triggers file input click when button is clicked', async () => {
     const user = userEvent.setup();
     const onFileSelect = vi.fn();
     render(
@@ -419,7 +419,7 @@ describe('AddItemButton', () => {
     expect(clickSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('should show item count with custom maxItems', () => {
+  it('shows item count with custom maxItems', () => {
     const onFileSelect = vi.fn();
     const { container } = render(
       <AddItemButton
@@ -433,7 +433,7 @@ describe('AddItemButton', () => {
     expect(container.textContent).toContain('50');
   });
 
-  it('should not call onFileSelect when no file is selected', () => {
+  it('does not call onFileSelect when no file is selected', () => {
     const onFileSelect = vi.fn();
     render(
       <AddItemButton
@@ -449,7 +449,7 @@ describe('AddItemButton', () => {
     expect(onFileSelect).not.toHaveBeenCalled();
   });
 
-  it('should not call onFileSelect when the file list is missing', () => {
+  it('does not call onFileSelect when the file list is missing', () => {
     const onFileSelect = vi.fn();
     render(
       <AddItemButton

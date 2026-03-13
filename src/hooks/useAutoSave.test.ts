@@ -53,7 +53,7 @@ describe('useAutoSave', () => {
     vi.useRealTimers();
   });
 
-  it('should start with idle status', () => {
+  it('starts with idle status', () => {
     const { result } = renderHook(() => useAutoSave(null));
 
     expect(result.current.status).toBe('idle');
@@ -61,7 +61,7 @@ describe('useAutoSave', () => {
     expect(result.current.errorMessage).toBeNull();
   });
 
-  it('should debounce saves (≤500ms)', async () => {
+  it('debounces saves (≤500ms)', async () => {
     const mockTierList = createMockTierList();
     const { result } = renderHook(() => useAutoSave(mockTierList));
 
@@ -82,7 +82,7 @@ describe('useAutoSave', () => {
     expect(result.current.lastSavedAt).toBeGreaterThan(0);
   });
 
-  it('should update status to saving then saved', async () => {
+  it('updates status to saving then saved', async () => {
     const mockTierList = createMockTierList();
     const { result } = renderHook(() => useAutoSave(mockTierList));
 
@@ -97,7 +97,7 @@ describe('useAutoSave', () => {
     expect(result.current.errorMessage).toBeNull();
   });
 
-  it('should handle save errors gracefully', async () => {
+  it('handles save errors gracefully', async () => {
     vi.mocked(saveTierList).mockRejectedValueOnce(new Error('Save failed'));
 
     const mockTierList = createMockTierList();
@@ -112,7 +112,7 @@ describe('useAutoSave', () => {
     expect(result.current.status).toBe('error');
   });
 
-  it('should provide manual save function', async () => {
+  it('provides manual save function', async () => {
     const mockTierList = createMockTierList();
     const { result } = renderHook(() => useAutoSave(mockTierList));
 
@@ -134,7 +134,7 @@ describe('useAutoSave', () => {
     expect(result.current.status).toBe('saved');
   });
 
-  it('should register beforeunload handler', async () => {
+  it('registers beforeunload handler', async () => {
     const mockTierList = createMockTierList();
     const { result } = renderHook(() => useAutoSave(mockTierList));
 
@@ -147,7 +147,7 @@ describe('useAutoSave', () => {
     expect(result.current.status).toBe('saved');
   });
 
-  it('should log save failures to IndexedDB', async () => {
+  it('logs save failures to IndexedDB', async () => {
     // Mock saveTierList to fail, which triggers the logSaveFailure function
     vi.mocked(saveTierList).mockRejectedValueOnce(new Error('Save failed'));
 
@@ -167,7 +167,7 @@ describe('useAutoSave', () => {
     );
   });
 
-  it('should display non-blocking status indicator', async () => {
+  it('displays non-blocking status indicator', async () => {
     const mockTierList = createMockTierList();
     const { result } = renderHook(() => useAutoSave(mockTierList));
 
@@ -182,7 +182,7 @@ describe('useAutoSave', () => {
     );
   });
 
-  it('should clear error on successful save', async () => {
+  it('clears error on successful save', async () => {
     const mockTierList = createMockTierList();
     const { result } = renderHook(() => useAutoSave(mockTierList));
 
@@ -202,14 +202,14 @@ describe('useAutoSave', () => {
     expect(result.current.errorMessage).toBeNull();
   });
 
-  it('should handle null tier list', () => {
+  it('handles null tier list', () => {
     const { result } = renderHook(() => useAutoSave(null));
 
     expect(result.current.status).toBe('idle');
     expect(result.current.lastSavedAt).toBeNull();
   });
 
-  it('should save updated tier list on changes', async () => {
+  it('saves updated tier list on changes', async () => {
     const initialTierList = createMockTierList();
     const { result, rerender } = renderHook(
       ({ tierList }) => useAutoSave(tierList),
@@ -243,7 +243,7 @@ describe('useAutoSave', () => {
     expect(saveTierList).toHaveBeenCalledTimes(2);
   });
 
-  it('should handle QuotaExceededError with specific message', async () => {
+  it('handles QuotaExceededError with specific message', async () => {
     const quotaError = new Error('Quota exceeded') as Error & { name?: string };
     quotaError.name = 'QuotaExceededError';
     vi.mocked(saveTierList).mockRejectedValueOnce(quotaError);
@@ -263,7 +263,7 @@ describe('useAutoSave', () => {
     );
   });
 
-  it('should handle NotFoundError gracefully', async () => {
+  it('handles NotFoundError gracefully', async () => {
     const notFoundError = new Error('Not found') as Error & { name?: string };
     notFoundError.name = 'NotFoundError';
     vi.mocked(saveTierList).mockRejectedValueOnce(notFoundError);
@@ -283,7 +283,7 @@ describe('useAutoSave', () => {
     );
   });
 
-  it('should log save failures to IndexedDB for later retrieval', async () => {
+  it('logs save failures to IndexedDB for later retrieval', async () => {
     const { openDB } = await import('idb');
     vi.mocked(saveTierList).mockRejectedValueOnce(new Error('Save failed'));
 
@@ -303,7 +303,7 @@ describe('useAutoSave', () => {
     expect(openDB).toHaveBeenCalledWith('TierListDB', 1);
   });
 
-  it('should register beforeunload handler to persist on navigation', async () => {
+  it('registers beforeunload handler to persist on navigation', async () => {
     const addEventListenerSpy = vi.spyOn(window, 'addEventListener');
     const removeEventListenerSpy = vi.spyOn(window, 'removeEventListener');
 
@@ -330,7 +330,7 @@ describe('useAutoSave', () => {
     );
   });
 
-  it('should save pending tier list on beforeunload event', async () => {
+  it('saves pending tier list on beforeunload event', async () => {
     const storageModule = await import('../services/storage');
     const mockSaveTierList = vi.mocked(storageModule.saveTierList);
     vi.clearAllMocks();

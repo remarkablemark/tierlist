@@ -7,7 +7,7 @@ import { blobToDataUrl, fileToBlob, fileToDataUrl } from './imageUpload';
 
 describe('imageUpload', () => {
   describe('fileToBlob', () => {
-    it('should convert a file to a blob', () => {
+    it('converts a file to a blob', () => {
       const file = new File(['test content'], 'test.png', {
         type: 'image/png',
       });
@@ -19,7 +19,7 @@ describe('imageUpload', () => {
       expect(blob.size).toBe(file.size);
     });
 
-    it('should preserve the file content', async () => {
+    it('preserves the file content', async () => {
       const file = new File(['hello world'], 'test.txt', {
         type: 'text/plain',
       });
@@ -30,7 +30,7 @@ describe('imageUpload', () => {
       expect(text).toBe('hello world');
     });
 
-    it('should handle empty files', () => {
+    it('handles empty files', () => {
       const file = new File([], 'empty.png', { type: 'image/png' });
 
       const blob = fileToBlob(file);
@@ -39,7 +39,7 @@ describe('imageUpload', () => {
       expect(blob.size).toBe(0);
     });
 
-    it('should handle different mime types', () => {
+    it('handles different mime types', () => {
       const types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
       types.forEach((type) => {
@@ -51,7 +51,7 @@ describe('imageUpload', () => {
   });
 
   describe('blobToDataUrl', () => {
-    it('should convert a blob to a data URL', async () => {
+    it('converts a blob to a data URL', async () => {
       const blob = new Blob(['test content'], { type: 'text/plain' });
 
       const dataUrl = await blobToDataUrl(blob);
@@ -60,7 +60,7 @@ describe('imageUpload', () => {
       expect(atob(dataUrl.split(',')[1])).toBe('test content');
     });
 
-    it('should handle image blobs', async () => {
+    it('handles image blobs', async () => {
       // Create a simple PNG-like blob (not a valid PNG, but tests the conversion)
       const blob = new Blob(['image data'], { type: 'image/png' });
 
@@ -69,7 +69,7 @@ describe('imageUpload', () => {
       expect(dataUrl).toMatch(/^data:image\/png;base64,/);
     });
 
-    it('should handle empty blobs', async () => {
+    it('handles empty blobs', async () => {
       const blob = new Blob([]);
 
       const dataUrl = await blobToDataUrl(blob);
@@ -78,7 +78,7 @@ describe('imageUpload', () => {
       expect(atob(dataUrl.split(',')[1])).toBe('');
     });
 
-    it('should handle binary data', async () => {
+    it('handles binary data', async () => {
       const binaryData = new Uint8Array([0, 1, 2, 3, 4, 5]);
       const blob = new Blob([binaryData]);
 
@@ -89,7 +89,7 @@ describe('imageUpload', () => {
   });
 
   describe('fileToDataUrl', () => {
-    it('should convert a file to a data URL', async () => {
+    it('converts a file to a data URL', async () => {
       const file = new File(['test content'], 'test.txt', {
         type: 'text/plain',
       });
@@ -100,7 +100,7 @@ describe('imageUpload', () => {
       expect(atob(dataUrl.split(',')[1])).toBe('test content');
     });
 
-    it('should handle image files', async () => {
+    it('handles image files', async () => {
       const file = new File(['image data'], 'test.png', {
         type: 'image/png',
       });
@@ -110,7 +110,7 @@ describe('imageUpload', () => {
       expect(dataUrl).toMatch(/^data:image\/png;base64,/);
     });
 
-    it('should handle empty files', async () => {
+    it('handles empty files', async () => {
       const file = new File([], 'empty.txt', { type: 'text/plain' });
 
       const dataUrl = await fileToDataUrl(file);
@@ -119,7 +119,7 @@ describe('imageUpload', () => {
       expect(atob(dataUrl.split(',')[1])).toBe('');
     });
 
-    it('should preserve filename in conversion', async () => {
+    it('preserves filename in conversion', async () => {
       const file = new File(['test'], 'my-file.json', {
         type: 'application/json',
       });
@@ -130,7 +130,7 @@ describe('imageUpload', () => {
       expect(atob(dataUrl.split(',')[1])).toBe('test');
     });
 
-    it('should handle different file types', async () => {
+    it('handles different file types', async () => {
       const files = [
         { content: 'html', name: 'test.html', type: 'text/html' },
         { content: 'css', name: 'test.css', type: 'text/css' },
@@ -148,7 +148,7 @@ describe('imageUpload', () => {
   });
 
   describe('error handling', () => {
-    it('should reject if FileReader fails for blob', async () => {
+    it('rejects if FileReader fails for blob', async () => {
       // Mock FileReader to fail
       const originalFileReader = window.FileReader;
 
@@ -184,7 +184,7 @@ describe('imageUpload', () => {
       window.FileReader = originalFileReader;
     });
 
-    it('should reject if FileReader fails for file', async () => {
+    it('rejects if FileReader fails for file', async () => {
       // Mock FileReader to fail
       const originalFileReader = window.FileReader;
 
