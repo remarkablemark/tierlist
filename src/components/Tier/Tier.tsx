@@ -63,7 +63,7 @@ export function Tier({
 
   return (
     <div
-      className={`relative mb-4 rounded-lg border-2 ${dropZoneClasses} ${draggingClasses} transition-all`}
+      className={`relative rounded-lg border-2 ${dropZoneClasses} ${draggingClasses} transition-all`}
       style={{ backgroundColor: tier.color }}
       role="region"
       aria-label={`Tier ${tier.label}`}

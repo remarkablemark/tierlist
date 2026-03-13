@@ -7,14 +7,14 @@
 
 import { DragDropProvider } from '@dnd-kit/react';
 import { useRef, useState } from 'react';
-
-import { useAutoSave } from '../../hooks/useAutoSave';
-import { useTierList } from '../../hooks/useTierList';
+import { useAutoSave } from 'src/hooks/useAutoSave';
+import { useTierList } from 'src/hooks/useTierList';
 import {
   type Tier as TierType,
   type TierListItem as TierItemType,
-} from '../../types/tierList.types';
-import { exportTierListToPng } from '../../utils/exportToPng';
+} from 'src/types/tierList.types';
+import { exportTierListToPng } from 'src/utils/exportToPng';
+
 import { AddItemButton } from '../AddItemButton';
 import { ExportButton } from '../ExportButton';
 import { SaveLoadControls } from '../SaveLoadControls';
@@ -271,37 +271,35 @@ export function TierList({
         )}
 
         {/* Tiers */}
-        <div className="space-y-4">
-          {tierList.tiers.map((tier, index) => (
-            <Tier
-              key={tier.id}
-              tier={tier}
-              index={index}
-              totalTiers={tierList.tiers.length}
-              isDragging={_draggedTier?.id === tier.id}
-              isOver={overTierId === tier.id}
-              onLabelChange={(label) => {
-                handleTierLabelChange(tier.id, label);
-              }}
-              onColorChange={(color) => {
-                handleTierColorChange(tier.id, color);
-              }}
-              onReset={() => {
-                handleTierReset(tier.id);
-              }}
-              onDelete={() => {
-                handleDeleteTier(tier.id);
-              }}
-              onItemDrop={handleItemDrop}
-              onItemReorder={handleItemReorder}
-              itemSize={tierList.settings.itemSize}
-              showLabels={tierList.settings.showItemLabels}
-            />
-          ))}
-        </div>
+        {tierList.tiers.map((tier, index) => (
+          <Tier
+            key={tier.id}
+            tier={tier}
+            index={index}
+            totalTiers={tierList.tiers.length}
+            isDragging={_draggedTier?.id === tier.id}
+            isOver={overTierId === tier.id}
+            onLabelChange={(label) => {
+              handleTierLabelChange(tier.id, label);
+            }}
+            onColorChange={(color) => {
+              handleTierColorChange(tier.id, color);
+            }}
+            onReset={() => {
+              handleTierReset(tier.id);
+            }}
+            onDelete={() => {
+              handleDeleteTier(tier.id);
+            }}
+            onItemDrop={handleItemDrop}
+            onItemReorder={handleItemReorder}
+            itemSize={tierList.settings.itemSize}
+            showLabels={tierList.settings.showItemLabels}
+          />
+        ))}
 
         {/* Unassigned Items Area */}
-        <div className="mt-8 rounded-lg border-2 border-dashed border-slate-300 p-4 dark:border-slate-700">
+        <div className="mt-8 rounded-lg dark:border-slate-700">
           <h2 className="mb-4 text-lg font-semibold text-slate-700 dark:text-slate-300">
             Unassigned Items
           </h2>
