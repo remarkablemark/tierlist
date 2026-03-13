@@ -437,6 +437,14 @@ describe('TierList', () => {
         const dropTargetItem = screen.getByRole('listitem', { name: 'Item 2' });
         expect(dropTargetItem).toHaveAttribute('data-drop-target', 'true');
         expect(dropTargetItem).toHaveClass('ring-amber-500');
+        expect(dropTargetItem.parentElement).toHaveAttribute(
+          'data-reorder-preview',
+          'true',
+        );
+        expect(dropTargetItem.parentElement).toHaveClass(
+          '-translate-y-1',
+          'translate-x-4',
+        );
       });
     });
 

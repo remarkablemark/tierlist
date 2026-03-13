@@ -359,13 +359,15 @@ export function TierList({
     const isDropTarget =
       reorderTarget?.tierId === containerTierId &&
       reorderTarget.index === itemIndex;
+    const dropTargetWrapperClasses = isDropTarget
+      ? 'z-10 -translate-y-1 translate-x-4'
+      : '';
 
     return (
       <div
         key={item.id}
-        className={`relative transition-transform ${
-          isDropTarget ? 'translate-x-1' : ''
-        }`}
+        className={`relative transition-transform duration-150 ease-out ${dropTargetWrapperClasses}`}
+        data-reorder-preview={isDropTarget}
         onDragOver={(event) => {
           event.preventDefault();
           event.stopPropagation();
