@@ -6,14 +6,18 @@
 /* v8 ignore file -- @preserve */
 
 import { DragDropProvider } from '@dnd-kit/react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
+import { useAutoSave } from '../../hooks/useAutoSave';
 import { useTierList } from '../../hooks/useTierList';
 import {
   type Tier as TierType,
   type TierListItem as TierItemType,
 } from '../../types/tierList.types';
+import { exportTierListToPng } from '../../utils/exportToPng';
 import { AddItemButton } from '../AddItemButton';
+import { ExportButton } from '../ExportButton';
+import { SaveLoadControls } from '../SaveLoadControls';
 import { Tier } from '../Tier';
 import { TierListItem } from '../TierListItem';
 
@@ -45,7 +49,25 @@ export function TierList({
     hasReachedItemLimit,
     hasItemLimitWarning,
     tierList,
+    save,
+    load,
+    createNew,
+    deleteSaved,
   } = useTierList();
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isExporting, setIsExporting] = useState(false);
+
+  // Auto-save hook - wires into lifecycle for debounced saves
+  const {
+    status: autoSaveStatus,
+    errorMessage: autoSaveError,
+    lastSavedAt,
+  } = useAutoSave(tierList);
+
+  const [savedTierLists] = useState<
+    { id: string; name: string; updatedAt: number; lastAccessedAt: number }[]
+  >([]);
 
   const [draggedItem, setDraggedItem] = useState<TierItemType | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -113,16 +135,77 @@ export function TierList({
     reader.readAsDataURL(file);
   };
 
+  const handleExport = async () => {
+    if (!containerRef.current) {
+      throw new Error('Container not available for export');
+    }
+
+    setIsExporting(true);
+    try {
+      const result = await exportTierListToPng(containerRef.current, {
+        format: 'png',
+        scale: 2,
+        minWidth: 1080,
+        fileName: tierList.name.replace(/[^a-z0-9]/gi, '-').toLowerCase(),
+      });
+
+      if (!result.success) {
+        throw new Error(result.error ?? 'Export failed');
+      }
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  const handleSaveClick = async (): Promise<void> => {
+    await save();
+  };
+
+  const handleLoadClick = async (id: string): Promise<void> => {
+    await load(id);
+  };
+
+  const handleDeleteClick = async (id: string): Promise<void> => {
+    await deleteSaved(id);
+  };
+
+  const handleCreateNewClick = (name?: string): void => {
+    createNew(name);
+  };
+
   return (
     <DragDropProvider>
-      <div className={`mx-auto max-w-7xl p-4 ${className ?? ''}`}>
+      <div
+        ref={containerRef}
+        className={`mx-auto max-w-7xl p-4 ${className ?? ''}`}
+      >
         {/* Header */}
         <div className="mb-6 flex items-center justify-between">
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
-            Tier List
+            {tierList.name}
           </h1>
 
           <div className="flex items-center gap-2">
+            {/* Save/Load Controls */}
+            <SaveLoadControls
+              autoSaveStatus={autoSaveStatus}
+              lastSavedAt={lastSavedAt}
+              errorMessage={autoSaveError}
+              onSave={handleSaveClick}
+              onLoad={handleLoadClick}
+              onDelete={handleDeleteClick}
+              onCreateNew={handleCreateNewClick}
+              savedTierLists={savedTierLists}
+              currentTierList={tierList}
+            />
+
+            {/* Export Button */}
+            <ExportButton
+              onExport={handleExport}
+              isLoading={isExporting}
+              disabled={tierList.tiers.length === 0}
+            />
+
             {/* Undo/Redo */}
             <button
               className="rounded-md bg-slate-100 px-3 py-2 text-sm text-slate-700 transition-colors hover:bg-slate-200 disabled:opacity-50 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
@@ -154,6 +237,26 @@ export function TierList({
             </button>
           </div>
         </div>
+
+        {/* Auto-save status */}
+        {autoSaveError && (
+          <div
+            className="mb-4 rounded-md bg-red-100 p-3 text-sm text-red-700 dark:bg-red-900/30 dark:text-red-400"
+            role="alert"
+          >
+            {autoSaveError}
+          </div>
+        )}
+        {autoSaveStatus === 'saving' && (
+          <div className="mb-4 text-sm text-slate-500 dark:text-slate-400">
+            Saving...
+          </div>
+        )}
+        {autoSaveStatus === 'saved' && (
+          <div className="mb-4 text-sm text-green-600 dark:text-green-400">
+            Saved
+          </div>
+        )}
 
         {/* Item count warning */}
         {hasReachedItemLimit && (

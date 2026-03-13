@@ -797,11 +797,13 @@ describe('useTierList', () => {
           id: generateId(),
           name: 'Saved List 1',
           updatedAt: Date.now(),
+          lastAccessedAt: Date.now(),
         },
         {
           id: generateId(),
           name: 'Saved List 2',
           updatedAt: Date.now(),
+          lastAccessedAt: Date.now(),
         },
       ];
       vi.mocked(getAllTierLists).mockResolvedValueOnce(savedLists);

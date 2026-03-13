@@ -135,7 +135,7 @@ export async function deleteTierList(id: string): Promise<void> {
  * @returns A promise resolving to an array of tier list summaries.
  */
 export async function getAllTierLists(): Promise<
-  { id: string; name: string; updatedAt: number }[]
+  { id: string; name: string; updatedAt: number; lastAccessedAt: number }[]
 > {
   const db = await openDatabase();
   const records = await db.getAll('tierLists');
@@ -145,6 +145,7 @@ export async function getAllTierLists(): Promise<
       id: record.id,
       name: record.data.name,
       updatedAt: record.updatedAt,
+      lastAccessedAt: record.lastAccessedAt,
     }));
 }
 

@@ -31,13 +31,13 @@ export interface SaveLoadControlsProps {
   /** Error message from auto-save */
   errorMessage: string | null;
   /** Handler for creating a new tier list */
-  onCreateNew: (name?: string) => void;
+  onCreateNew: (name?: string) => void | Promise<void>;
   /** Handler for loading a saved tier list */
-  onLoad: (id: string) => void;
+  onLoad: (id: string) => void | Promise<void>;
   /** Handler for deleting a saved tier list */
-  onDelete: (id: string) => void;
+  onDelete: (id: string) => void | Promise<void>;
   /** Manual save trigger */
-  onSave: () => void;
+  onSave: () => void | Promise<void>;
   /** List of saved tier lists */
   savedTierLists: SavedTierListSummary[];
   /** Current tier list */

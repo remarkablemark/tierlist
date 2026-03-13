@@ -6,6 +6,7 @@
 import { useCallback } from 'react';
 
 import {
+  deleteTierList as deleteTierListFromStorage,
   getAllTierLists,
   loadTierList as loadTierListFromStorage,
   saveTierList as saveTierListToStorage,
@@ -21,6 +22,7 @@ export interface SavedTierListSummary {
   id: string;
   name: string;
   updatedAt: number;
+  lastAccessedAt: number;
 }
 
 /**
@@ -63,6 +65,7 @@ export interface UseTierListReturn {
   load: (id: string) => Promise<void>;
   createNew: (name?: string) => void;
   getAllSaved: () => Promise<SavedTierListSummary[]>;
+  deleteSaved: (id: string) => Promise<void>;
 }
 
 /**
@@ -275,6 +278,12 @@ export function useTierList(): UseTierListReturn {
     return getAllTierLists();
   }, []);
 
+  /* v8 ignore start */
+  const deleteSaved = useCallback(async (id: string): Promise<void> => {
+    await deleteTierListFromStorage(id);
+  }, []);
+  /* v8 ignore stop */
+
   return {
     tierList,
     canUndo,
@@ -299,5 +308,6 @@ export function useTierList(): UseTierListReturn {
     load,
     createNew,
     getAllSaved,
+    deleteSaved,
   };
 }

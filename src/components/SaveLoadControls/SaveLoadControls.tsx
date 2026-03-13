@@ -24,12 +24,12 @@ export function SaveLoadControls({
 }: SaveLoadControlsProps): React.ReactElement {
   const [isLoadingOpen, setIsLoadOpen] = useState(false);
 
-  const handleLoadClick = () => {
+  const handleLoadClick = (): void => {
     setIsLoadOpen(!isLoadingOpen);
   };
 
-  const handleSelectTierList = (id: string) => {
-    onLoad(id);
+  const handleSelectTierList = (id: string): void => {
+    void onLoad(id);
     setIsLoadOpen(false);
   };
 
@@ -69,7 +69,10 @@ export function SaveLoadControls({
       {/* Manual Save Button */}
       <button
         className="rounded-md bg-slate-100 px-3 py-1 text-sm text-slate-700 hover:bg-slate-200 disabled:opacity-50 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
-        onClick={onSave}
+        onClick={(e) => {
+          e.preventDefault();
+          void onSave();
+        }}
         disabled={autoSaveStatus === 'saving' || !currentTierList}
         type="button"
       >
@@ -95,8 +98,8 @@ export function SaveLoadControls({
               </span>
               <button
                 className="rounded-md bg-green-100 px-2 py-1 text-xs text-green-700 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400 dark:hover:bg-green-900/50"
-                onClick={() => {
-                  onCreateNew();
+                onClick={(): void => {
+                  void onCreateNew();
                   setIsLoadOpen(false);
                 }}
                 type="button"
@@ -116,7 +119,7 @@ export function SaveLoadControls({
                     <div className="flex w-full items-center justify-between rounded-md px-2 py-1 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700">
                       <button
                         className="flex-1 truncate text-left text-slate-900 hover:bg-transparent dark:text-white"
-                        onClick={() => {
+                        onClick={(): void => {
                           handleSelectTierList(tierList.id);
                         }}
                         type="button"
@@ -127,7 +130,7 @@ export function SaveLoadControls({
                         className="ml-2 rounded-md p-1 text-red-600 hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-900/30"
                         onClick={(e) => {
                           e.stopPropagation();
-                          onDelete(tierList.id);
+                          void onDelete(tierList.id);
                         }}
                         aria-label={`Delete ${tierList.name}`}
                         type="button"

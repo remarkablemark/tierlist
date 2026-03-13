@@ -171,9 +171,9 @@
 - [x] T062 [US4] Create barrel export: `src/components/SaveLoadControls/index.ts`
 - [x] T063 [US4] Extend useTierList hook with persistence operations: save, load, createNew, getAllSaved
 - [x] T064 [US4] Add persistence actions to reducer: LOAD, SAVE_REQUEST, SAVE_SUCCESS, SAVE_ERROR
-- [ ] T065 [US4] Implement IndexedDB error handling with user notifications (QuotaExceededError, NotFoundError)
-- [ ] T066 [US4] Wire auto-save hook into TierList lifecycle to trigger debounced saves on reducer commits, handle `beforeunload`, and enqueue failure logs in IndexedDB
-- [ ] T067 [US4] Implement restoration flow leveraging auto-save snapshot when app initializes (TierList + context)
+- [x] T065 [US4] Implement IndexedDB error handling with user notifications (QuotaExceededError, NotFoundError)
+- [x] T066 [US4] Wire auto-save hook into TierList lifecycle to trigger debounced saves on reducer commits, handle `beforeunload`, and enqueue failure logs in IndexedDB
+- [x] T067 [US4] Implement restoration flow leveraging auto-save snapshot when app initializes (TierList + context)
 
 **Checkpoint**: User Story 4 complete - persistence functional independently
 
@@ -195,13 +195,13 @@
 
 ### Implementation for User Story 5
 
-- [ ] T071 [P] [US5] Create export utility: `src/utils/exportToPng.ts` with exportTierListToPng function using html2canvas, enforcing ≥1080px width, 2x scale, and returning standardized error messages plus failure logging hook
-- [ ] T072 [P] [US5] Write export utility tests: `src/utils/exportToPng.test.ts` mocking html2canvas
-- [ ] T073 [US5] Create ExportButton component: `src/components/ExportButton/ExportButton.tsx` with loading state, standardized error banner messaging, download trigger, and logging of failures to IndexedDB
-- [ ] T074 [US5] Create ExportButton types: `src/components/ExportButton/ExportButton.types.ts` with ExportButtonProps interface
-- [ ] T075 [US5] Create barrel export: `src/components/ExportButton/index.ts`
-- [ ] T076 [US5] Extend useTierList hook with exportToPng operation
-- [ ] T077 [US5] Add export container ref for capturing tier list canvas at full resolution
+- [x] T071 [P] [US5] Create export utility: `src/utils/exportToPng.ts` with exportTierListToPng function using html2canvas, enforcing ≥1080px width, 2x scale, and returning standardized error messages plus failure logging hook
+- [x] T072 [P] [US5] Write export utility tests: `src/utils/exportToPng.test.ts` mocking html2canvas
+- [x] T073 [US5] Create ExportButton component: `src/components/ExportButton/ExportButton.tsx` with loading state, standardized error banner messaging, download trigger, and logging of failures to IndexedDB
+- [x] T074 [US5] Create ExportButton types: `src/components/ExportButton/ExportButton.types.ts` with ExportButtonProps interface
+- [x] T075 [US5] Create barrel export: `src/components/ExportButton/index.ts`
+- [x] T076 [US5] Extend useTierList hook with exportToPng operation
+- [x] T077 [US5] Add export container ref for capturing tier list canvas at full resolution
 
 **Checkpoint**: User Story 5 complete - export functional independently
 
@@ -215,21 +215,21 @@
 
 ### Tests for Undo/Redo ⚠️
 
-- [ ] T078 [P] Unit test: Undo action restores previous state in `src/store/tierListReducer.test.ts`
-- [ ] T079 [P] Unit test: Redo action restores future state in `src/store/tierListReducer.test.ts`
-- [ ] T080 [P] Unit test: 50-action limit with circular buffer in `src/store/tierListReducer.test.ts`
-- [ ] T081 [P] Integration test: Undo/redo UI updates canUndo/canRedo in `src/components/UndoRedoControls/UndoRedoControls.test.tsx`
+- [x] T078 [P] Unit test: Undo action restores previous state in `src/store/tierListReducer.test.ts`
+- [x] T079 [P] Unit test: Redo action restores future state in `src/store/tierListReducer.test.ts`
+- [x] T080 [P] Unit test: 50-action limit with circular buffer in `src/store/tierListReducer.test.ts`
+- [x] T081 [P] Integration test: Undo/redo UI updates canUndo/canRedo in `src/components/UndoRedoControls/UndoRedoControls.test.tsx`
 
 ### Implementation for Undo/Redo
 
-- [ ] T082 Wrap TierListState with undo/redo wrapper: past array (max 50), present state, future array
-- [ ] T083 Implement UNDO action in reducer: moves present to future, restores from past
-- [ ] T084 Implement REDO action in reducer: moves present to past, restores from future
-- [ ] T085 Implement circular buffer: enforce 50-action limit, clear future on new actions
-- [ ] T086 Create UndoRedoControls component: `src/components/UndoRedoControls/UndoRedoControls.tsx` with undo/redo buttons, disabled states, keyboard shortcuts display
-- [ ] T087 Create UndoRedoControls types: `src/components/UndoRedoControls/UndoRedoControls.types.ts` with UndoRedoControlsProps interface
-- [ ] T088 Create barrel export: `src/components/UndoRedoControls/index.ts`
-- [ ] T089 Extend useTierList hook with undo, redo operations and canUndo, canRedo computed values
+- [x] T082 Wrap TierListState with undo/redo wrapper: past array (max 50), present state, future array
+- [x] T083 Implement UNDO action in reducer: moves present to future, restores from past
+- [x] T084 Implement REDO action in reducer: moves present to past, restores from future
+- [x] T085 Implement circular buffer: enforce 50-action limit, clear future on new actions
+- [x] T086 Create UndoRedoControls component: `src/components/UndoRedoControls/UndoRedoControls.tsx` with undo/redo buttons, disabled states, keyboard shortcuts display
+- [x] T087 Create UndoRedoControls types: `src/components/UndoRedoControls/UndoRedoControls.types.ts` with UndoRedoControlsProps interface
+- [x] T088 Create barrel export: `src/components/UndoRedoControls/index.ts`
+- [x] T089 Extend useTierList hook with undo, redo operations and canUndo, canRedo computed values
 
 **Checkpoint**: Undo/redo complete - all state changes are reversible
 
