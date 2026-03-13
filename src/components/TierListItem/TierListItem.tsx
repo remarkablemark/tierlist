@@ -122,7 +122,7 @@ export function TierListItem({
 
   return (
     <div
-      className={`relative flex flex-col items-center rounded-md border border-slate-200 bg-white p-2 shadow-sm transition-all dark:border-slate-700 dark:bg-slate-800 ${sizeClasses[size]} ${draggingClasses} ${keyboardDragClasses} ${dropTargetClasses} min-h-11 min-w-11 focus-within:ring-2 focus-within:ring-blue-500`}
+      className={`group relative flex flex-col items-center rounded-md border border-slate-200 bg-white p-2 shadow-sm transition-all dark:border-slate-700 dark:bg-slate-800 ${sizeClasses[size]} ${draggingClasses} ${keyboardDragClasses} ${dropTargetClasses} min-h-11 min-w-11 focus-within:ring-2 focus-within:ring-blue-500`}
       role="listitem"
       aria-label={item.label}
       data-grabbed={isDragging}
@@ -188,7 +188,7 @@ export function TierListItem({
 
       {/* Drag Handle */}
       <button
-        className="absolute -top-1 -right-1 rounded-full bg-slate-200 p-1 text-slate-600 opacity-0 transition-opacity hover:bg-slate-300 hover:text-slate-900 focus:opacity-100 dark:bg-slate-600 dark:text-slate-300 dark:hover:bg-slate-500 dark:hover:text-white"
+        className="absolute -top-2 -right-2 rounded-full bg-slate-200 p-1.5 text-slate-600 opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100 hover:bg-slate-300 hover:text-slate-900 focus:opacity-100 dark:bg-slate-600 dark:text-slate-300 dark:hover:bg-slate-500 dark:hover:text-white"
         onClick={() => {
           handleDragStart('keyboard');
         }}
@@ -213,7 +213,7 @@ export function TierListItem({
 
       {/* Delete Button */}
       <button
-        className="absolute -top-1 -left-1 rounded-full bg-red-100 p-1 text-red-600 opacity-0 transition-opacity hover:bg-red-200 hover:text-red-700 focus:opacity-100 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50 dark:hover:text-red-300"
+        className="absolute -top-2 -left-2 rounded-full bg-red-100 p-1.5 text-red-600 opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100 hover:bg-red-200 hover:text-red-700 focus:opacity-100 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50 dark:hover:text-red-300"
         onClick={onDelete}
         aria-label="Delete item"
         tabIndex={0}

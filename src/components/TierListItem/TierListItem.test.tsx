@@ -126,6 +126,27 @@ describe('TierListItem', () => {
         'true',
       );
     });
+
+    it('adds group styling so controls can appear on hover and focus', () => {
+      render(<TierListItem {...defaultProps} />);
+
+      expect(screen.getByRole('listitem')).toHaveClass('group');
+    });
+
+    it('configures corner controls to appear when the item is hovered or focused', () => {
+      render(<TierListItem {...defaultProps} />);
+
+      expect(screen.getByLabelText('Drag handle')).toHaveClass(
+        'opacity-0',
+        'group-hover:opacity-100',
+        'group-focus-within:opacity-100',
+      );
+      expect(screen.getByLabelText('Delete item')).toHaveClass(
+        'opacity-0',
+        'group-hover:opacity-100',
+        'group-focus-within:opacity-100',
+      );
+    });
   });
 
   describe('accessibility', () => {
