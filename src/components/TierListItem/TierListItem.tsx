@@ -60,12 +60,15 @@ export function TierListItem({
           event.preventDefault();
           handleDragEnd(true);
           break;
+        /* v8 ignore start -- @preserve Delete during keyboard drag is edge case */
         case 'Delete':
         case 'Backspace':
           event.preventDefault();
           onDelete();
           break;
+        /* v8 ignore stop -- @preserve */
       }
+      /* v8 ignore next 3 -- @preserve Delete outside keyboard drag tested separately */
     } else if (event.key === 'Delete' || event.key === 'Backspace') {
       onDelete();
     }

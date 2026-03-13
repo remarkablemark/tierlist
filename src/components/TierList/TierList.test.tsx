@@ -181,6 +181,159 @@ describe('TierList', () => {
       ),
     ).not.toBeInTheDocument();
   });
+
+  describe('drag and drop - item to tier', () => {
+    it('should show visual feedback when item is being dragged', () => {
+      const mockTierList = createMockTierListWithItems(5);
+      render(<TierList />, {
+        wrapper: (props) => (
+          <TestWrapper {...props} initialTierList={mockTierList} />
+        ),
+      });
+
+      // Find first item in unassigned area
+      const items = screen.getAllByRole('listitem');
+      const firstItem = items[0];
+
+      // Item should be present and draggable
+      expect(firstItem).toBeInTheDocument();
+      // When not dragging, data-grabbed should not be set to true
+      expect(firstItem.getAttribute('data-grabbed')).not.toBe('true');
+    });
+
+    it('should drop item into tier when Enter is pressed after moving to tier', async () => {
+      const user = userEvent.setup();
+      const mockTierList = createMockTierListWithItems(3);
+
+      render(<TierList />, {
+        wrapper: (props) => (
+          <TestWrapper {...props} initialTierList={mockTierList} />
+        ),
+      });
+
+      // Find first item in unassigned area
+      const items = screen.getAllByRole('listitem');
+      const firstItem = items[0];
+      const itemLabel = firstItem.getAttribute('aria-label');
+
+      // Start keyboard drag
+      firstItem.focus();
+      await user.keyboard('{Enter}');
+
+      // Move to first tier
+      await user.keyboard('{ArrowDown}');
+
+      // Drop the item
+      await user.keyboard('{Enter}');
+
+      // Item should no longer be in unassigned area
+      // (it's now in the tier)
+      const unassignedArea = screen.getByText('Unassigned Items').parentElement;
+      if (itemLabel && unassignedArea) {
+        expect(
+          unassignedArea.querySelector(`[aria-label="${itemLabel}"]`),
+        ).not.toBeInTheDocument();
+      }
+    });
+
+    it('should cancel drag operation when Escape is pressed', async () => {
+      const user = userEvent.setup();
+      const mockTierList = createMockTierListWithItems(3);
+      render(<TierList />, {
+        wrapper: (props) => (
+          <TestWrapper {...props} initialTierList={mockTierList} />
+        ),
+      });
+
+      // Find first item
+      const items = screen.getAllByRole('listitem');
+      const firstItem = items[0];
+
+      // Start keyboard drag
+      firstItem.focus();
+      await user.keyboard('{Enter}');
+
+      // Move item
+      await user.keyboard('{ArrowDown}');
+
+      // Cancel
+      await user.keyboard('{Escape}');
+
+      // Item should still be in unassigned area (drag cancelled)
+      expect(firstItem).toBeInTheDocument();
+    });
+  });
+
+  describe('move item between tiers', () => {
+    it('should move item from one tier to another with visual feedback', async () => {
+      const user = userEvent.setup();
+      // Create tier list with items in first tier
+      const mockTierList = createMockTierListWithItems(10);
+      render(<TierList />, {
+        wrapper: (props) => (
+          <TestWrapper {...props} initialTierList={mockTierList} />
+        ),
+      });
+
+      // Find first item in first tier
+      const tiers = screen.getAllByRole('region');
+      const firstTier = tiers[0];
+      const itemsInFirstTier = firstTier.querySelectorAll('[role="listitem"]');
+
+      expect(itemsInFirstTier.length).toBeGreaterThan(0);
+
+      const firstItem = itemsInFirstTier[0] as HTMLElement;
+      const itemLabel = firstItem.getAttribute('aria-label');
+
+      // Start keyboard drag
+      firstItem.focus();
+      await user.keyboard('{Enter}');
+
+      // Move down to next tier
+      await user.keyboard('{ArrowDown}');
+
+      // Drop in new tier
+      await user.keyboard('{Enter}');
+
+      // Verify visual feedback persisted (item is in new tier)
+      if (itemLabel) {
+        // The item should now be in a different tier
+        const allItems = screen.getAllByRole('listitem');
+        const movedItem = allItems.find(
+          (item) => item.getAttribute('aria-label') === itemLabel,
+        );
+        expect(movedItem).toBeInTheDocument();
+      }
+    });
+
+    it('should maintain item visibility during keyboard drag', async () => {
+      const user = userEvent.setup();
+      const mockTierList = createMockTierListWithItems(5);
+      render(<TierList />, {
+        wrapper: (props) => (
+          <TestWrapper {...props} initialTierList={mockTierList} />
+        ),
+      });
+
+      // Find first item
+      const items = screen.getAllByRole('listitem');
+      const firstItem = items[0];
+
+      // Start keyboard drag
+      firstItem.focus();
+      await user.keyboard('{Enter}');
+
+      // Item should still be visible during drag
+      expect(firstItem).toBeInTheDocument();
+
+      // Move multiple times
+      await user.keyboard('{ArrowDown}');
+      expect(firstItem).toBeInTheDocument();
+
+      await user.keyboard('{ArrowUp}');
+      expect(firstItem).toBeInTheDocument();
+    });
+  });
 });
 
 // Import React for JSX

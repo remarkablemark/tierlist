@@ -6,13 +6,14 @@
 import { useCallback } from 'react';
 
 import { useTierListContext } from '../store/tierListContext';
-import { type TierListItem } from '../types/tierList.types';
+import { type TierList, type TierListItem } from '../types/tierList.types';
 
 /**
  * Return type for the useTierList hook.
  */
 export interface UseTierListReturn {
   // State
+  tierList: TierList;
   canUndo: boolean;
   canRedo: boolean;
   totalItems: number;
@@ -49,6 +50,9 @@ export interface UseTierListReturn {
  */
 export function useTierList(): UseTierListReturn {
   const { state, dispatch } = useTierListContext();
+
+  // Current tier list
+  const tierList = state.present;
 
   // Computed values
   const canUndo = state.past.length > 0;
@@ -207,6 +211,7 @@ export function useTierList(): UseTierListReturn {
   }, [dispatch]);
 
   return {
+    tierList,
     canUndo,
     canRedo,
     totalItems,

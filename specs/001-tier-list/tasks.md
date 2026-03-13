@@ -97,24 +97,24 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation. Do not start T035-T045 while these tests are red.**
 
-- [ ] T030 [P] [US2] Component test: TierListItem renders with image and label in `src/components/TierListItem/TierListItem.test.tsx`
-- [ ] T031 [P] [US2] Component test: AddItemButton opens file picker in `src/components/AddItemButton/AddItemButton.test.tsx`
-- [ ] T032 [P] [US2] Integration test: Drag item from unassigned to tier with hover/drop visual cues in `src/components/TierList/TierList.test.tsx`
-- [ ] T033 [P] [US2] Integration test: Move item between tiers and verify visual feedback persists in `src/components/TierList/TierList.test.tsx`
+- [x] T030 [P] [US2] Component test: TierListItem renders with image and label in `src/components/TierListItem/TierListItem.test.tsx`
+- [x] T031 [P] [US2] Component test: AddItemButton opens file picker in `src/components/AddItemButton/AddItemButton.test.tsx`
+- [x] T032 [P] [US2] Integration test: Drag item from unassigned to tier with hover/drop visual cues in `src/components/TierList/TierList.test.tsx`
+- [x] T033 [P] [US2] Integration test: Move item between tiers and verify visual feedback persists in `src/components/TierList/TierList.test.tsx`
 
 ### Implementation for User Story 2
 
-- [ ] T034 [P] [US2] Create image upload utility: `src/utils/imageUpload.ts` with fileToBlob, blobToDataUrl functions and tests
-- [ ] T035 [P] [US2] Create TierListItem component: `src/components/TierListItem/TierListItem.tsx` with SortableItem, renders image, label, drag handle
-- [ ] T036 [US2] Create TierListItem types: `src/components/TierListItem/TierListItem.types.ts` with TierListItemComponentProps interface
-- [ ] T037 [US2] Create barrel export: `src/components/TierListItem/index.ts`
-- [ ] T038 [US2] Create AddItemButton component: `src/components/AddItemButton/AddItemButton.tsx` with file input, item count validation, warning at 50+ items
-- [ ] T039 [US2] Create AddItemButton types: `src/components/AddItemButton/AddItemButton.types.ts` with AddItemButtonProps interface
-- [ ] T040 [US2] Create barrel export: `src/components/AddItemButton/index.ts`
-- [ ] T041 [US2] Extend useTierList hook with item operations: addItem, deleteItem, moveItem, reorderItem, updateItemLabel
-- [ ] T042 [US2] Implement drag-and-drop handlers in TierList component using @dnd-kit/react onDragEnd with hover/drop zone styling hooks
-- [ ] T043 [US2] Add collision detection for item drops in tiers using @dnd-kit/react closestCenter
-- [ ] T044 [US2] Implement item reordering within tiers using @dnd-kit/react sortable
+- [x] T034 [P] [US2] Create image upload utility: `src/utils/imageUpload.ts` with fileToBlob, blobToDataUrl functions and tests
+- [x] T035 [P] [US2] Create TierListItem component: `src/components/TierListItem/TierListItem.tsx` with SortableItem, renders image, label, drag handle
+- [x] T036 [US2] Create TierListItem types: `src/components/TierListItem/TierListItem.types.ts` with TierListItemComponentProps interface
+- [x] T037 [US2] Create barrel export: `src/components/TierListItem/index.ts`
+- [x] T038 [US2] Create AddItemButton component: `src/components/AddItemButton/AddItemButton.tsx` with file input, item count validation, warning at 50+ items
+- [x] T039 [US2] Create AddItemButton types: `src/components/AddItemButton/AddItemButton.types.ts` with AddItemButtonProps interface
+- [x] T040 [US2] Create barrel export: `src/components/AddItemButton/index.ts`
+- [x] T041 [US2] Extend useTierList hook with item operations: addItem, deleteItem, moveItem, reorderItem, updateItemLabel
+- [x] T042 [US2] Implement drag-and-drop handlers in TierList component using @dnd-kit/react onDragEnd with hover/drop zone styling hooks
+- [x] T043 [US2] Add collision detection for item drops in tiers using @dnd-kit/react closestCenter
+- [x] T044 [US2] Implement item reordering within tiers using @dnd-kit/react sortable
 
 **Checkpoint**: User Stories 1 AND 2 complete - full tier list creation and item management functional
 

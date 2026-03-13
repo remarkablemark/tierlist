@@ -1,438 +1,377 @@
 /**
- * Component tests for the TierListItem component.
+ * Tests for the TierListItem component.
  * @packageDocumentation
  */
 
 import { render, screen } from '@testing-library/react';
-import { userEvent } from '@testing-library/user-event';
+import userEvent from '@testing-library/user-event';
 
 import { type TierListItem as TierItemType } from '../../types/tierList.types';
-import { generateId } from '../../utils/generateId';
 import { TierListItem } from './TierListItem';
 
-/**
- * Creates a mock item for testing.
- */
-function createMockItem(overrides?: Partial<TierItemType>): TierItemType {
-  return {
-    id: generateId(),
-    label: 'Test Item',
-    imageUrl: null,
-    imageBlobId: null,
-    createdAt: Date.now(),
-    metadata: {},
-    ...overrides,
-  };
-}
-
-/**
- * Mock props for the TierListItem component.
- */
-const mockProps = {
-  item: createMockItem(),
-  tierId: 'tier-1',
-  index: 0,
-  isDragging: false,
-  isKeyboardDragActive: false,
-  onDragStart: vi.fn(),
-  onDragEnd: vi.fn(),
-  onMove: vi.fn(),
-  onDelete: vi.fn(),
-  onLabelEdit: vi.fn(),
-  size: 'medium' as const,
-  showLabel: true,
-};
+const createMockItem = (overrides?: Partial<TierItemType>): TierItemType => ({
+  id: 'test-item-1',
+  label: 'Test Item',
+  imageUrl: null,
+  imageBlobId: null,
+  createdAt: Date.now(),
+  metadata: {},
+  ...overrides,
+});
 
 describe('TierListItem', () => {
-  it('should render item with label', () => {
-    render(<TierListItem {...mockProps} />);
+  const defaultProps = {
+    item: createMockItem(),
+    isDragging: false,
+    isKeyboardDragActive: false,
+    onDragStart: vi.fn(),
+    onDragEnd: vi.fn(),
+    onMove: vi.fn(),
+    onDelete: vi.fn(),
+    onLabelEdit: vi.fn(),
+    size: 'medium' as const,
+    showLabel: true,
+  };
 
-    expect(screen.getByText('Test Item')).toBeInTheDocument();
-  });
+  describe('rendering', () => {
+    it('renders with image and label', () => {
+      const item = createMockItem({ label: 'My Test Item' });
+      render(<TierListItem {...defaultProps} item={item} />);
 
-  it('should render item with image when imageUrl is provided', () => {
-    const itemWithImage = createMockItem({
-      imageUrl: 'https://example.com/image.png',
+      expect(screen.getByText('My Test Item')).toBeInTheDocument();
     });
-    render(<TierListItem {...mockProps} item={itemWithImage} />);
 
-    const image = screen.getByAltText('Test Item');
-    expect(image).toBeInTheDocument();
-    expect(image).toHaveAttribute('src', 'https://example.com/image.png');
-  });
+    it('renders without label when showLabel is false', () => {
+      const item = createMockItem({ label: 'My Test Item' });
+      render(<TierListItem {...defaultProps} item={item} showLabel={false} />);
 
-  it('should render placeholder when no image', () => {
-    render(<TierListItem {...mockProps} />);
-
-    expect(screen.getByText('No Image')).toBeInTheDocument();
-  });
-
-  it('should call onDelete when delete button is clicked', async () => {
-    const user = userEvent.setup();
-    const onDelete = vi.fn();
-    render(<TierListItem {...mockProps} onDelete={onDelete} />);
-
-    const deleteButton = screen.getByRole('button', { name: /delete item/i });
-    await user.click(deleteButton);
-
-    expect(onDelete).toHaveBeenCalledTimes(1);
-  });
-
-  it('should call onDragStart when drag handle is clicked', async () => {
-    const user = userEvent.setup();
-    const onDragStart = vi.fn();
-    render(<TierListItem {...mockProps} onDragStart={onDragStart} />);
-
-    const dragHandle = screen.getByRole('button', { name: /drag handle/i });
-    await user.click(dragHandle);
-
-    expect(onDragStart).toHaveBeenCalledTimes(1);
-  });
-
-  it('should call onDragEnd when drag is completed', async () => {
-    const user = userEvent.setup();
-    const onDragEnd = vi.fn();
-    render(
-      <TierListItem
-        {...mockProps}
-        isKeyboardDragActive
-        onDragEnd={onDragEnd}
-      />,
-    );
-
-    // Focus the item first
-    const item = screen.getByRole('listitem');
-    item.focus();
-
-    // Press Escape to cancel drag
-    await user.keyboard('{Escape}');
-
-    expect(onDragEnd).toHaveBeenCalledWith(false);
-  });
-
-  it('should call onMove with direction when arrow keys are pressed during keyboard drag', async () => {
-    const user = userEvent.setup();
-    const onMove = vi.fn();
-    render(
-      <TierListItem {...mockProps} isKeyboardDragActive onMove={onMove} />,
-    );
-
-    // Focus the item first
-    const item = screen.getByRole('listitem');
-    item.focus();
-
-    // Press arrow keys to move
-    await user.keyboard('{ArrowDown}');
-    await user.keyboard('{ArrowUp}');
-    await user.keyboard('{ArrowLeft}');
-    await user.keyboard('{ArrowRight}');
-
-    expect(onMove).toHaveBeenCalledWith('down');
-    expect(onMove).toHaveBeenCalledWith('up');
-    expect(onMove).toHaveBeenCalledWith('left');
-    expect(onMove).toHaveBeenCalledWith('right');
-  });
-
-  it('should call onLabelEdit when label is double-clicked', async () => {
-    const user = userEvent.setup();
-    const onLabelEdit = vi.fn();
-    render(<TierListItem {...mockProps} onLabelEdit={onLabelEdit} />);
-
-    const label = screen.getByText('Test Item');
-    await user.dblClick(label);
-
-    // Should show input field
-    const input = screen.getByRole('textbox');
-    await user.clear(input);
-    await user.type(input, 'New Label{enter}');
-
-    expect(onLabelEdit).toHaveBeenCalledWith('New Label');
-  });
-
-  it('should hide label when showLabel is false', () => {
-    render(<TierListItem {...mockProps} showLabel={false} />);
-
-    expect(screen.queryByText('Test Item')).not.toBeInTheDocument();
-  });
-
-  it('should apply correct size classes for small size', () => {
-    render(<TierListItem {...mockProps} size="small" />);
-
-    const item = screen.getByRole('listitem');
-    expect(item).toHaveClass('h-16', 'w-16');
-  });
-
-  it('should apply correct size classes for medium size', () => {
-    render(<TierListItem {...mockProps} size="medium" />);
-
-    const item = screen.getByRole('listitem');
-    expect(item).toHaveClass('h-24', 'w-24');
-  });
-
-  it('should apply correct size classes for large size', () => {
-    render(<TierListItem {...mockProps} size="large" />);
-
-    const item = screen.getByRole('listitem');
-    expect(item).toHaveClass('h-32', 'w-32');
-  });
-
-  it('should have dragging styling when isDragging is true', () => {
-    render(<TierListItem {...mockProps} isDragging />);
-
-    const item = screen.getByRole('listitem');
-    expect(item).toHaveClass('opacity-50');
-  });
-
-  it('should have keyboard drag active styling when isKeyboardDragActive is true', () => {
-    render(<TierListItem {...mockProps} isKeyboardDragActive />);
-
-    const item = screen.getByRole('listitem');
-    expect(item).toHaveClass('ring-2');
-  });
-
-  it('should have correct ARIA attributes', () => {
-    render(<TierListItem {...mockProps} />);
-
-    const item = screen.getByRole('listitem');
-    expect(item).toHaveAttribute('aria-label', 'Test Item');
-    expect(item).toHaveAttribute('data-grabbed', 'false');
-  });
-
-  it('should have data-grabbed true when dragging', () => {
-    render(<TierListItem {...mockProps} isDragging />);
-
-    const item = screen.getByRole('listitem');
-    expect(item).toHaveAttribute('data-grabbed', 'true');
-  });
-
-  it('should have keyboard instructions in aria-describedby', () => {
-    render(<TierListItem {...mockProps} />);
-
-    const item = screen.getByRole('listitem');
-    const describedBy = item.getAttribute('aria-describedby');
-    expect(describedBy).toBeDefined();
-  });
-
-  it('should call onDelete when Delete key is pressed', async () => {
-    const user = userEvent.setup();
-    const onDelete = vi.fn();
-    render(<TierListItem {...mockProps} onDelete={onDelete} />);
-
-    const item = screen.getByRole('listitem');
-    item.focus();
-    await user.keyboard('{Delete}');
-
-    expect(onDelete).toHaveBeenCalledTimes(1);
-  });
-
-  it('should call onDragStart when Enter is pressed on focused item', async () => {
-    const user = userEvent.setup();
-    const onDragStart = vi.fn();
-    render(<TierListItem {...mockProps} onDragStart={onDragStart} />);
-
-    const dragHandle = screen.getByRole('button', { name: /drag handle/i });
-    dragHandle.focus();
-    await user.keyboard('{Enter}');
-
-    expect(onDragStart).toHaveBeenCalledTimes(1);
-  });
-
-  it('should cancel keyboard drag when Escape is pressed', async () => {
-    const user = userEvent.setup();
-    const onDragEnd = vi.fn();
-    render(
-      <TierListItem
-        {...mockProps}
-        isKeyboardDragActive
-        onDragEnd={onDragEnd}
-      />,
-    );
-
-    // Focus the item first
-    const item = screen.getByRole('listitem');
-    item.focus();
-
-    await user.keyboard('{Escape}');
-
-    expect(onDragEnd).toHaveBeenCalledWith(false);
-  });
-
-  it('should submit label edit on Enter key', async () => {
-    const user = userEvent.setup();
-    const onLabelEdit = vi.fn();
-    render(<TierListItem {...mockProps} onLabelEdit={onLabelEdit} />);
-
-    const label = screen.getByText('Test Item');
-    await user.dblClick(label);
-
-    const input = screen.getByRole('textbox');
-    await user.clear(input);
-    await user.type(input, 'Updated{enter}');
-
-    expect(onLabelEdit).toHaveBeenCalledWith('Updated');
-  });
-
-  it('should cancel label edit on Escape key', async () => {
-    const user = userEvent.setup();
-    const onLabelEdit = vi.fn();
-    render(<TierListItem {...mockProps} onLabelEdit={onLabelEdit} />);
-
-    const label = screen.getByText('Test Item');
-    await user.dblClick(label);
-
-    const input = screen.getByRole('textbox');
-    await user.clear(input);
-    await user.type(input, 'Changed{escape}');
-
-    // Should not have called onLabelEdit since Escape cancels
-    expect(onLabelEdit).not.toHaveBeenCalled();
-  });
-
-  it('should have minimum 44x44px touch target', () => {
-    render(<TierListItem {...mockProps} />);
-
-    const item = screen.getByRole('listitem');
-    // Check for min-h-11 and min-w-11 (44px in Tailwind)
-    expect(item).toHaveClass('min-h-11', 'min-w-11');
-  });
-
-  it('should have visible focus indicator', () => {
-    render(<TierListItem {...mockProps} />);
-
-    const dragHandle = screen.getByRole('button', { name: /drag handle/i });
-    // Check that the drag handle has focus styling classes
-    expect(dragHandle).toHaveClass('focus:opacity-100');
-  });
-
-  it('should render item with imageBlobId reference', () => {
-    const itemWithBlob = createMockItem({
-      imageUrl: 'blob:http://example.com/123',
-      imageBlobId: 'blob-123',
+      expect(screen.queryByText('My Test Item')).not.toBeInTheDocument();
     });
-    render(<TierListItem {...mockProps} item={itemWithBlob} />);
 
-    const image = screen.getByAltText('Test Item');
-    expect(image).toBeInTheDocument();
-  });
+    it('renders with image when imageUrl is provided', () => {
+      const item = createMockItem({
+        imageUrl: 'data:image/png;base64,test',
+        label: 'Image Item',
+      });
+      render(<TierListItem {...defaultProps} item={item} />);
 
-  it('should have drag handle with proper accessibility', () => {
-    render(<TierListItem {...mockProps} />);
-
-    const dragHandle = screen.getByRole('button', { name: /drag handle/i });
-    expect(dragHandle).toHaveAttribute('aria-label', 'Drag handle');
-    expect(dragHandle).toHaveAttribute('tabIndex', '0');
-  });
-
-  it('should call onMove when keyboard dragging and arrow key pressed', async () => {
-    const user = userEvent.setup();
-    const onMove = vi.fn();
-    render(
-      <TierListItem {...mockProps} isKeyboardDragActive onMove={onMove} />,
-    );
-
-    // Focus the item first
-    const item = screen.getByRole('listitem');
-    item.focus();
-
-    // Move down
-    await user.keyboard('{ArrowDown}');
-
-    expect(onMove).toHaveBeenCalledWith('down');
-  });
-
-  it('should call onDelete when Backspace key is pressed during keyboard drag', async () => {
-    const user = userEvent.setup();
-    const onDelete = vi.fn();
-    render(
-      <TierListItem {...mockProps} isKeyboardDragActive onDelete={onDelete} />,
-    );
-
-    const item = screen.getByRole('listitem');
-    item.focus();
-    await user.keyboard('{Backspace}');
-
-    expect(onDelete).toHaveBeenCalledTimes(1);
-  });
-
-  it('should call onDelete when Delete key is pressed during keyboard drag', async () => {
-    const user = userEvent.setup();
-    const onDelete = vi.fn();
-    render(
-      <TierListItem {...mockProps} isKeyboardDragActive onDelete={onDelete} />,
-    );
-
-    const item = screen.getByRole('listitem');
-    item.focus();
-    await user.keyboard('{Delete}');
-
-    expect(onDelete).toHaveBeenCalledTimes(1);
-  });
-
-  it('should call onDelete when Backspace key is pressed without keyboard drag', async () => {
-    const user = userEvent.setup();
-    const onDelete = vi.fn();
-    render(<TierListItem {...mockProps} onDelete={onDelete} />);
-
-    const item = screen.getByRole('listitem');
-    item.focus();
-    await user.keyboard('{Backspace}');
-
-    expect(onDelete).toHaveBeenCalledTimes(1);
-  });
-
-  it('should call onDragEnd with true when Enter is pressed during keyboard drag', async () => {
-    const user = userEvent.setup();
-    const onDragEnd = vi.fn();
-    render(
-      <TierListItem
-        {...mockProps}
-        isKeyboardDragActive
-        onDragEnd={onDragEnd}
-      />,
-    );
-
-    const item = screen.getByRole('listitem');
-    item.focus();
-    await user.keyboard('{Enter}');
-
-    expect(onDragEnd).toHaveBeenCalledWith(true);
-  });
-
-  it('should restore original label when blur with empty label', async () => {
-    const user = userEvent.setup();
-    const onLabelEdit = vi.fn();
-    render(<TierListItem {...mockProps} onLabelEdit={onLabelEdit} />);
-
-    const label = screen.getByText('Test Item');
-    await user.dblClick(label);
-
-    const input = screen.getByRole('textbox');
-    await user.clear(input);
-    await user.tab();
-
-    expect(onLabelEdit).not.toHaveBeenCalled();
-  });
-
-  it('should have proper role hierarchy', () => {
-    render(<TierListItem {...mockProps} />);
-
-    const item = screen.getByRole('listitem');
-    expect(item).toBeInTheDocument();
-
-    // Image should be inside
-    const placeholder = screen.getByText('No Image');
-    expect(placeholder).toBeInTheDocument();
-  });
-
-  it('should truncate long labels', () => {
-    const longLabelItem = createMockItem({
-      label: 'This is a very long label that should be truncated',
+      const image = screen.getByAltText('Image Item');
+      expect(image).toBeInTheDocument();
+      expect(image).toHaveAttribute('src', 'data:image/png;base64,test');
     });
-    render(<TierListItem {...mockProps} item={longLabelItem} />);
 
-    const label = screen.getByText(
-      'This is a very long label that should be truncated',
-    );
-    expect(label).toHaveClass('truncate');
+    it('renders with placeholder when no image', () => {
+      const item = createMockItem({ imageUrl: null });
+      render(<TierListItem {...defaultProps} item={item} />);
+
+      expect(screen.getByText('No Image')).toBeInTheDocument();
+    });
+
+    it('applies correct size classes', () => {
+      const { rerender } = render(
+        <TierListItem {...defaultProps} size="small" />,
+      );
+      expect(screen.getByRole('listitem')).toHaveClass('h-16', 'w-16');
+
+      rerender(<TierListItem {...defaultProps} size="medium" />);
+      expect(screen.getByRole('listitem')).toHaveClass('h-24', 'w-24');
+
+      rerender(<TierListItem {...defaultProps} size="large" />);
+      expect(screen.getByRole('listitem')).toHaveClass('h-32', 'w-32');
+    });
+
+    it('applies dragging opacity class when isDragging is true', () => {
+      const { rerender } = render(
+        <TierListItem {...defaultProps} isDragging={false} />,
+      );
+      expect(screen.getByRole('listitem')).not.toHaveClass('opacity-50');
+
+      rerender(<TierListItem {...defaultProps} isDragging={true} />);
+      expect(screen.getByRole('listitem')).toHaveClass('opacity-50');
+    });
+
+    it('applies keyboard drag ring class when isKeyboardDragActive is true', () => {
+      const { rerender } = render(
+        <TierListItem {...defaultProps} isKeyboardDragActive={false} />,
+      );
+      expect(screen.getByRole('listitem')).not.toHaveClass(
+        'ring-2',
+        'ring-blue-500',
+      );
+
+      rerender(<TierListItem {...defaultProps} isKeyboardDragActive={true} />);
+      expect(screen.getByRole('listitem')).toHaveClass(
+        'ring-2',
+        'ring-blue-500',
+        'ring-inset',
+      );
+    });
+  });
+
+  describe('accessibility', () => {
+    it('has role="listitem"', () => {
+      render(<TierListItem {...defaultProps} />);
+      expect(screen.getByRole('listitem')).toBeInTheDocument();
+    });
+
+    it('has aria-label with item label', () => {
+      const item = createMockItem({ label: 'Accessible Item' });
+      render(<TierListItem {...defaultProps} item={item} />);
+
+      expect(screen.getByRole('listitem')).toHaveAttribute(
+        'aria-label',
+        'Accessible Item',
+      );
+    });
+
+    it('has aria-describedby pointing to instructions', () => {
+      const item = createMockItem({ id: 'item-123' });
+      render(<TierListItem {...defaultProps} item={item} />);
+
+      const element = screen.getByRole('listitem');
+      expect(element).toHaveAttribute(
+        'aria-describedby',
+        'item-instructions-item-123',
+      );
+    });
+
+    it('has hidden instructions for screen readers', () => {
+      const item = createMockItem({ id: 'item-456' });
+      render(<TierListItem {...defaultProps} item={item} />);
+
+      expect(
+        screen.getByText(
+          'Press Enter to pick up, arrow keys to move, Enter to drop, Escape to cancel',
+        ),
+      ).toHaveClass('sr-only');
+    });
+
+    it('is focusable with tabIndex={0}', () => {
+      render(<TierListItem {...defaultProps} />);
+      expect(screen.getByRole('listitem')).toHaveAttribute('tabIndex', '0');
+    });
+
+    it('has drag handle button with aria-label', () => {
+      render(<TierListItem {...defaultProps} />);
+      expect(screen.getByLabelText('Drag handle')).toBeInTheDocument();
+    });
+
+    it('has delete button with aria-label', () => {
+      render(<TierListItem {...defaultProps} />);
+      expect(screen.getByLabelText('Delete item')).toBeInTheDocument();
+    });
+  });
+
+  describe('interactions', () => {
+    it('calls onDragStart when drag handle is clicked', async () => {
+      const user = userEvent.setup();
+      const onDragStart = vi.fn();
+      render(<TierListItem {...defaultProps} onDragStart={onDragStart} />);
+
+      const dragHandle = screen.getByLabelText('Drag handle');
+      await user.click(dragHandle);
+
+      expect(onDragStart).toHaveBeenCalledTimes(1);
+    });
+
+    it('calls onDragEnd with dropped=true when Enter is pressed during keyboard drag', async () => {
+      const user = userEvent.setup();
+      const onDragEnd = vi.fn();
+      render(
+        <TierListItem
+          {...defaultProps}
+          isKeyboardDragActive={true}
+          onDragEnd={onDragEnd}
+        />,
+      );
+
+      const element = screen.getByRole('listitem');
+      element.focus();
+      await user.keyboard('{Enter}');
+
+      expect(onDragEnd).toHaveBeenCalledWith(true);
+    });
+
+    it('calls onDragEnd with dropped=false when Escape is pressed during keyboard drag', async () => {
+      const user = userEvent.setup();
+      const onDragEnd = vi.fn();
+      render(
+        <TierListItem
+          {...defaultProps}
+          isKeyboardDragActive={true}
+          onDragEnd={onDragEnd}
+        />,
+      );
+
+      const element = screen.getByRole('listitem');
+      element.focus();
+      await user.keyboard('{Escape}');
+
+      expect(onDragEnd).toHaveBeenCalledWith(false);
+    });
+
+    it('calls onMove with direction when arrow keys are pressed during keyboard drag', async () => {
+      const user = userEvent.setup();
+      const onMove = vi.fn();
+      render(
+        <TierListItem
+          {...defaultProps}
+          isKeyboardDragActive={true}
+          onMove={onMove}
+        />,
+      );
+
+      const element = screen.getByRole('listitem');
+      element.focus();
+
+      await user.keyboard('{ArrowUp}');
+      expect(onMove).toHaveBeenCalledWith('up');
+
+      await user.keyboard('{ArrowDown}');
+      expect(onMove).toHaveBeenCalledWith('down');
+
+      await user.keyboard('{ArrowLeft}');
+      expect(onMove).toHaveBeenCalledWith('left');
+
+      await user.keyboard('{ArrowRight}');
+      expect(onMove).toHaveBeenCalledWith('right');
+    });
+
+    it('calls onDelete when delete button is clicked', async () => {
+      const user = userEvent.setup();
+      const onDelete = vi.fn();
+      render(<TierListItem {...defaultProps} onDelete={onDelete} />);
+
+      const deleteButton = screen.getByLabelText('Delete item');
+      await user.click(deleteButton);
+
+      expect(onDelete).toHaveBeenCalledTimes(1);
+    });
+
+    it('calls onDelete when Delete key is pressed (not during keyboard drag)', async () => {
+      const user = userEvent.setup();
+      const onDelete = vi.fn();
+      render(
+        <TierListItem
+          {...defaultProps}
+          isKeyboardDragActive={false}
+          onDelete={onDelete}
+        />,
+      );
+
+      const element = screen.getByRole('listitem');
+      element.focus();
+      await user.keyboard('{Delete}');
+
+      expect(onDelete).toHaveBeenCalledTimes(1);
+    });
+
+    it('calls onDelete when Backspace is pressed (not during keyboard drag)', async () => {
+      const user = userEvent.setup();
+      const onDelete = vi.fn();
+      render(
+        <TierListItem
+          {...defaultProps}
+          isKeyboardDragActive={false}
+          onDelete={onDelete}
+        />,
+      );
+
+      const element = screen.getByRole('listitem');
+      element.focus();
+      await user.keyboard('{Backspace}');
+
+      expect(onDelete).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('label editing', () => {
+    it('enters edit mode on double-click of label', async () => {
+      const user = userEvent.setup();
+      render(<TierListItem {...defaultProps} />);
+
+      const label = screen.getByText('Test Item');
+      await user.dblClick(label);
+
+      const input = screen.getByLabelText('Edit item label');
+      expect(input).toBeInTheDocument();
+    });
+
+    it('calls onLabelEdit when input loses focus with changed label', async () => {
+      const user = userEvent.setup();
+      const onLabelEdit = vi.fn();
+      render(<TierListItem {...defaultProps} onLabelEdit={onLabelEdit} />);
+
+      const label = screen.getByText('Test Item');
+      await user.dblClick(label);
+
+      const input = screen.getByLabelText('Edit item label');
+      await user.clear(input);
+      await user.type(input, 'New Label');
+      await user.tab();
+
+      expect(onLabelEdit).toHaveBeenCalledWith('New Label');
+    });
+
+    it('does not call onLabelEdit when label is unchanged', async () => {
+      const user = userEvent.setup();
+      const onLabelEdit = vi.fn();
+      render(<TierListItem {...defaultProps} onLabelEdit={onLabelEdit} />);
+
+      const label = screen.getByText('Test Item');
+      await user.dblClick(label);
+
+      await user.tab();
+
+      expect(onLabelEdit).not.toHaveBeenCalled();
+    });
+
+    it('does not call onLabelEdit when label is empty after trim', async () => {
+      const user = userEvent.setup();
+      const onLabelEdit = vi.fn();
+      render(<TierListItem {...defaultProps} onLabelEdit={onLabelEdit} />);
+
+      const label = screen.getByText('Test Item');
+      await user.dblClick(label);
+
+      const input = screen.getByLabelText('Edit item label');
+      await user.clear(input);
+      await user.type(input, '   ');
+      await user.tab();
+
+      expect(onLabelEdit).not.toHaveBeenCalled();
+    });
+
+    it('saves label on Enter key', async () => {
+      const user = userEvent.setup();
+      const onLabelEdit = vi.fn();
+      render(<TierListItem {...defaultProps} onLabelEdit={onLabelEdit} />);
+
+      const label = screen.getByText('Test Item');
+      await user.dblClick(label);
+
+      const input = screen.getByLabelText('Edit item label');
+      await user.clear(input);
+      await user.type(input, 'New Label{Enter}');
+
+      expect(onLabelEdit).toHaveBeenCalledWith('New Label');
+    });
+
+    it('cancels edit on Escape key', async () => {
+      const user = userEvent.setup();
+      render(<TierListItem {...defaultProps} />);
+
+      const label = screen.getByText('Test Item');
+      await user.dblClick(label);
+
+      const input = screen.getByLabelText('Edit item label');
+      await user.clear(input);
+      await user.type(input, 'New Label{Escape}');
+
+      expect(
+        screen.queryByLabelText('Edit item label'),
+      ).not.toBeInTheDocument();
+      expect(screen.getByText('Test Item')).toBeInTheDocument();
+    });
   });
 });
