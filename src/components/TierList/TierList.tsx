@@ -628,7 +628,7 @@ export function TierList({
             }}
           >
             {tierList.unassignedItems.length === 0 ? (
-              <div className="flex items-center justify-center text-slate-400 dark:text-slate-500">
+              <div className="flex w-full items-center justify-center text-slate-400 dark:text-slate-500">
                 <span className="text-sm">No unassigned items</span>
               </div>
             ) : (
