@@ -5,8 +5,6 @@
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment -- Mocks cause unsafe assignments */
 
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-
 import {
   EXPORT_ERRORS,
   type ExportOptions,

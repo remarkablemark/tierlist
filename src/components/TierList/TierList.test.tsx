@@ -121,6 +121,28 @@ describe('TierList', () => {
     expect(screen.getByText('Unassigned Items')).toBeInTheDocument();
   });
 
+  it('should render uploaded items inside the unassigned items section', async () => {
+    render(<TierList />, { wrapper: TestWrapper });
+
+    const fileInput = screen.getByTestId('file-input');
+    const uploadedFile = new File(['uploaded image'], 'uploaded-image.png', {
+      type: 'image/png',
+    });
+
+    fireEvent.change(fileInput, {
+      target: { files: [uploadedFile] },
+    });
+
+    const uploadedItem = await screen.findByRole('listitem', {
+      name: 'uploaded-image',
+    });
+    const unassignedSection =
+      screen.getByText('Unassigned Items').parentElement;
+
+    expect(unassignedSection).not.toBeNull();
+    expect(unassignedSection).toContainElement(uploadedItem);
+  });
+
   it('should have undo/redo buttons', () => {
     render(<TierList />, { wrapper: TestWrapper });
 
