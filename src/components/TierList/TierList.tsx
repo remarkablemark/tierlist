@@ -85,26 +85,69 @@ export function TierList({
     return sourceTier?.id ?? null;
   };
 
+  const findItemPosition = (
+    itemId: string,
+  ): { tierId: string | null; index: number } | null => {
+    const sourceTier = tierList.tiers.find((tier) =>
+      tier.items.some((item) => item.id === itemId),
+    );
+
+    if (sourceTier) {
+      return {
+        tierId: sourceTier.id,
+        index: sourceTier.items.findIndex((item) => item.id === itemId),
+      };
+    }
+
+    const unassignedIndex = tierList.unassignedItems.findIndex(
+      (item) => item.id === itemId,
+    );
+
+    if (unassignedIndex === -1) {
+      return null;
+    }
+
+    return {
+      tierId: null,
+      index: unassignedIndex,
+    };
+  };
+
   const clearDragState = () => {
     setDraggedItem(null);
     setKeyboardDraggedItemId(null);
     setOverTierId(null);
   };
 
-  const moveDraggedItem = (itemId: string, targetTierId: string | null) => {
-    const sourceTierId = findItemTierId(itemId);
+  const moveDraggedItem = (
+    itemId: string,
+    targetTierId: string | null,
+    targetIndex?: number,
+  ) => {
+    const sourcePosition = findItemPosition(itemId);
 
-    if (sourceTierId === targetTierId) {
+    if (!sourcePosition) {
       clearDragState();
       return;
     }
 
-    const targetIndex = targetTierId
-      ? (tierList.tiers.find((tier) => tier.id === targetTierId)?.items
-          .length ?? 0)
-      : tierList.unassignedItems.length;
+    const destinationIndex =
+      typeof targetIndex === 'number'
+        ? targetIndex
+        : targetTierId
+          ? (tierList.tiers.find((tier) => tier.id === targetTierId)?.items
+              .length ?? 0)
+          : tierList.unassignedItems.length;
 
-    moveItem(itemId, targetTierId, targetIndex);
+    if (
+      sourcePosition.tierId === targetTierId &&
+      sourcePosition.index === destinationIndex
+    ) {
+      clearDragState();
+      return;
+    }
+
+    moveItem(itemId, targetTierId, destinationIndex);
     clearDragState();
   };
 
@@ -137,6 +180,14 @@ export function TierList({
 
   const handleItemDropToTier = (itemId: string, targetTierId: string) => {
     moveDraggedItem(itemId, targetTierId);
+  };
+
+  const handleItemInsert = (
+    itemId: string,
+    targetTierId: string | null,
+    targetIndex: number,
+  ) => {
+    moveDraggedItem(itemId, targetTierId, targetIndex);
   };
 
   const handleItemReorder = (
@@ -239,7 +290,32 @@ export function TierList({
       return;
     }
 
+    const sourcePosition = findItemPosition(draggedItem.id);
+
+    if (!sourcePosition) {
+      return;
+    }
+
     if (direction === 'left' || direction === 'right') {
+      if (sourcePosition.tierId !== overTierId) {
+        return;
+      }
+
+      const items =
+        sourcePosition.tierId === null
+          ? tierList.unassignedItems
+          : (tierList.tiers.find((tier) => tier.id === sourcePosition.tierId)
+              ?.items ?? []);
+      const nextIndex =
+        direction === 'left'
+          ? sourcePosition.index - 1
+          : sourcePosition.index + 1;
+
+      if (nextIndex < 0 || nextIndex >= items.length) {
+        return;
+      }
+
+      moveDraggedItem(draggedItem.id, sourcePosition.tierId, nextIndex);
       return;
     }
 
@@ -268,32 +344,49 @@ export function TierList({
     moveDraggedItem(draggedItem.id, overTierId);
   };
 
-  const renderItem = (item: TierItemType) => (
-    <TierListItem
+  const renderItem = (
+    item: TierItemType,
+    containerTierId: string | null,
+    itemIndex: number,
+  ) => (
+    <div
       key={item.id}
-      item={item}
-      isDragging={draggedItem?.id === item.id}
-      isKeyboardDragActive={keyboardDraggedItemId === item.id}
-      onDragStart={(source) => {
-        if (source === 'keyboard') {
-          handleKeyboardDragStart(item);
+      onDragOver={(event) => {
+        event.preventDefault();
+        setOverTierId(containerTierId);
+      }}
+      onDrop={(event) => {
+        event.preventDefault();
+        if (draggedItem) {
+          handleItemInsert(draggedItem.id, containerTierId, itemIndex);
         }
       }}
-      onDragEnd={handleKeyboardDrop}
-      onMove={handleKeyboardMove}
-      onDelete={() => {
-        deleteItem(item.id);
-      }}
-      onLabelEdit={(label) => {
-        updateItemLabel(item.id, label);
-      }}
-      onPointerDragStart={(event) => {
-        handlePointerDragStart(event, item);
-      }}
-      onPointerDragEnd={handlePointerDragEnd}
-      size={tierList.settings.itemSize}
-      showLabel={tierList.settings.showItemLabels}
-    />
+    >
+      <TierListItem
+        item={item}
+        isDragging={draggedItem?.id === item.id}
+        isKeyboardDragActive={keyboardDraggedItemId === item.id}
+        onDragStart={(source) => {
+          if (source === 'keyboard') {
+            handleKeyboardDragStart(item);
+          }
+        }}
+        onDragEnd={handleKeyboardDrop}
+        onMove={handleKeyboardMove}
+        onDelete={() => {
+          deleteItem(item.id);
+        }}
+        onLabelEdit={(label) => {
+          updateItemLabel(item.id, label);
+        }}
+        onPointerDragStart={(event) => {
+          handlePointerDragStart(event, item);
+        }}
+        onPointerDragEnd={handlePointerDragEnd}
+        size={tierList.settings.itemSize}
+        showLabel={tierList.settings.showItemLabels}
+      />
+    </div>
   );
 
   return (
@@ -434,7 +527,9 @@ export function TierList({
             itemSize={tierList.settings.itemSize}
             showLabels={tierList.settings.showItemLabels}
           >
-            {tier.items.map((item) => renderItem(item))}
+            {tier.items.map((item, itemIndex) =>
+              renderItem(item, tier.id, itemIndex),
+            )}
           </Tier>
         ))}
 
@@ -479,7 +574,9 @@ export function TierList({
                 <span className="text-sm">No unassigned items</span>
               </div>
             ) : (
-              tierList.unassignedItems.map((item) => renderItem(item))
+              tierList.unassignedItems.map((item, itemIndex) =>
+                renderItem(item, null, itemIndex),
+              )
             )}
           </div>
         </div>

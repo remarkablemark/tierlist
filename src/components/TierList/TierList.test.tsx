@@ -389,6 +389,58 @@ describe('TierList', () => {
       await user.keyboard('{ArrowUp}');
       expect(firstItem).toBeInTheDocument();
     });
+
+    it('should reorder items within the same tier when dragged with the pointer', () => {
+      const mockTierList = createMockTierListWithItems(10);
+      render(<TierList />, {
+        wrapper: (props) => (
+          <TestWrapper {...props} initialTierList={mockTierList} />
+        ),
+      });
+
+      const firstTier = screen.getAllByRole('region')[0];
+      const itemsBeforeReorder = Array.from(
+        firstTier.querySelectorAll('[role="listitem"]'),
+      ).map((item) => item.getAttribute('aria-label'));
+
+      expect(itemsBeforeReorder).toEqual(['Item 1', 'Item 2']);
+
+      const firstItem = screen.getByRole('listitem', { name: 'Item 1' });
+      const secondItem = screen.getByRole('listitem', { name: 'Item 2' });
+
+      fireEvent.dragStart(firstItem);
+      fireEvent.dragOver(secondItem);
+      fireEvent.drop(secondItem);
+
+      const itemsAfterReorder = Array.from(
+        firstTier.querySelectorAll('[role="listitem"]'),
+      ).map((item) => item.getAttribute('aria-label'));
+
+      expect(itemsAfterReorder).toEqual(['Item 2', 'Item 1']);
+    });
+
+    it('should reorder items within the same tier with keyboard controls', async () => {
+      const user = userEvent.setup();
+      const mockTierList = createMockTierListWithItems(10);
+      render(<TierList />, {
+        wrapper: (props) => (
+          <TestWrapper {...props} initialTierList={mockTierList} />
+        ),
+      });
+
+      const firstItem = screen.getByRole('listitem', { name: 'Item 1' });
+
+      firstItem.focus();
+      await user.keyboard('{Enter}');
+      await user.keyboard('{ArrowRight}');
+
+      const firstTier = screen.getAllByRole('region')[0];
+      const itemsAfterReorder = Array.from(
+        firstTier.querySelectorAll('[role="listitem"]'),
+      ).map((item) => item.getAttribute('aria-label'));
+
+      expect(itemsAfterReorder).toEqual(['Item 2', 'Item 1']);
+    });
   });
 
   it('should customize tier color and persist the change', async () => {
