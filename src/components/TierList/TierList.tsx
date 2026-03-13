@@ -3,8 +3,6 @@
  * @packageDocumentation
  */
 
-/* v8 ignore file -- @preserve */
-
 import { DragDropProvider } from '@dnd-kit/react';
 import { type DragEvent, useRef, useState } from 'react';
 import { useAutoSave } from 'src/hooks/useAutoSave';
@@ -142,7 +140,8 @@ export function TierList({
       typeof targetIndex === 'number'
         ? targetIndex
         : targetTierId
-          ? (tierList.tiers.find((tier) => tier.id === targetTierId)?.items
+          ? /* v8 ignore next -- target tier ids come from rendered tiers, so the fallback branch is defensive only */
+            (tierList.tiers.find((tier) => tier.id === targetTierId)?.items
               .length ?? 0)
           : tierList.unassignedItems.length;
 
@@ -305,19 +304,24 @@ export function TierList({
 
     const sourcePosition = findItemPosition(draggedItem.id);
 
+    /* v8 ignore start -- stale keyboard drag state is guarded but not reachable from the rendered UI */
     if (!sourcePosition) {
       return;
     }
+    /* v8 ignore stop */
 
     if (direction === 'left' || direction === 'right') {
+      /* v8 ignore start -- keyboard horizontal moves are only reachable while the hover target matches the source container */
       if (sourcePosition.tierId !== overTierId) {
         return;
       }
+      /* v8 ignore stop */
 
       const items =
         sourcePosition.tierId === null
           ? tierList.unassignedItems
-          : (tierList.tiers.find((tier) => tier.id === sourcePosition.tierId)
+          : /* v8 ignore next -- sourcePosition is derived from tierList, so the fallback branch is defensive only */
+            (tierList.tiers.find((tier) => tier.id === sourcePosition.tierId)
               ?.items ?? []);
       const nextIndex =
         direction === 'left'
