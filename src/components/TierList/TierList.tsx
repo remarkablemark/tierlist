@@ -76,6 +76,10 @@ export function TierList({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_draggedTier, _setDraggedTier] = useState<TierType | null>(null);
   const [overTierId, setOverTierId] = useState<string | null>(null);
+  const [reorderTarget, setReorderTarget] = useState<{
+    tierId: string | null;
+    index: number;
+  } | null>(null);
 
   const findItemTierId = (itemId: string): string | null => {
     const sourceTier = tierList.tiers.find((tier) =>
@@ -117,6 +121,7 @@ export function TierList({
     setDraggedItem(null);
     setKeyboardDraggedItemId(null);
     setOverTierId(null);
+    setReorderTarget(null);
   };
 
   const moveDraggedItem = (
@@ -271,6 +276,7 @@ export function TierList({
     }
     setDraggedItem(item);
     setKeyboardDraggedItemId(null);
+    setReorderTarget(null);
   };
 
   const handlePointerDragEnd = () => {
@@ -283,6 +289,7 @@ export function TierList({
     setDraggedItem(item);
     setKeyboardDraggedItemId(item.id);
     setOverTierId(findItemTierId(item.id));
+    setReorderTarget(null);
   };
 
   const handleKeyboardMove = (direction: 'up' | 'down' | 'left' | 'right') => {
@@ -348,46 +355,81 @@ export function TierList({
     item: TierItemType,
     containerTierId: string | null,
     itemIndex: number,
-  ) => (
-    <div
-      key={item.id}
-      onDragOver={(event) => {
-        event.preventDefault();
-        setOverTierId(containerTierId);
-      }}
-      onDrop={(event) => {
-        event.preventDefault();
-        if (draggedItem) {
-          handleItemInsert(draggedItem.id, containerTierId, itemIndex);
-        }
-      }}
-    >
-      <TierListItem
-        item={item}
-        isDragging={draggedItem?.id === item.id}
-        isKeyboardDragActive={keyboardDraggedItemId === item.id}
-        onDragStart={(source) => {
-          if (source === 'keyboard') {
-            handleKeyboardDragStart(item);
+  ) => {
+    const isDropTarget =
+      reorderTarget?.tierId === containerTierId &&
+      reorderTarget.index === itemIndex;
+
+    return (
+      <div
+        key={item.id}
+        className={`relative transition-transform ${
+          isDropTarget ? 'translate-x-1' : ''
+        }`}
+        onDragOver={(event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          setOverTierId(containerTierId);
+
+          if (!draggedItem || draggedItem.id === item.id) {
+            setReorderTarget(null);
+            return;
+          }
+
+          const sourcePosition = findItemPosition(draggedItem.id);
+
+          if (sourcePosition?.tierId === containerTierId) {
+            setReorderTarget({
+              tierId: containerTierId,
+              index: itemIndex,
+            });
+            return;
+          }
+
+          setReorderTarget(null);
+        }}
+        onDrop={(event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          if (draggedItem) {
+            handleItemInsert(draggedItem.id, containerTierId, itemIndex);
           }
         }}
-        onDragEnd={handleKeyboardDrop}
-        onMove={handleKeyboardMove}
-        onDelete={() => {
-          deleteItem(item.id);
-        }}
-        onLabelEdit={(label) => {
-          updateItemLabel(item.id, label);
-        }}
-        onPointerDragStart={(event) => {
-          handlePointerDragStart(event, item);
-        }}
-        onPointerDragEnd={handlePointerDragEnd}
-        size={tierList.settings.itemSize}
-        showLabel={tierList.settings.showItemLabels}
-      />
-    </div>
-  );
+      >
+        {isDropTarget ? (
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-y-2 -left-2 w-1 rounded-full bg-amber-500 shadow-[0_0_0_3px_rgba(251,191,36,0.25)] dark:bg-amber-400 dark:shadow-[0_0_0_3px_rgba(251,191,36,0.2)]"
+          />
+        ) : null}
+        <TierListItem
+          item={item}
+          isDragging={draggedItem?.id === item.id}
+          isKeyboardDragActive={keyboardDraggedItemId === item.id}
+          isDropTarget={isDropTarget}
+          onDragStart={(source) => {
+            if (source === 'keyboard') {
+              handleKeyboardDragStart(item);
+            }
+          }}
+          onDragEnd={handleKeyboardDrop}
+          onMove={handleKeyboardMove}
+          onDelete={() => {
+            deleteItem(item.id);
+          }}
+          onLabelEdit={(label) => {
+            updateItemLabel(item.id, label);
+          }}
+          onPointerDragStart={(event) => {
+            handlePointerDragStart(event, item);
+          }}
+          onPointerDragEnd={handlePointerDragEnd}
+          size={tierList.settings.itemSize}
+          showLabel={tierList.settings.showItemLabels}
+        />
+      </div>
+    );
+  };
 
   return (
     <DragDropProvider>
@@ -518,10 +560,14 @@ export function TierList({
               setOverTierId((currentTierId) =>
                 currentTierId === tier.id ? null : currentTierId,
               );
+              setReorderTarget((currentTarget) =>
+                currentTarget?.tierId === tier.id ? null : currentTarget,
+              );
             }}
             onItemDragOver={(event) => {
               event.preventDefault();
               setOverTierId(tier.id);
+              setReorderTarget(null);
             }}
             onItemReorder={handleItemReorder}
             itemSize={tierList.settings.itemSize}
@@ -558,6 +604,7 @@ export function TierList({
             onDragOver={(event) => {
               event.preventDefault();
               setOverTierId(null);
+              setReorderTarget(null);
             }}
             onDrop={(event) => {
               event.preventDefault();

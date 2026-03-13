@@ -419,6 +419,27 @@ describe('TierList', () => {
       expect(itemsAfterReorder).toEqual(['Item 2', 'Item 1']);
     });
 
+    it('should show a reorder target indicator when hovering another item in the same tier', async () => {
+      const mockTierList = createMockTierListWithItems(10);
+      render(<TierList />, {
+        wrapper: (props) => (
+          <TestWrapper {...props} initialTierList={mockTierList} />
+        ),
+      });
+
+      const firstItem = screen.getByRole('listitem', { name: 'Item 1' });
+      const secondItem = screen.getByRole('listitem', { name: 'Item 2' });
+
+      fireEvent.dragStart(firstItem);
+      fireEvent.dragOver(secondItem);
+
+      await waitFor(() => {
+        const dropTargetItem = screen.getByRole('listitem', { name: 'Item 2' });
+        expect(dropTargetItem).toHaveAttribute('data-drop-target', 'true');
+        expect(dropTargetItem).toHaveClass('ring-amber-500');
+      });
+    });
+
     it('should reorder items within the same tier with keyboard controls', async () => {
       const user = userEvent.setup();
       const mockTierList = createMockTierListWithItems(10);

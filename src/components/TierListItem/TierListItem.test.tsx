@@ -106,6 +106,26 @@ describe('TierListItem', () => {
         'ring-inset',
       );
     });
+
+    it('applies reorder target styling when isDropTarget is true', () => {
+      const { rerender } = render(
+        <TierListItem {...defaultProps} isDropTarget={false} />,
+      );
+      expect(screen.getByRole('listitem')).toHaveAttribute(
+        'data-drop-target',
+        'false',
+      );
+
+      rerender(<TierListItem {...defaultProps} isDropTarget={true} />);
+      expect(screen.getByRole('listitem')).toHaveClass(
+        'ring-2',
+        'ring-amber-500',
+      );
+      expect(screen.getByRole('listitem')).toHaveAttribute(
+        'data-drop-target',
+        'true',
+      );
+    });
   });
 
   describe('accessibility', () => {

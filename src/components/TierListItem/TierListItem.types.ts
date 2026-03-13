@@ -24,6 +24,10 @@ export interface TierListItemComponentProps {
    */
   isKeyboardDragActive?: boolean;
   /**
+   * Whether this item is the active reorder target.
+   */
+  isDropTarget?: boolean;
+  /**
    * Callback when drag starts.
    */
   onDragStart: (source: 'keyboard' | 'pointer') => void;

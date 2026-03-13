@@ -14,6 +14,7 @@ export function TierListItem({
   item,
   isDragging = false,
   isKeyboardDragActive = false,
+  isDropTarget = false,
   onDragStart,
   onDragEnd,
   onMove,
@@ -115,13 +116,17 @@ export function TierListItem({
   const keyboardDragClasses = isKeyboardDragActive
     ? 'ring-2 ring-blue-500 ring-inset'
     : '';
+  const dropTargetClasses = isDropTarget
+    ? 'ring-2 ring-amber-500 ring-offset-2 ring-offset-white bg-amber-50 shadow-md dark:ring-amber-400 dark:ring-offset-slate-900 dark:bg-amber-950/30'
+    : '';
 
   return (
     <div
-      className={`relative flex flex-col items-center rounded-md border border-slate-200 bg-white p-2 shadow-sm transition-all dark:border-slate-700 dark:bg-slate-800 ${sizeClasses[size]} ${draggingClasses} ${keyboardDragClasses} min-h-11 min-w-11 focus-within:ring-2 focus-within:ring-blue-500`}
+      className={`relative flex flex-col items-center rounded-md border border-slate-200 bg-white p-2 shadow-sm transition-all dark:border-slate-700 dark:bg-slate-800 ${sizeClasses[size]} ${draggingClasses} ${keyboardDragClasses} ${dropTargetClasses} min-h-11 min-w-11 focus-within:ring-2 focus-within:ring-blue-500`}
       role="listitem"
       aria-label={item.label}
       data-grabbed={isDragging}
+      data-drop-target={isDropTarget}
       aria-describedby={`item-instructions-${item.id}`}
       tabIndex={0}
       onKeyDown={handleKeyDown}
