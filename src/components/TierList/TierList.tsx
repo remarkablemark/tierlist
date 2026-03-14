@@ -6,10 +6,7 @@
 import { DragDropProvider } from '@dnd-kit/react';
 import { type DragEvent, useRef, useState } from 'react';
 import { useTierList } from 'src/hooks/useTierList';
-import {
-  type Tier as TierType,
-  type TierListItem as TierItemType,
-} from 'src/types/tierList.types';
+import { type TierListItem as TierItemType } from 'src/types/tierList.types';
 import { generateId } from 'src/utils/generateId';
 import { fileToDataUrl } from 'src/utils/imageUpload';
 
@@ -47,8 +44,6 @@ export function TierList() {
   const [keyboardDraggedItemId, setKeyboardDraggedItemId] = useState<
     string | null
   >(null);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_draggedTier, _setDraggedTier] = useState<TierType | null>(null);
   const [overTierId, setOverTierId] = useState<string | null>(null);
   const [reorderTarget, setReorderTarget] = useState<{
     tierId: string | null;
@@ -442,7 +437,6 @@ export function TierList() {
             tier={tier}
             index={index}
             totalTiers={tierList.tiers.length}
-            isDragging={_draggedTier?.id === tier.id}
             isOver={overTierId === tier.id}
             onLabelChange={(label) => {
               handleTierLabelChange(tier.id, label);
