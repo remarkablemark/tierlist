@@ -140,13 +140,7 @@ export type TierListAction =
   | { type: 'REDO' }
 
   // Settings
-  | { type: 'SETTINGS_UPDATE'; payload: Partial<TierListSettings> }
-
-  // Persistence
-  | { type: 'LOAD'; payload: TierList }
-  | { type: 'SAVE_REQUEST' }
-  | { type: 'SAVE_SUCCESS' }
-  | { type: 'SAVE_ERROR'; payload: string };
+  | { type: 'SETTINGS_UPDATE'; payload: Partial<TierListSettings> };
 
 /**
  * Default tier configuration.

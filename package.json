@@ -16,7 +16,6 @@
   },
   "dependencies": {
     "@dnd-kit/react": "0.3.2",
-    "idb": "8.0.3",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "tailwindcss": "4.2.1"
@@ -45,7 +44,6 @@
     "eslint-plugin-react-x": "2.13.0",
     "eslint-plugin-simple-import-sort": "12.1.1",
     "eslint-plugin-tsdoc": "0.5.2",
-    "fake-indexeddb": "6.2.5",
     "husky": "9.1.7",
     "jsdom": "28.1.0",
     "lint-staged": "16.3.3",

@@ -4,8 +4,7 @@
  */
 
 import { DragDropProvider } from '@dnd-kit/react';
-import { type DragEvent, useEffect, useRef, useState } from 'react';
-import { useAutoSave } from 'src/hooks/useAutoSave';
+import { type DragEvent, useRef, useState } from 'react';
 import { useTierList } from 'src/hooks/useTierList';
 import {
   type Tier as TierType,
@@ -15,7 +14,6 @@ import { generateId } from 'src/utils/generateId';
 import { fileToDataUrl } from 'src/utils/imageUpload';
 
 import { AddItemButton } from '../AddItemButton';
-import { SaveLoadControls } from '../SaveLoadControls';
 import { Tier } from '../Tier';
 import { TierListItem } from '../TierListItem';
 
@@ -30,14 +28,12 @@ export function TierList({
   const {
     addTier,
     deleteTier,
-    // reorderTiers - reserved for future keyboard navigation
     updateTierLabel,
     updateTierColor,
     resetTier,
     addItem,
     deleteItem,
     moveItem,
-    // reorderItem - reserved for future use
     updateItemLabel,
     undo,
     redo,
@@ -47,30 +43,9 @@ export function TierList({
     hasReachedItemLimit,
     hasItemLimitWarning,
     tierList,
-    save,
-    load,
-    createNew,
-    deleteSaved,
-    getAllSaved,
   } = useTierList();
 
   const containerRef = useRef<HTMLDivElement>(null);
-
-  // Auto-save hook - wires into lifecycle for debounced saves
-  const {
-    status: autoSaveStatus,
-    errorMessage: autoSaveError,
-    lastSavedAt,
-  } = useAutoSave(tierList);
-
-  const [savedTierLists, setSavedTierLists] = useState<
-    { id: string; name: string; updatedAt: number; lastAccessedAt: number }[]
-  >([]);
-
-  // Load saved tier lists on mount
-  useEffect(() => {
-    void getAllSaved().then(setSavedTierLists);
-  }, [getAllSaved]);
 
   const [draggedItem, setDraggedItem] = useState<TierItemType | null>(null);
   const [keyboardDraggedItemId, setKeyboardDraggedItemId] = useState<
@@ -143,8 +118,7 @@ export function TierList({
       typeof targetIndex === 'number'
         ? targetIndex
         : targetTierId
-          ? /* v8 ignore next -- target tier ids come from rendered tiers, so the fallback branch is defensive only */
-            (tierList.tiers.find((tier) => tier.id === targetTierId)?.items
+          ? (tierList.tiers.find((tier) => tier.id === targetTierId)?.items
               .length ?? 0)
           : tierList.unassignedItems.length;
 
@@ -234,30 +208,6 @@ export function TierList({
     })();
   };
 
-  const handleSaveClick = async (): Promise<void> => {
-    await save();
-    const lists = await getAllSaved();
-    setSavedTierLists(lists);
-  };
-
-  const handleLoadClick = async (id: string): Promise<void> => {
-    await load(id);
-    const lists = await getAllSaved();
-    setSavedTierLists(lists);
-  };
-
-  const handleDeleteClick = async (id: string): Promise<void> => {
-    await deleteSaved(id);
-    const lists = await getAllSaved();
-    setSavedTierLists(lists);
-  };
-
-  const handleCreateNewClick = async (name?: string): Promise<void> => {
-    createNew(name);
-    const lists = await getAllSaved();
-    setSavedTierLists(lists);
-  };
-
   const handlePointerDragStart = (
     event: DragEvent<HTMLDivElement>,
     item: TierItemType,
@@ -293,14 +243,14 @@ export function TierList({
 
     const sourcePosition = findItemPosition(draggedItem.id);
 
-    /* v8 ignore start -- stale keyboard drag state is guarded but not reachable from the rendered UI */
+    /* v8 ignore start */
     if (!sourcePosition) {
       return;
     }
     /* v8 ignore stop */
 
     if (direction === 'left' || direction === 'right') {
-      /* v8 ignore start -- keyboard horizontal moves are only reachable while the hover target matches the source container */
+      /* v8 ignore start */
       if (sourcePosition.tierId !== overTierId) {
         return;
       }
@@ -309,8 +259,7 @@ export function TierList({
       const items =
         sourcePosition.tierId === null
           ? tierList.unassignedItems
-          : /* v8 ignore next -- sourcePosition is derived from tierList, so the fallback branch is defensive only */
-            (tierList.tiers.find((tier) => tier.id === sourcePosition.tierId)
+          : (tierList.tiers.find((tier) => tier.id === sourcePosition.tierId)
               ?.items ?? []);
       const nextIndex =
         direction === 'left'
@@ -445,19 +394,6 @@ export function TierList({
           </h1>
 
           <div className="flex items-center gap-2">
-            {/* Save/Load Controls */}
-            <SaveLoadControls
-              autoSaveStatus={autoSaveStatus}
-              lastSavedAt={lastSavedAt}
-              errorMessage={autoSaveError}
-              onSave={handleSaveClick}
-              onLoad={handleLoadClick}
-              onDelete={handleDeleteClick}
-              onCreateNew={handleCreateNewClick}
-              savedTierLists={savedTierLists}
-              currentTierList={tierList}
-            />
-
             {/* Undo/Redo */}
             <button
               className="rounded-md bg-slate-100 px-3 py-2 text-slate-700 transition-colors hover:bg-slate-200 disabled:opacity-50 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
@@ -489,24 +425,6 @@ export function TierList({
             </button>
           </div>
         </div>
-
-        {/* Auto-save status */}
-        {autoSaveError && (
-          <div
-            className="mb-4 rounded-md bg-red-100 p-3 text-red-700 dark:bg-red-900/30 dark:text-red-400"
-            role="alert"
-          >
-            {autoSaveError}
-          </div>
-        )}
-        {autoSaveStatus === 'saving' && (
-          <div className="mb-4 text-slate-500 dark:text-slate-400">
-            Saving...
-          </div>
-        )}
-        {autoSaveStatus === 'saved' && (
-          <div className="mb-4 text-green-600 dark:text-green-400">Saved</div>
-        )}
 
         {/* Item count warning */}
         {hasReachedItemLimit && (

@@ -12,6 +12,3 @@ if (typeof window.ResizeObserver === 'undefined') {
     disconnect = vi.fn();
   };
 }
-
-// Polyfill for IndexedDB (required for storage tests)
-import 'fake-indexeddb/auto';

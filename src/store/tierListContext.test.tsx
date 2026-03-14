@@ -178,23 +178,6 @@ describe('TierListContext', () => {
       expect(result.current.state.present.settings.theme).toBe('dark');
       expect(result.current.state.present.settings.itemSize).toBe('large');
     });
-
-    it('handles load action', () => {
-      const { result } = renderHook(() => useTierListContext(), { wrapper });
-      const newTierList = createMockTierList();
-      newTierList.name = 'Loaded Tier List';
-
-      act(() => {
-        result.current.dispatch({
-          type: 'LOAD',
-          payload: newTierList,
-        });
-      });
-
-      expect(result.current.state.present.name).toBe('Loaded Tier List');
-      expect(result.current.state.past).toHaveLength(0);
-      expect(result.current.state.future).toHaveLength(0);
-    });
   });
 });
 

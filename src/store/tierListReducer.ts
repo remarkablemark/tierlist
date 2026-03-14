@@ -461,22 +461,6 @@ export function tierListReducer(
       return addToHistory(state, newTierList);
     }
 
-    case 'LOAD': {
-      // Load replaces current state without adding to history
-      return {
-        past: [],
-        present: action.payload,
-        future: [],
-      };
-    }
-
-    case 'SAVE_REQUEST':
-    case 'SAVE_SUCCESS':
-    case 'SAVE_ERROR': {
-      // Save operations don't modify the tier list state
-      return state;
-    }
-
     default: {
       const _exhaustiveCheck: never = action;
       return _exhaustiveCheck;
