@@ -400,7 +400,7 @@ export function TierList({
           <div className="flex items-center gap-2">
             {/* Undo/Redo */}
             <button
-              className="rounded-md bg-slate-100 px-3 py-2 text-slate-700 transition-colors hover:bg-slate-200 disabled:opacity-50 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
+              className="rounded-md border border-slate-300 bg-white px-3 py-2 text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50 disabled:opacity-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300 dark:hover:border-slate-500 dark:hover:bg-slate-600"
               onClick={undo}
               disabled={!canUndo}
               aria-label="Undo"
@@ -409,7 +409,7 @@ export function TierList({
               Undo
             </button>
             <button
-              className="rounded-md bg-slate-100 px-3 py-2 text-slate-700 transition-colors hover:bg-slate-200 disabled:opacity-50 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
+              className="rounded-md border border-slate-300 bg-white px-3 py-2 text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50 disabled:opacity-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300 dark:hover:border-slate-500 dark:hover:bg-slate-600"
               onClick={redo}
               disabled={!canRedo}
               aria-label="Redo"
