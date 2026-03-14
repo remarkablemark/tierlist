@@ -148,22 +148,6 @@ describe('TierList', () => {
     expect(firstInput).toHaveValue('Custom Label');
   });
 
-  it('resets tier to default values', () => {
-    renderTierList();
-    const labelInputs = screen.getAllByRole('textbox', {
-      name: /tier label/i,
-    });
-    const firstInput = labelInputs[0];
-    fireEvent.change(firstInput, { target: { value: 'Custom Label' } });
-    fireEvent.blur(firstInput);
-    const resetButtons = screen.getAllByRole('button', { name: /reset tier/i });
-    fireEvent.click(resetButtons[0]);
-    const updatedLabelInputs = screen.getAllByRole('textbox', {
-      name: /tier label/i,
-    });
-    expect(updatedLabelInputs[0]).toHaveValue('S');
-  });
-
   it('renders items in unassigned area', () => {
     const tierListWithItems = createDefaultTierList();
     tierListWithItems.unassignedItems = [

@@ -26,7 +26,6 @@ interface MockUseTierListResult {
   hasReachedItemLimit: boolean;
   moveItem: ReturnType<typeof vi.fn>;
   redo: ReturnType<typeof vi.fn>;
-  resetTier: ReturnType<typeof vi.fn>;
   reorderTiers: ReturnType<typeof vi.fn>;
   tierList: {
     name: string;
@@ -97,7 +96,6 @@ vi.mock('../Tier', () => ({
     onLabelChange,
     onMoveDown,
     onMoveUp,
-    onReset,
     tier,
   }: {
     activeItemId?: string | null;
@@ -113,7 +111,6 @@ vi.mock('../Tier', () => ({
     onLabelChange: (label: string) => void;
     onMoveDown?: () => void;
     onMoveUp?: () => void;
-    onReset: () => void;
     tier: Tier;
   }): ReactElement => (
     <section
@@ -135,9 +132,6 @@ vi.mock('../Tier', () => ({
         }}
       >
         Change color {tier.id}
-      </button>
-      <button type="button" onClick={onReset}>
-        Reset {tier.id}
       </button>
       <button type="button" onClick={onDelete}>
         Delete {tier.id}
@@ -348,7 +342,6 @@ function createMockHookResult(
     hasReachedItemLimit: false,
     moveItem: vi.fn(),
     redo: vi.fn(),
-    resetTier: vi.fn(),
     reorderTiers: vi.fn(),
     tierList: {
       name: 'Mock Tier List',
@@ -430,7 +423,6 @@ describe('TierList', () => {
       screen.getByRole('button', { name: 'Change color tier-a' }),
     );
     fireEvent.click(screen.getByRole('button', { name: 'Reorder tier-a' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Reset tier-a' }));
     fireEvent.click(screen.getByRole('button', { name: 'Delete tier-a' }));
     fireEvent.click(
       screen.getByRole('button', { name: 'Delete item tier-item-a' }),
@@ -447,7 +439,6 @@ describe('TierList', () => {
       'label-tier-a',
     );
     expect(hookState.updateTierColor).toHaveBeenCalledWith('tier-a', '#tier-a');
-    expect(hookState.resetTier).toHaveBeenCalledWith('tier-a');
     expect(hookState.deleteTier).toHaveBeenCalledWith('tier-a');
     expect(hookState.deleteItem).toHaveBeenCalledWith('tier-item-a');
     expect(hookState.updateItemLabel).toHaveBeenCalledWith(

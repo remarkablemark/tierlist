@@ -40,10 +40,6 @@ export interface TierProps {
    */
   onColorChange: (color: string) => void;
   /**
-   * Callback when tier is reset to defaults.
-   */
-  onReset: () => void;
-  /**
    * Callback when tier is deleted.
    */
   onDelete: () => void;

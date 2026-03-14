@@ -30,7 +30,6 @@ export function TierList({
     deleteTier,
     updateTierLabel,
     updateTierColor,
-    resetTier,
     reorderTiers,
     addItem,
     deleteItem,
@@ -151,10 +150,6 @@ export function TierList({
 
   const handleTierColorChange = (tierId: string, color: string) => {
     updateTierColor(tierId, color);
-  };
-
-  const handleTierReset = (tierId: string) => {
-    resetTier(tierId);
   };
 
   const handleItemDropToUnassigned = (
@@ -461,9 +456,6 @@ export function TierList({
             }}
             onColorChange={(color) => {
               handleTierColorChange(tier.id, color);
-            }}
-            onReset={() => {
-              handleTierReset(tier.id);
             }}
             onDelete={() => {
               handleDeleteTier(tier.id);

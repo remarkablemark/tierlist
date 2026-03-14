@@ -36,7 +36,6 @@ const mockProps = {
   isOver: false,
   onLabelChange: vi.fn(),
   onColorChange: vi.fn(),
-  onReset: vi.fn(),
   onDelete: vi.fn(),
   onMoveUp: vi.fn(),
   onMoveDown: vi.fn(),
@@ -139,17 +138,6 @@ describe('Tier', () => {
     await user.click(colorOption);
 
     expect(onColorChange).toHaveBeenCalledWith('#ff0000');
-  });
-
-  it('calls onReset when reset button is clicked', async () => {
-    const user = userEvent.setup();
-    const onReset = vi.fn();
-    render(<Tier {...mockProps} onReset={onReset} />);
-
-    const resetButton = screen.getByRole('button', { name: /reset tier/i });
-    await user.click(resetButton);
-
-    expect(onReset).toHaveBeenCalledTimes(1);
   });
 
   it('calls onItemDrop when item is dropped', () => {
