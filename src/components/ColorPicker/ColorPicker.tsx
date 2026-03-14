@@ -39,7 +39,7 @@ export function ColorPicker({
   };
 
   return (
-    <div className="absolute z-50 mt-2 rounded-md border border-slate-200 bg-white p-3 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+    <div className="absolute right-0 z-50 mt-2 w-[220px] rounded-md border border-slate-200 bg-white p-3 shadow-lg dark:border-slate-700 dark:bg-slate-800">
       <div className="grid grid-cols-5 gap-2">
         {COLOR_PALETTE.map((paletteColor, index) => (
           <button
