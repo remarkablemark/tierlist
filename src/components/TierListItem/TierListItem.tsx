@@ -169,13 +169,13 @@ export function TierListItem({
               }}
               onBlur={handleLabelBlur}
               onKeyDown={handleLabelKeydown}
-              className="w-full rounded border border-slate-300 bg-white px-1 py-0.5 text-xs text-slate-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-slate-600 dark:bg-slate-700 dark:text-white"
+              className="w-full rounded border border-slate-300 bg-white px-1 py-0.5 text-center text-xs text-slate-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-slate-600 dark:bg-slate-700 dark:text-white"
               autoFocus
               aria-label="Edit item label"
             />
           ) : (
             <span
-              className="block truncate text-xs text-slate-700 dark:text-slate-300"
+              className="block truncate text-center text-xs text-slate-700 dark:text-slate-300"
               onDoubleClick={handleLabelDoubleClick}
               role="button"
               tabIndex={0}
