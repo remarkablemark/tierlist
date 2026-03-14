@@ -504,10 +504,6 @@ export function TierList({
           data-testid="unassigned-items-section"
           className="mt-8 rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900/30"
         >
-          <h2 className="mb-4 text-lg font-semibold text-slate-700 dark:text-slate-300">
-            Unassigned Items
-          </h2>
-
           {/* Add Item Button */}
           <div className="mb-4">
             <AddItemButton

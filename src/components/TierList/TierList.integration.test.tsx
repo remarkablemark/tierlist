@@ -10,7 +10,6 @@ import {
   DEFAULT_TIERS,
   type TierList as TierListData,
 } from 'src/types/tierList.types';
-import { createDefaultTierList } from 'src/utils/createDefaultTierList';
 import { generateId } from 'src/utils/generateId';
 
 import { TierList } from './TierList';
@@ -74,11 +73,6 @@ describe('TierList', () => {
     expect(screen.getByText('Tier List')).toBeInTheDocument();
   });
 
-  it('renders unassigned items area', () => {
-    renderTierList();
-    expect(screen.getByText('Unassigned Items')).toBeInTheDocument();
-  });
-
   it('has undo/redo buttons', () => {
     renderTierList();
     expect(screen.getByRole('button', { name: 'Undo' })).toBeInTheDocument();
@@ -109,18 +103,6 @@ describe('TierList', () => {
     expect(undoButton).toBeDisabled();
   });
 
-  it('shows item limit warning when 50+ items', () => {
-    const tierListWith50Items = createMockTierListWithItems(50);
-    renderTierList(tierListWith50Items);
-    expect(screen.getByText('Unassigned Items')).toBeInTheDocument();
-  });
-
-  it('shows maximum items reached warning when 100+ items', () => {
-    const tierListWith100Items = createMockTierListWithItems(100);
-    renderTierList(tierListWith100Items);
-    expect(screen.getByText('Unassigned Items')).toBeInTheDocument();
-  });
-
   it('does not show warnings when under 50 items', () => {
     const tierListWith10Items = createMockTierListWithItems(10);
     renderTierList(tierListWith10Items);
@@ -146,31 +128,5 @@ describe('TierList', () => {
     fireEvent.change(firstInput, { target: { value: 'Custom Label' } });
     fireEvent.blur(firstInput);
     expect(firstInput).toHaveValue('Custom Label');
-  });
-
-  it('renders items in unassigned area', () => {
-    const tierListWithItems = createDefaultTierList();
-    tierListWithItems.unassignedItems = [
-      {
-        id: 'test-item',
-        label: 'Test Item',
-        imageUrl: null,
-        imageBlobId: null,
-        createdAt: Date.now(),
-        metadata: {},
-      },
-    ];
-    renderTierList(tierListWithItems);
-    expect(screen.getByText('Unassigned Items')).toBeInTheDocument();
-  });
-
-  it('ignores drops when no item is active', () => {
-    renderTierList();
-    const unassignedArea = screen.getByText('Unassigned Items').closest('div');
-    if (unassignedArea) {
-      fireEvent.dragOver(unassignedArea);
-      fireEvent.drop(unassignedArea);
-    }
-    expect(screen.getByText('No unassigned items')).toBeInTheDocument();
   });
 });

@@ -15,11 +15,9 @@ describe('App component', () => {
     ).toBeInTheDocument();
 
     expect(
-      screen.getByRole('heading', { level: 2, name: 'Unassigned Items' }),
-    ).toBeInTheDocument();
-
-    expect(
       screen.getByRole('button', { name: /add item/i }),
     ).toBeInTheDocument();
+
+    expect(screen.getByText('No unassigned items')).toBeInTheDocument();
   });
 });
