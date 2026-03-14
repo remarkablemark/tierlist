@@ -60,8 +60,6 @@ src/
 │   └── UndoRedoControls/# Undo/redo buttons
 ├── hooks/
 │   └── useTierList.ts   # Main hook for state management
-├── services/
-│   └── storage.ts       # IndexedDB operations
 ├── store/
 │   ├── tierListReducer.ts    # Reducer for all actions
 │   └── tierListContext.tsx   # Context provider
@@ -113,32 +111,6 @@ function App() {
       </SortableContext>
     </DragDropProvider>
   );
-}
-```
-
-### IndexedDB with idb
-
-Promise-based wrapper for IndexedDB.
-
-```bash
-npm install idb
-```
-
-**Basic Setup**:
-
-```typescript
-import { openDB } from 'idb';
-
-const DB_NAME = 'TierListDB';
-const DB_VERSION = 1;
-
-async function initDB() {
-  return openDB(DB_NAME, DB_VERSION, {
-    upgrade(db) {
-      db.createObjectStore('tierLists', { keyPath: 'id' });
-      db.createObjectStore('images', { keyPath: 'id' });
-    },
-  });
 }
 ```
 
@@ -215,8 +187,6 @@ export function useTierListContext() {
 - [ ] Define TypeScript types (from data-model.md)
 - [ ] Create tier list reducer
 - [ ] Create context provider
-- [ ] Set up IndexedDB database
-- [ ] Implement storage service
 
 ### Phase 2: Tier Components
 
@@ -244,14 +214,7 @@ export function useTierListContext() {
 - [ ] Create UndoRedoControls component
 - [ ] Add 50-action limit with circular buffer
 
-### Phase 5: Persistence
-
-- [ ] Implement auto-save on state change
-- [ ] Create save/load UI
-- [ ] Handle IndexedDB errors
-- [ ] Add quota exceeded handling
-
-### Phase 6: Accessibility
+### Phase 5: Accessibility
 
 - [ ] Add keyboard navigation
 - [ ] Implement screen reader announcements
@@ -259,12 +222,11 @@ export function useTierListContext() {
 - [ ] Test with screen reader
 - [ ] Ensure 44x44px touch targets
 
-### Phase 8: Testing
+### Phase 6: Testing
 
 - [ ] Write unit tests for reducer
 - [ ] Write component tests with Testing Library
 - [ ] Write integration tests
-- [ ] Mock IndexedDB for tests
 - [ ] Achieve 100% coverage (excluding barrel exports)
 
 ---
@@ -292,24 +254,6 @@ describe('tierListReducer', () => {
 
     expect(newState.tiers).toHaveLength(state.tiers.length + 1);
   });
-});
-```
-
-### Mocking IndexedDB
-
-```typescript
-// Use fake-indexeddb for tests
-import 'fake-indexeddb/auto';
-import { openDB } from 'idb';
-
-// Reset database before each test
-beforeEach(async () => {
-  const db = await openDB('TierListDB', 1, {
-    upgrade(db) {
-      db.createObjectStore('tierLists', { keyPath: 'id' });
-    },
-  });
-  db.clear('tierLists');
 });
 ```
 
@@ -431,12 +375,6 @@ npm run build
 - Inspect component hierarchy
 - View state and props
 
-### IndexedDB DevTools
-
-- Chrome: DevTools → Application → IndexedDB
-- Firefox: Storage Inspector → IndexedDB
-- View stored tier lists and images
-
 ### Debugging Drag-and-Drop
 
 ```typescript
@@ -457,7 +395,6 @@ const handleDragEnd = (event: DragEndEvent) => {
 
 - [React Documentation](https://react.dev/)
 - [@dnd-kit Documentation](https://docs.dndkit.com/)
-- [idb Documentation](https://github.com/jakearchibald/idb)
 - [Testing Library](https://testing-library.com/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Vitest](https://vitest.dev/)

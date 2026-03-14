@@ -26,8 +26,6 @@
 **Purpose**: Project initialization and dependency installation
 
 - [x] T001 Verify Node.js 24, npm, and existing project structure
-- [x] T002 Install idb library for IndexedDB: `npm install idb`
-- [x] T004 [P] Install fake-indexeddb for testing: `npm install --save-dev fake-indexeddb`
 
 ---
 
@@ -41,13 +39,11 @@
 - [x] T006 [P] Create utility: `src/utils/escapeHtml.ts` with escapeHtml function and tests
 - [x] T007 [P] Create utility: `src/utils/validation.ts` with validateTierList, validateTier, validateItem, isValidCssColor, getTotalItemCount, findItemLocation and tests
 - [x] T008 [P] Create utility: `src/utils/generateId.ts` with generateId function using crypto.randomUUID() and tests
-- [x] T009 Create IndexedDB service: `src/services/storage.ts` with openDB, saveTierList, loadTierList, deleteTierList, saveImage, loadImage, deleteImage functions
-- [x] T010 Write storage service tests: `src/services/storage.test.ts` mocking IndexedDB with fake-indexeddb
-- [x] T011 Create tier list reducer: `src/store/tierListReducer.ts` implementing all TierListAction types (TIER_ADD, TIER_DELETE, TIER_REORDER, TIER_UPDATE_LABEL, TIER_UPDATE_COLOR, TIER_RESET, ITEM_ADD, ITEM_DELETE, ITEM_MOVE, ITEM_REORDER, ITEM_UPDATE_LABEL, DRAG_START, DRAG_MOVE, DRAG_END, UNDO, REDO, SETTINGS_UPDATE, LOAD, SAVE_REQUEST, SAVE_SUCCESS, SAVE_ERROR)
-- [x] T012 Write reducer tests: `src/store/tierListReducer.test.ts` covering all action types
-- [x] T013 Create context provider: `src/store/tierListContext.tsx` with TierListContext, TierListProvider, useTierListContext
-- [x] T014 Write context tests: `src/store/tierListContext.test.tsx` testing provider and hook
-- [x] T019 [P] [US1] Unit test: createDefaultTierList produces DEFAULT_TIERS baseline in `src/utils/createDefaultTierList.test.ts`
+- [x] T009 Create tier list reducer: `src/store/tierListReducer.ts` implementing all TierListAction types (TIER_ADD, TIER_DELETE, TIER_REORDER, TIER_UPDATE_LABEL, TIER_UPDATE_COLOR, TIER_RESET, ITEM_ADD, ITEM_DELETE, ITEM_MOVE, ITEM_REORDER, ITEM_UPDATE_LABEL, DRAG_START, DRAG_MOVE, DRAG_END, UNDO, REDO, SETTINGS_UPDATE, LOAD)
+- [x] T010 Write reducer tests: `src/store/tierListReducer.test.ts` covering all action types
+- [x] T011 Create context provider: `src/store/tierListContext.tsx` with TierListContext, TierListProvider, useTierListContext
+- [x] T012 Write context tests: `src/store/tierListContext.test.tsx` testing provider and hook
+- [x] T013 [P] [US1] Unit test: createDefaultTierList produces DEFAULT_TIERS baseline in `src/utils/createDefaultTierList.test.ts`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -144,38 +140,6 @@
 - [x] T053 [US3] Add tier customization actions to reducer: TIER_UPDATE_COLOR, TIER_UPDATE_LABEL, TIER_RESET with isCustomColor and isCustomLabel flags
 
 **Checkpoint**: User Story 3 complete - tier customization functional independently
-
----
-
-## Phase 6: User Story 4 - Save and Load Tier Lists (Priority: P2)
-
-**Goal**: Users can save tier list configurations to IndexedDB and reload them later with all tiers, items, and customizations intact
-
-**Independent Test**: User can save a completed tier list and reload it later with all tiers, items, and customizations intact
-
-### Tests for User Story 4 ⚠️
-
-> **NOTE: Write these tests FIRST, ensure they FAIL before implementation. Do not start T058-T065 while these tests are red.**
-
-- [x] T054 [P] [US4] Integration test: Save tier list and verify IndexedDB storage in `src/services/storage.test.ts`
-- [x] T055 [P] [US4] Integration test: Load saved tier list and verify state restoration in `src/components/TierList/TierList.test.tsx`
-- [x] T056 [P] [US4] Error test: Handle IndexedDB save failure with user notification in `src/services/storage.test.ts`
-- [x] T057 [P] [US4] Hook test: Auto-save debounces saves (≤500ms), registers `beforeunload`, and surfaces non-blocking status indicator in `src/hooks/useAutoSave.test.ts`
-- [ ] T058 [US4] Integration test: Auto-saved work-in-progress restores after refresh/navigation in `src/components/TierList/TierList.test.tsx`
-
-### Implementation for User Story 4
-
-- [x] T059 [P] [US4] Create auto-save hook: `src/hooks/useAutoSave.ts` that debounces saves (≤500ms), registers `beforeunload` persistence, displays non-blocking status indicator, and logs failures
-- [x] T060 [US4] Create save/load UI component: `src/components/SaveLoadControls/SaveLoadControls.tsx` with save button, load list, delete saved list
-- [x] T061 [US4] Create SaveLoadControls types: `src/components/SaveLoadControls/SaveLoadControls.types.ts`
-- [x] T062 [US4] Create barrel export: `src/components/SaveLoadControls/index.ts`
-- [x] T063 [US4] Extend useTierList hook with persistence operations: save, load, createNew, getAllSaved
-- [x] T064 [US4] Add persistence actions to reducer: LOAD, SAVE_REQUEST, SAVE_SUCCESS, SAVE_ERROR
-- [x] T065 [US4] Implement IndexedDB error handling with user notifications (QuotaExceededError, NotFoundError)
-- [x] T066 [US4] Wire auto-save hook into TierList lifecycle to trigger debounced saves on reducer commits, handle `beforeunload`, and enqueue failure logs in IndexedDB
-- [x] T067 [US4] Implement restoration flow leveraging auto-save snapshot when app initializes (TierList + context)
-
-**Checkpoint**: User Story 4 complete - persistence functional independently
 
 ---
 
@@ -285,12 +249,10 @@
 
 **Setup Phase**:
 
-- T004 (fake-indexeddb) can install in parallel
-
 **Foundational Phase**:
 
-- T007 (escapeHtml), T008 (validation), T009 (generateId) utilities can develop in parallel
-- T010 (storage) and T012 (reducer) can develop in parallel
+- T006 (escapeHtml), T007 (validation), T008 (generateId) utilities can develop in parallel
+- T009 (reducer) and T011 (context) can develop in parallel
 
 **User Story 1**:
 
@@ -306,11 +268,6 @@
 
 - T045, T046, T047 (tests) can run in parallel
 - T048 (ColorPicker) and T051 (Tier customization UI) can develop in parallel
-
-**User Story 4**:
-
-- T054, T055, T056, T057 (tests) can run in parallel
-- T058 (useAutoSave) and T059 (SaveLoadControls) can develop in parallel
 
 **Undo/Redo**:
 
@@ -362,8 +319,8 @@ npm test -- src/components/TierList/TierList.test.tsx &
 
 ### MVP First (User Story 1 Only)
 
-1. Complete Phase 1: Setup (T001-T004)
-2. Complete Phase 2: Foundational (T005-T014)
+1. Complete Phase 1: Setup (T001)
+2. Complete Phase 2: Foundational (T005-T013)
 3. Complete Phase 3: User Story 1 (T015-T029)
 4. **STOP and VALIDATE**: Test User Story 1 independently
    - Can create tier list with tiers?
@@ -377,10 +334,8 @@ npm test -- src/components/TierList/TierList.test.tsx &
 2. Add User Story 1 → Test independently → Deploy/Demo (MVP!)
 3. Add User Story 2 → Test independently → Deploy/Demo
 4. Add User Story 3 → Test independently → Deploy/Demo
-5. Add User Story 4 → Test independently → Deploy/Demo
-6. Add User Story 5 → Test independently → Deploy/Demo
-7. Add Undo/Redo → Test independently → Deploy/Demo
-8. Polish → Final validation → Production
+5. Add Undo/Redo → Test independently → Deploy/Demo
+6. Polish → Final validation → Production
 
 ### Parallel Team Strategy
 
@@ -390,7 +345,7 @@ With multiple developers:
 2. Once Foundational is done:
    - Developer A: User Story 1 (T015-T029)
    - Developer B: User Story 2 (T030-T044)
-   - Developer C: User Story 3 (T045-T053) + User Story 4 (T054-T067)
+   - Developer C: User Story 3 (T045-T053)
 3. Stories complete and integrate independently
 4. Team reconvenes for Undo/Redo (T078-T089)
 5. Team reconvenes for Accessibility (T090-T101)
@@ -402,25 +357,21 @@ With multiple developers:
 
 | Phase     | Description       | Task Count |
 | --------- | ----------------- | ---------- |
-| Phase 1   | Setup             | 4          |
-| Phase 2   | Foundational      | 10         |
+| Phase 1   | Setup             | 1          |
+| Phase 2   | Foundational      | 9          |
 | Phase 3   | User Story 1 (P1) | 15         |
 | Phase 4   | User Story 2 (P1) | 15         |
 | Phase 5   | User Story 3 (P2) | 9          |
-| Phase 6   | User Story 4 (P2) | 14         |
-| Phase 7   | User Story 5 (P3) | 10         |
 | Phase 8   | Undo/Redo         | 12         |
 | Phase 9   | Accessibility     | 12         |
 | Phase 10  | Polish            | 12         |
-| **Total** |                   | **113**    |
+| **Total** |                   | **85**     |
 
 ### Task Count per User Story
 
 - **User Story 1**: 15 tasks (T015-T029)
 - **User Story 2**: 15 tasks (T030-T044)
 - **User Story 3**: 9 tasks (T045-T053)
-- **User Story 4**: 14 tasks (T054-T067)
-- **User Story 5**: 10 tasks (T068-T077)
 
 ### Suggested MVP Scope
 

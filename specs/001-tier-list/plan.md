@@ -7,13 +7,13 @@
 
 ## Summary
 
-Build a client-side React application for creating and managing tier lists with drag-and-drop functionality. Users can create ranked tiers, add items with images, categorize items into tiers, customize appearance, and save/load from IndexedDB. Technical approach: React 19 with @dnd-kit for accessible drag-and-drop, useReducer + Context API for state management, IndexedDB for persistence, and Tailwind CSS for styling.
+Build a client-side React application for creating and managing tier lists with drag-and-drop functionality. Users can create ranked tiers, add items with images, categorize items into tiers, and customize appearance. Technical approach: React 19 with @dnd-kit for accessible drag-and-drop, useReducer + Context API for state management, in-memory state only (no persistence), and Tailwind CSS for styling.
 
 ## Technical Context
 
 **Language/Version**: TypeScript 5 (strict mode)
 **Primary Dependencies**: React 19, @dnd-kit/react (core, sortable, touch-sensor, accessibility)
-**Storage**: IndexedDB (via idb library)
+**Storage**: In-memory state only (no persistence)
 **Testing**: Vitest 4 + @testing-library/react + @testing-library/user-event
 **Target Platform**: Modern web browsers (Chrome, Firefox, Safari, Edge) - last 2 versions
 **Project Type**: Frontend-only web application (SPA)
@@ -49,7 +49,7 @@ _GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 - ✅ Conventional Commits for git messages
 - ✅ Husky hooks enforce code quality
 - ✅ Vitest for testing, Testing Library for components
-- ✅ Mock external dependencies (IndexedDB, @dnd-kit context)
+- ✅ Mock @dnd-kit context for isolated component tests
 - ✅ React Compiler handles memoization (no manual optimization)
 
 **Result**: ✅ ALL GATES PASS - No violations. Plan aligns with constitution principles.
@@ -182,20 +182,14 @@ No violations detected. All constitution principles are satisfied by this plan.
 - Implement UNDO/REDO actions
 - 50-action circular buffer
 
-**Phase 2.5: Persistence**
-
-- Auto-save on state change
-- Save/load UI
-- Error handling
-
-**Phase 2.6: Accessibility**
+**Phase 2.5: Accessibility**
 
 - Keyboard navigation
 - Screen reader announcements
 - ARIA labels
 - Touch target sizing
 
-**Phase 2.7: Testing & Polish**
+**Phase 2.6: Testing & Polish**
 
 - Unit tests for reducer
 - Component tests

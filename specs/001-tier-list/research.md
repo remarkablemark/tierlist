@@ -53,28 +53,20 @@
 
 ### 3. Storage
 
-**Decision**: IndexedDB with idb library wrapper
+**Decision**: In-memory state only (no persistence)
 
 **Rationale**:
 
-- Spec requires IndexedDB (FR-009)
-- IndexedDB supports larger data storage than localStorage
-- IndexedDB supports storing binary data (images as blobs/data URLs)
-- Async API prevents blocking main thread
-- `idb` library provides Promise-based wrapper for cleaner code
+- Simpler implementation without storage complexity
+- State stored in React useReducer + Context API
+- No need to handle storage quotas or migrations
+- Data resets on page refresh (acceptable for this scope)
 
 **Alternatives Considered**:
 
+- IndexedDB: Rejected due to complexity and unnecessary for this scope
 - localStorage: Rejected due to 5MB limit and synchronous API
-- WebSQL: Rejected as it's deprecated
-- File System Access API: Rejected due to limited browser support
-
-**Best Practices**:
-
-- Use transaction-based operations for data integrity
-- Implement versioned schema for future migrations
-- Store images as blobs, not base64 data URLs (more efficient)
-- Handle QuotaExceededError gracefully with user notification
+- File-based save/load: Could be added later as enhancement
 
 ---
 
@@ -99,7 +91,6 @@
 **Best Practices**:
 
 - Write tests before implementation (TDD red-green-refactor)
-- Mock IndexedDB using fake-indexeddb
 - Mock @dnd-kit context for isolated component tests
 - Test accessibility with axe-core integration
 - Exclude barrel exports from coverage requirements
@@ -114,7 +105,6 @@
 
 - React static website targets web browsers (from AGENTS.md)
 - @dnd-kit supports all modern browsers
-- IndexedDB has universal support in modern browsers
 - Responsive design required from 320px to 1920px (FR-019)
 
 **Alternatives Considered**:
@@ -136,7 +126,7 @@
 
 **Rationale**:
 
-- No backend required - all data stored client-side in IndexedDB
+- No backend required - all data stored in-memory with React state
 - React SPA with Vite build tool (from AGENTS.md)
 - Tab-local isolation means no server coordination needed (FR-020)
 
@@ -280,26 +270,6 @@ const TierListContext = createContext<{
 }>(null!);
 ```
 
-### IndexedDB Pattern
-
-**Decision**: Transaction-based operations with idb library
-
-```typescript
-// Database schema
-const db = await openDB('TierListDB', 1, {
-  upgrade(db) {
-    db.createObjectStore('tierLists', { keyPath: 'id' });
-  },
-});
-
-// Save operation
-async function saveTierList(tierList: TierList) {
-  const tx = db.transaction('tierLists', 'readwrite');
-  await tx.store.put(tierList);
-  await tx.done;
-}
-```
-
 ---
 
 ## Security Considerations
@@ -331,7 +301,7 @@ function escapeHtml(text: string): string {
 
 - Escape HTML entities only (`<`, `>`, `&`)
 - No rich text support needed
-- Images stored as blobs, not executed
+- Images stored as data URLs in state
 
 ---
 
@@ -435,26 +405,6 @@ const announcements = {
 
 ---
 
-## Error Handling Strategy
-
-### IndexedDB Failures
-
-**Pattern**: Immediate error notification, no retry
-
-```typescript
-try {
-  await saveTierList(tierList);
-} catch (error) {
-  if (error.name === 'QuotaExceededError') {
-    showError('Storage full. Please delete old tier lists.');
-  } else {
-    showError('Failed to save.');
-  }
-}
-```
-
----
-
 ## Undo/Redo Implementation
 
 **Decision**: Circular buffer with 50 action limit
@@ -499,34 +449,29 @@ function undoReducer(state: UndoRedoState, action: Action) {
 
 ## Image Storage Strategy
 
-**Decision**: Store images as blobs in IndexedDB
+**Decision**: Store images as data URLs in state
 
 **Rationale**:
 
-- More efficient than base64 data URLs
-- Smaller storage footprint
-- Faster load times
-- Native binary support in IndexedDB
+- Simpler implementation without IndexedDB complexity
+- Data URLs can be directly used in img src attributes
+- No cleanup required (no object URLs to revoke)
+- Acceptable for in-memory state only approach
 
 **Implementation**:
 
 ```typescript
-// Convert file to blob
+// Convert file to data URL
 const file = input.files[0];
-const blob = file.slice(0, file.size, file.type);
+const dataUrl = await new Promise<string>((resolve) => {
+  const reader = new FileReader();
+  reader.onload = (e) => resolve(e.target?.result as string);
+  reader.readAsDataURL(file);
+});
 
-// Store in IndexedDB
-await db.put('images', { id: itemId, blob, type: file.type });
-
-// Load and convert to URL for display
-const record = await db.get('images', itemId);
-const url = URL.createObjectURL(record.blob);
+// Store directly in state
+const item = { id, image: dataUrl, label: '' };
 ```
-
-**Cleanup**:
-
-- Revoke object URLs when component unmounts
-- Store metadata (type, size) with blob
 
 ---
 
@@ -538,7 +483,7 @@ const url = URL.createObjectURL(record.blob);
 | UI Framework     | React 19                      | Project standard                                  |
 | Drag-and-Drop    | @dnd-kit/react                | Touch support, accessibility, React 19 compatible |
 | State Management | useReducer + Context          | Spec requirement, no external dependency          |
-| Storage          | IndexedDB + idb               | Large data, async, binary support                 |
+| Storage          | In-memory state only          | Simpler implementation, no persistence needed     |
 | Testing          | Vitest 4 + Testing Library    | Project standard, TDD support                     |
 | Styling          | Tailwind CSS 4                | Constitution requirement                          |
 | Build Tool       | Vite 7                        | Project standard                                  |
@@ -548,20 +493,18 @@ const url = URL.createObjectURL(record.blob);
 
 ## Risks & Mitigations
 
-| Risk                              | Impact | Mitigation                                      |
-| --------------------------------- | ------ | ----------------------------------------------- |
-| @dnd-kit learning curve           | Medium | Study examples, use sortable presets            |
-| IndexedDB browser inconsistencies | Low    | Use idb library which abstracts differences     |
-| Touch drag-and-drop complexity    | Medium | @dnd-kit touch sensor handles most cases        |
-| Performance with 100 items        | Medium | Monitor, optimize with React Compiler if needed |
+| Risk                           | Impact | Mitigation                                      |
+| ------------------------------ | ------ | ----------------------------------------------- |
+| @dnd-kit learning curve        | Medium | Study examples, use sortable presets            |
+| Data loss on page refresh      | Low    | Acceptable for this scope - users expect it     |
+| Touch drag-and-drop complexity | Medium | @dnd-kit touch sensor handles most cases        |
+| Performance with 100 items     | Medium | Monitor, optimize with React Compiler if needed |
 
 ---
 
 ## References
 
 - [@dnd-kit Documentation](https://docs.dndkit.com/)
-- [IndexedDB API](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)
-- [idb library](https://github.com/jakearchibald/idb)
 - [Testing Library](https://testing-library.com/)
 - [Vitest](https://vitest.dev/)
 - [Tailwind CSS](https://tailwindcss.com/)
