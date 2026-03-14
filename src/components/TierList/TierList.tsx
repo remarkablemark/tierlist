@@ -4,7 +4,7 @@
  */
 
 import { DragDropProvider } from '@dnd-kit/react';
-import { type DragEvent, useRef, useState } from 'react';
+import { type DragEvent, useEffect, useRef, useState } from 'react';
 import { useAutoSave } from 'src/hooks/useAutoSave';
 import { useTierList } from 'src/hooks/useTierList';
 import {
@@ -51,6 +51,7 @@ export function TierList({
     load,
     createNew,
     deleteSaved,
+    getAllSaved,
   } = useTierList();
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -62,9 +63,14 @@ export function TierList({
     lastSavedAt,
   } = useAutoSave(tierList);
 
-  const [savedTierLists] = useState<
+  const [savedTierLists, setSavedTierLists] = useState<
     { id: string; name: string; updatedAt: number; lastAccessedAt: number }[]
   >([]);
+
+  // Load saved tier lists on mount
+  useEffect(() => {
+    void getAllSaved().then(setSavedTierLists);
+  }, [getAllSaved]);
 
   const [draggedItem, setDraggedItem] = useState<TierItemType | null>(null);
   const [keyboardDraggedItemId, setKeyboardDraggedItemId] = useState<
@@ -230,18 +236,26 @@ export function TierList({
 
   const handleSaveClick = async (): Promise<void> => {
     await save();
+    const lists = await getAllSaved();
+    setSavedTierLists(lists);
   };
 
   const handleLoadClick = async (id: string): Promise<void> => {
     await load(id);
+    const lists = await getAllSaved();
+    setSavedTierLists(lists);
   };
 
   const handleDeleteClick = async (id: string): Promise<void> => {
     await deleteSaved(id);
+    const lists = await getAllSaved();
+    setSavedTierLists(lists);
   };
 
-  const handleCreateNewClick = (name?: string): void => {
+  const handleCreateNewClick = async (name?: string): Promise<void> => {
     createNew(name);
+    const lists = await getAllSaved();
+    setSavedTierLists(lists);
   };
 
   const handlePointerDragStart = (
