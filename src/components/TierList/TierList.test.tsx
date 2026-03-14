@@ -10,7 +10,6 @@ import {
   waitFor,
   within,
 } from '@testing-library/react';
-import { userEvent } from '@testing-library/user-event';
 import type React from 'react';
 import { type ReactElement } from 'react';
 import { type TierListItemComponentProps } from 'src/components/TierListItem/TierListItem.types';
@@ -401,30 +400,26 @@ describe('TierList', () => {
     vi.restoreAllMocks();
   });
 
-  it('wires header and tier actions through the hook callbacks', async () => {
+  it('wires header and tier actions through the hook callbacks', () => {
     renderSubject();
     const hookState = getHookState();
 
-    await userEvent.click(screen.getByRole('button', { name: 'Undo' }));
-    await userEvent.click(screen.getByRole('button', { name: 'Redo' }));
-    await userEvent.click(screen.getByRole('button', { name: 'Add tier' }));
-    await userEvent.click(
+    fireEvent.click(screen.getByRole('button', { name: 'Undo' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Redo' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Add tier' }));
+    fireEvent.click(
       screen.getByRole('button', { name: 'Change label tier-a' }),
     );
-    await userEvent.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Change color tier-a' }),
     );
-    await userEvent.click(
-      screen.getByRole('button', { name: 'Reorder tier-a' }),
-    );
-    await userEvent.click(screen.getByRole('button', { name: 'Reset tier-a' }));
-    await userEvent.click(
-      screen.getByRole('button', { name: 'Delete tier-a' }),
-    );
-    await userEvent.click(
+    fireEvent.click(screen.getByRole('button', { name: 'Reorder tier-a' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Reset tier-a' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Delete tier-a' }));
+    fireEvent.click(
       screen.getByRole('button', { name: 'Delete item tier-item-a' }),
     );
-    await userEvent.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Edit item tier-item-a' }),
     );
 
@@ -445,41 +440,39 @@ describe('TierList', () => {
     );
   });
 
-  it('moves an item between tiers and into unassigned via pointer and keyboard flows', async () => {
+  it('moves an item between tiers and into unassigned via pointer and keyboard flows', () => {
     renderSubject();
     const hookState = getHookState();
 
-    await userEvent.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Pointer start tier-item-a' }),
     );
-    await userEvent.click(screen.getByRole('button', { name: 'Enter tier-a' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Enter tier-a' }));
     fireEvent.dragOver(screen.getByTestId('tier-over-tier-a'));
-    await userEvent.click(screen.getByRole('button', { name: 'Leave tier-a' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Leave tier-a' }));
     fireEvent.dragOver(
       getParentElement(screen.getByTestId('item-tier-item-b')),
     );
     fireEvent.drop(getParentElement(screen.getByTestId('item-tier-item-b')));
-    await userEvent.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Pointer end tier-item-a' }),
     );
 
-    await userEvent.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Pick up tier-item-a' }),
     );
-    await userEvent.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Move right tier-item-a' }),
     );
-    await userEvent.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Pick up tier-item-a' }),
     );
-    await userEvent.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Move down tier-item-a' }),
     );
-    await userEvent.click(
-      screen.getByRole('button', { name: 'Drop tier-item-a' }),
-    );
+    fireEvent.click(screen.getByRole('button', { name: 'Drop tier-item-a' }));
 
-    await userEvent.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Pointer start tier-item-a' }),
     );
     const unassignedDropZone = getUnassignedDropZone();
@@ -491,7 +484,7 @@ describe('TierList', () => {
     expect(hookState.moveItem).toHaveBeenCalledWith('tier-item-a', null, 1);
   });
 
-  it('covers item drag-over branches and tier drop callbacks', async () => {
+  it('covers item drag-over branches and tier drop callbacks', () => {
     renderSubject();
     const hookState = getHookState();
     const tierItemA = screen.getByTestId('item-tier-item-a');
@@ -504,7 +497,7 @@ describe('TierList', () => {
       'false',
     );
 
-    await userEvent.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Pointer start tier-item-a' }),
     );
 
@@ -526,18 +519,16 @@ describe('TierList', () => {
       'true',
     );
 
-    await userEvent.click(
-      screen.getByRole('button', { name: 'Drop on tier-b' }),
-    );
+    fireEvent.click(screen.getByRole('button', { name: 'Drop on tier-b' }));
 
     expect(hookState.moveItem).toHaveBeenCalledWith('tier-item-a', 'tier-b', 0);
   });
 
-  it('ignores pointer-source drag starts and item drops without an active drag', async () => {
+  it('ignores pointer-source drag starts and item drops without an active drag', () => {
     renderSubject();
     const hookState = getHookState();
 
-    await userEvent.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Pointer source tier-item-a' }),
     );
     fireEvent.drop(getParentElement(screen.getByTestId('item-tier-item-b')));
@@ -549,38 +540,34 @@ describe('TierList', () => {
     );
   });
 
-  it('guards keyboard movement and cancel paths that should not dispatch moves', async () => {
+  it('guards keyboard movement and cancel paths that should not dispatch moves', () => {
     renderSubject();
     const hookState = getHookState();
 
-    await userEvent.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Pick up tier-item-a' }),
     );
-    await userEvent.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Move left tier-item-a' }),
     );
-    await userEvent.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Move up tier-item-a' }),
     );
-    await userEvent.click(
-      screen.getByRole('button', { name: 'Cancel tier-item-a' }),
-    );
+    fireEvent.click(screen.getByRole('button', { name: 'Cancel tier-item-a' }));
 
     expect(hookState.moveItem).not.toHaveBeenCalled();
   });
 
-  it('clears drag state when dropping onto the current slot or an unknown item id', async () => {
+  it('clears drag state when dropping onto the current slot or an unknown item id', () => {
     renderSubject();
     const hookState = getHookState();
 
-    await userEvent.click(
-      screen.getByRole('button', { name: 'Drop on tier-b' }),
-    );
-    await userEvent.click(
+    fireEvent.click(screen.getByRole('button', { name: 'Drop on tier-b' }));
+    fireEvent.click(
       screen.getByRole('button', { name: 'Pointer start tier-item-a' }),
     );
     fireEvent.drop(getParentElement(screen.getByTestId('item-tier-item-a')));
-    await userEvent.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Pointer end tier-item-a' }),
     );
 
@@ -591,14 +578,14 @@ describe('TierList', () => {
     );
   });
 
-  it('preserves unrelated hover and reorder state when another tier receives drag leave', async () => {
+  it('preserves unrelated hover and reorder state when another tier receives drag leave', () => {
     renderSubject();
     const tierItemB = screen.getByTestId('item-tier-item-b');
 
-    await userEvent.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Pointer start tier-item-a' }),
     );
-    await userEvent.click(screen.getByRole('button', { name: 'Enter tier-a' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Enter tier-a' }));
     fireEvent.dragOver(getParentElement(tierItemB));
 
     expect(screen.getByTestId('tier-tier-a')).toHaveAttribute(
@@ -610,7 +597,7 @@ describe('TierList', () => {
       'true',
     );
 
-    await userEvent.click(screen.getByRole('button', { name: 'Leave tier-b' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Leave tier-b' }));
 
     expect(screen.getByTestId('tier-tier-a')).toHaveAttribute(
       'data-is-over',
@@ -622,17 +609,15 @@ describe('TierList', () => {
     );
   });
 
-  it('guards idle keyboard actions and vertical boundary moves', async () => {
+  it('guards idle keyboard actions and vertical boundary moves', () => {
     renderSubject();
     const hookState = getHookState();
 
-    await userEvent.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Move right tier-item-a' }),
     );
-    await userEvent.click(
-      screen.getByRole('button', { name: 'Drop tier-item-a' }),
-    );
-    await userEvent.click(
+    fireEvent.click(screen.getByRole('button', { name: 'Drop tier-item-a' }));
+    fireEvent.click(
       screen.getByRole('button', { name: 'Pick up unassigned-item' }),
     );
 
@@ -641,13 +626,13 @@ describe('TierList', () => {
       'true',
     );
 
-    await userEvent.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Pointer end unassigned-item' }),
     );
-    await userEvent.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Move up unassigned-item' }),
     );
-    await userEvent.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Move right unassigned-item' }),
     );
 
@@ -658,15 +643,15 @@ describe('TierList', () => {
     expect(hookState.moveItem).not.toHaveBeenCalled();
   });
 
-  it('handles active drops into the unassigned grid', async () => {
+  it('handles active drops into the unassigned grid', () => {
     renderSubject();
     const hookState = getHookState();
 
-    await userEvent.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Pointer start unassigned-item' }),
     );
     fireEvent.drop(getUnassignedDropZone());
-    await userEvent.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Pointer end unassigned-item' }),
     );
 
@@ -689,7 +674,7 @@ describe('TierList', () => {
     renderSubject({ totalItems: 99 });
     const hookState = getHookState();
 
-    await userEvent.click(screen.getByRole('button', { name: 'Select files' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Select files' }));
 
     await waitFor(() => {
       expect(hookState.addItem).toHaveBeenCalledTimes(1);
@@ -718,7 +703,7 @@ describe('TierList', () => {
     renderSubject();
     const hookState = getHookState();
 
-    await userEvent.click(screen.getByRole('button', { name: 'Select files' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Select files' }));
 
     await waitFor(() => {
       expect(hookState.addItem).toHaveBeenCalledTimes(1);

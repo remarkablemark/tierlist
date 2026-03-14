@@ -4,7 +4,6 @@
  */
 
 import { fireEvent, render, screen } from '@testing-library/react';
-import { userEvent } from '@testing-library/user-event';
 import { TierListProvider } from 'src/store/tierListContext';
 import {
   DEFAULT_SETTINGS,
@@ -55,116 +54,110 @@ function TierListWrapper({ children }: { children: React.ReactNode }) {
   return <TierListProvider>{children}</TierListProvider>;
 }
 
+function renderTierList(initialTierList?: TierListData) {
+  if (initialTierList) {
+    return render(<TierList />, {
+      wrapper: ({ children }) => (
+        <TierListProvider initialTierList={initialTierList}>
+          {children}
+        </TierListProvider>
+      ),
+    });
+  }
+
+  return render(<TierList />, { wrapper: TierListWrapper });
+}
+
 describe('TierList', () => {
   it('renders with header', () => {
-    render(<TierList />, { wrapper: TierListWrapper });
+    renderTierList();
     expect(screen.getByText('Tier List')).toBeInTheDocument();
   });
 
   it('renders unassigned items area', () => {
-    render(<TierList />, { wrapper: TierListWrapper });
+    renderTierList();
     expect(screen.getByText('Unassigned Items')).toBeInTheDocument();
   });
 
   it('has undo/redo buttons', () => {
-    render(<TierList />, { wrapper: TierListWrapper });
+    renderTierList();
     expect(screen.getByRole('button', { name: 'Undo' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Redo' })).toBeInTheDocument();
   });
 
   it('has add tier button', () => {
-    render(<TierList />, { wrapper: TierListWrapper });
+    renderTierList();
     expect(
       screen.getByRole('button', { name: 'Add tier' }),
     ).toBeInTheDocument();
   });
 
-  it('allows adding a new tier', async () => {
-    render(<TierList />, { wrapper: TierListWrapper });
-    const addTierButton = screen.getByRole('button', { name: 'Add tier' });
-    await userEvent.click(addTierButton);
+  it('allows adding a new tier', () => {
+    renderTierList();
+    fireEvent.click(screen.getByRole('button', { name: 'Add tier' }));
     const tierInputs = screen.getAllByRole('textbox', {
       name: /tier label/i,
     });
     expect(tierInputs.length).toBeGreaterThan(0);
   });
 
-  it('supports undo/redo', async () => {
-    render(<TierList />, { wrapper: TierListWrapper });
-    const addTierButton = screen.getByRole('button', { name: 'Add tier' });
-    await userEvent.click(addTierButton);
+  it('supports undo/redo', () => {
+    renderTierList();
+    fireEvent.click(screen.getByRole('button', { name: 'Add tier' }));
     const undoButton = screen.getByRole('button', { name: 'Undo' });
-    await userEvent.click(undoButton);
+    fireEvent.click(undoButton);
     expect(undoButton).toBeDisabled();
   });
 
   it('shows item limit warning when 50+ items', () => {
     const tierListWith50Items = createMockTierListWithItems(50);
-    render(<TierList />, {
-      wrapper: ({ children }) => (
-        <TierListProvider initialTierList={tierListWith50Items}>
-          {children}
-        </TierListProvider>
-      ),
-    });
+    renderTierList(tierListWith50Items);
     expect(screen.getByText('Unassigned Items')).toBeInTheDocument();
   });
 
   it('shows maximum items reached warning when 100+ items', () => {
     const tierListWith100Items = createMockTierListWithItems(100);
-    render(<TierList />, {
-      wrapper: ({ children }) => (
-        <TierListProvider initialTierList={tierListWith100Items}>
-          {children}
-        </TierListProvider>
-      ),
-    });
+    renderTierList(tierListWith100Items);
     expect(screen.getByText('Unassigned Items')).toBeInTheDocument();
   });
 
   it('does not show warnings when under 50 items', () => {
     const tierListWith10Items = createMockTierListWithItems(10);
-    render(<TierList />, {
-      wrapper: ({ children }) => (
-        <TierListProvider initialTierList={tierListWith10Items}>
-          {children}
-        </TierListProvider>
-      ),
-    });
+    renderTierList(tierListWith10Items);
     expect(
       screen.queryByText(/Warning:.*items may affect performance/i),
     ).not.toBeInTheDocument();
   });
 
   it('deletes a tier from the list', () => {
-    render(<TierList />, { wrapper: TierListWrapper });
+    renderTierList();
     const deleteButtons = screen.getAllByRole('button', {
       name: /delete tier/i,
     });
     expect(deleteButtons.length).toBeGreaterThan(0);
   });
 
-  it('customizes tier label', async () => {
-    render(<TierList />, { wrapper: TierListWrapper });
+  it('customizes tier label', () => {
+    renderTierList();
     const labelInputs = screen.getAllByRole('textbox', {
       name: /tier label/i,
     });
     const firstInput = labelInputs[0];
-    await userEvent.clear(firstInput);
-    await userEvent.type(firstInput, 'Custom Label');
+    fireEvent.change(firstInput, { target: { value: 'Custom Label' } });
+    fireEvent.blur(firstInput);
     expect(firstInput).toHaveValue('Custom Label');
   });
 
-  it('resets tier to default values', async () => {
-    render(<TierList />, { wrapper: TierListWrapper });
+  it('resets tier to default values', () => {
+    renderTierList();
     const labelInputs = screen.getAllByRole('textbox', {
       name: /tier label/i,
     });
     const firstInput = labelInputs[0];
-    await userEvent.clear(firstInput);
-    await userEvent.type(firstInput, 'Custom Label');
+    fireEvent.change(firstInput, { target: { value: 'Custom Label' } });
+    fireEvent.blur(firstInput);
     const resetButtons = screen.getAllByRole('button', { name: /reset tier/i });
-    await userEvent.click(resetButtons[0]);
+    fireEvent.click(resetButtons[0]);
     const updatedLabelInputs = screen.getAllByRole('textbox', {
       name: /tier label/i,
     });
@@ -183,18 +176,12 @@ describe('TierList', () => {
         metadata: {},
       },
     ];
-    render(<TierList />, {
-      wrapper: ({ children }) => (
-        <TierListProvider initialTierList={tierListWithItems}>
-          {children}
-        </TierListProvider>
-      ),
-    });
+    renderTierList(tierListWithItems);
     expect(screen.getByText('Unassigned Items')).toBeInTheDocument();
   });
 
   it('ignores drops when no item is active', () => {
-    render(<TierList />, { wrapper: TierListWrapper });
+    renderTierList();
     const unassignedArea = screen.getByText('Unassigned Items').closest('div');
     if (unassignedArea) {
       fireEvent.dragOver(unassignedArea);
