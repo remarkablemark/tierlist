@@ -143,10 +143,7 @@ export function TierList() {
     updateTierColor(tierId, color);
   };
 
-  const handleItemDropToUnassigned = (
-    itemId: string,
-    /* eslint-disable-line @typescript-eslint/no-unused-vars */ _index: number,
-  ) => {
+  const handleItemDropToUnassigned = (itemId: string) => {
     moveDraggedItem(itemId, null);
   };
 
@@ -415,6 +412,7 @@ export function TierList() {
             Maximum 100 items reached. Please remove items before adding more.
           </div>
         )}
+
         {hasItemLimitWarning && !hasReachedItemLimit && (
           <div className="mb-4 rounded-md bg-yellow-100 p-3 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400">
             Warning: {totalItems} items may affect performance.
@@ -507,10 +505,7 @@ export function TierList() {
 
               /* v8 ignore start */
               if (draggedItem) {
-                handleItemDropToUnassigned(
-                  draggedItem.id,
-                  tierList.unassignedItems.length,
-                );
+                handleItemDropToUnassigned(draggedItem.id);
               }
               /* v8 ignore stop */
             }}
