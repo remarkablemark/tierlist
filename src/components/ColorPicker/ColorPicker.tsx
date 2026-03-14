@@ -3,7 +3,7 @@
  * @packageDocumentation
  */
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { COLOR_PALETTE, type ColorPickerProps } from './ColorPicker.types';
 
@@ -16,6 +16,20 @@ export function ColorPicker({
   onToggle,
 }: ColorPickerProps): React.ReactElement {
   const [customColor, setCustomColor] = useState(color);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        onToggle?.();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [onToggle]);
 
   const handleColorClick = (
     paletteColor: string,
@@ -41,7 +55,10 @@ export function ColorPicker({
   };
 
   return (
-    <div className="absolute right-0 z-50 mt-2 w-[220px] rounded-md border border-slate-200 bg-white p-3 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+    <div
+      ref={ref}
+      className="absolute right-0 z-50 mt-2 w-[220px] rounded-md border border-slate-200 bg-white p-3 shadow-lg dark:border-slate-700 dark:bg-slate-800"
+    >
       <div className="grid grid-cols-5 gap-2">
         {COLOR_PALETTE.map((paletteColor, index) => (
           <button

@@ -114,4 +114,27 @@ describe('ColorPicker', () => {
 
     expect(onColorSelect).toHaveBeenCalledWith('#123456');
   });
+
+  it('calls onToggle when clicking outside the color picker', () => {
+    const onToggle = vi.fn();
+    render(<ColorPicker {...mockProps} onToggle={onToggle} />);
+
+    // Simulate clicking outside the component
+    fireEvent.mouseDown(document.body);
+
+    expect(onToggle).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not call onToggle when clicking inside the color picker', async () => {
+    const user = userEvent.setup();
+    const onToggle = vi.fn();
+    render(<ColorPicker {...mockProps} onToggle={onToggle} />);
+
+    // Click inside the color picker (on a color button)
+    const colorButton = screen.getByRole('button', { name: /#ff0000/i });
+    await user.click(colorButton);
+
+    // onToggle should only be called once from the color button click
+    expect(onToggle).toHaveBeenCalledTimes(1);
+  });
 });
