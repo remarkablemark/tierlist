@@ -27,6 +27,7 @@ interface MockUseTierListResult {
   moveItem: ReturnType<typeof vi.fn>;
   redo: ReturnType<typeof vi.fn>;
   resetTier: ReturnType<typeof vi.fn>;
+  reorderTiers: ReturnType<typeof vi.fn>;
   tierList: {
     name: string;
     settings: {
@@ -94,6 +95,8 @@ vi.mock('../Tier', () => ({
     onItemDrop,
     onItemReorder,
     onLabelChange,
+    onMoveDown,
+    onMoveUp,
     onReset,
     tier,
   }: {
@@ -108,6 +111,8 @@ vi.mock('../Tier', () => ({
     onItemDrop: (itemId: string, index: number) => void;
     onItemReorder: (itemId: string, newIndex: number) => void;
     onLabelChange: (label: string) => void;
+    onMoveDown?: () => void;
+    onMoveUp?: () => void;
     onReset: () => void;
     tier: Tier;
   }): ReactElement => (
@@ -153,6 +158,16 @@ vi.mock('../Tier', () => ({
       >
         Reorder {tier.id}
       </button>
+      {onMoveUp && (
+        <button type="button" onClick={onMoveUp}>
+          Move up {tier.id}
+        </button>
+      )}
+      {onMoveDown && (
+        <button type="button" onClick={onMoveDown}>
+          Move down {tier.id}
+        </button>
+      )}
       <button type="button" onClick={onItemDragEnter}>
         Enter {tier.id}
       </button>
@@ -334,6 +349,7 @@ function createMockHookResult(
     moveItem: vi.fn(),
     redo: vi.fn(),
     resetTier: vi.fn(),
+    reorderTiers: vi.fn(),
     tierList: {
       name: 'Mock Tier List',
       settings: {
@@ -762,5 +778,33 @@ describe('TierList', () => {
     expect(
       within(tierSection).getByRole('button', { name: 'Change label tier-a' }),
     ).toBeVisible();
+  });
+
+  it('calls reorderTiers when move up button is clicked', () => {
+    renderSubject();
+    const hookState = getHookState();
+
+    const tierSection = screen.getByTestId('tier-tier-a');
+    const moveUpButton = within(tierSection).getByRole('button', {
+      name: 'Move up tier-a',
+    });
+
+    fireEvent.click(moveUpButton);
+
+    expect(hookState.reorderTiers).toHaveBeenCalledWith('tier-a', -1);
+  });
+
+  it('calls reorderTiers when move down button is clicked', () => {
+    renderSubject();
+    const hookState = getHookState();
+
+    const tierSection = screen.getByTestId('tier-tier-a');
+    const moveDownButton = within(tierSection).getByRole('button', {
+      name: 'Move down tier-a',
+    });
+
+    fireEvent.click(moveDownButton);
+
+    expect(hookState.reorderTiers).toHaveBeenCalledWith('tier-a', 1);
   });
 });

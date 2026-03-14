@@ -31,6 +31,7 @@ export function TierList({
     updateTierLabel,
     updateTierColor,
     resetTier,
+    reorderTiers,
     addItem,
     deleteItem,
     moveItem,
@@ -466,6 +467,12 @@ export function TierList({
             }}
             onDelete={() => {
               handleDeleteTier(tier.id);
+            }}
+            onMoveUp={() => {
+              reorderTiers(tier.id, index - 1);
+            }}
+            onMoveDown={() => {
+              reorderTiers(tier.id, index + 1);
             }}
             onItemDrop={(itemId) => {
               handleItemDropToTier(itemId, tier.id);

@@ -38,6 +38,8 @@ const mockProps = {
   onColorChange: vi.fn(),
   onReset: vi.fn(),
   onDelete: vi.fn(),
+  onMoveUp: vi.fn(),
+  onMoveDown: vi.fn(),
   onItemDrop: vi.fn(),
   onItemReorder: vi.fn(),
   itemSize: 'medium' as const,
@@ -401,8 +403,7 @@ describe('Tier', () => {
     const moveUpButton = screen.getByRole('button', { name: /move up/i });
     await user.click(moveUpButton);
 
-    // Button click should be handled (function is a no-op but button works)
-    expect(moveUpButton).toBeInTheDocument();
+    expect(mockProps.onMoveUp).toHaveBeenCalledTimes(1);
   });
 
   it('calls handleMoveDown when move down button is clicked', async () => {
@@ -412,8 +413,7 @@ describe('Tier', () => {
     const moveDownButton = screen.getByRole('button', { name: /move down/i });
     await user.click(moveDownButton);
 
-    // Button click should be handled (function is a no-op but button works)
-    expect(moveDownButton).toBeInTheDocument();
+    expect(mockProps.onMoveDown).toHaveBeenCalledTimes(1);
   });
 
   it('renders item with image when imageUrl is provided', () => {

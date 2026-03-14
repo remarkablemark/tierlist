@@ -21,6 +21,8 @@ export function Tier({
   onColorChange,
   onReset,
   onDelete,
+  onMoveUp,
+  onMoveDown,
   onItemDrop,
   activeItemId = null,
   onItemDragEnter,
@@ -47,11 +49,11 @@ export function Tier({
   };
 
   const handleMoveUp = () => {
-    // Keyboard reordering would be handled by parent
+    onMoveUp?.();
   };
 
   const handleMoveDown = () => {
-    // Keyboard reordering would be handled by parent
+    onMoveDown?.();
   };
 
   const dropZoneClasses = isOver

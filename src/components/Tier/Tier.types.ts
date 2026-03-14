@@ -48,6 +48,14 @@ export interface TierProps {
    */
   onDelete: () => void;
   /**
+   * Callback when tier is moved up.
+   */
+  onMoveUp?: () => void;
+  /**
+   * Callback when tier is moved down.
+   */
+  onMoveDown?: () => void;
+  /**
    * Callback when item is dropped on this tier.
    */
   onItemDrop: (itemId: string, index: number) => void;
