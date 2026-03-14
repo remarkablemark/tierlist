@@ -410,7 +410,7 @@ describe('TierList', () => {
   it('renders with header', () => {
     render(<TierList />, { wrapper: TestWrapper });
 
-    expect(screen.getByText('Untitled Tier List')).toBeInTheDocument();
+    expect(screen.getByText('Tier List')).toBeInTheDocument();
   });
 
   it('renders unassigned items area', () => {

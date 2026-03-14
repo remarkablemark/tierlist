@@ -10,7 +10,7 @@ describe('createDefaultTierList', () => {
   it('creates a tier list with default name', () => {
     const tierList = createDefaultTierList();
 
-    expect(tierList.name).toBe('Untitled Tier List');
+    expect(tierList.name).toBe('Tier List');
   });
 
   it('creates a tier list with custom name', () => {

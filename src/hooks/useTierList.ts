@@ -254,7 +254,7 @@ export function useTierList(): UseTierListReturn {
       const now = Date.now();
       const newTierList: TierList = {
         id: generateId(),
-        name: name ?? 'Untitled Tier List',
+        name: name ?? 'Tier List',
         createdAt: now,
         updatedAt: now,
         tiers: [],

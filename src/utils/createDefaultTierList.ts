@@ -14,10 +14,10 @@ import { generateId } from './generateId';
 
 /**
  * Creates a new tier list with default tiers.
- * @param name - Optional name for the tier list. Defaults to 'Untitled Tier List'.
+ * @param name - Optional name for the tier list. Defaults to 'Tier List'.
  * @returns A new tier list with default configuration.
  */
-export function createDefaultTierList(name = 'Untitled Tier List'): TierList {
+export function createDefaultTierList(name = 'Tier List'): TierList {
   const now = Date.now();
   const tiers: Tier[] = DEFAULT_TIERS.map((defaultTier) => ({
     id: generateId(),

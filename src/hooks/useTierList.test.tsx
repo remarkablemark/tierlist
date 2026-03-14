@@ -775,7 +775,7 @@ describe('useTierList', () => {
         result.current.createNew();
       });
 
-      expect(result.current.tierList.name).toBe('Untitled Tier List');
+      expect(result.current.tierList.name).toBe('Tier List');
       expect(result.current.tierList.tiers).toEqual([]);
       expect(result.current.tierList.unassignedItems).toEqual([]);
     });

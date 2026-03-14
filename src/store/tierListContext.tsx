@@ -51,7 +51,7 @@ function createDefaultTierList(): TierList {
   const now = Date.now();
   return {
     id: generateId(),
-    name: 'Untitled Tier List',
+    name: 'Tier List',
     createdAt: now,
     updatedAt: now,
     tiers: DEFAULT_TIERS.map((t) => ({ ...t, id: generateId() })),

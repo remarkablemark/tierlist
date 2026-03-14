@@ -577,7 +577,7 @@ const DEFAULT_TIERS: Omit<Tier, 'id'>[] = [
 ### Default Tier List
 
 ```typescript
-function createDefaultTierList(name: string = 'Untitled Tier List'): TierList {
+function createDefaultTierList(name: string = 'Tier List'): TierList {
   const now = Date.now();
   return {
     id: crypto.randomUUID(),

@@ -74,7 +74,7 @@ describe('TierListContext', () => {
       const { result } = renderHook(() => useTierListContext(), { wrapper });
 
       const tierList = result.current.state.present;
-      expect(tierList.name).toBe('Untitled Tier List');
+      expect(tierList.name).toBe('Tier List');
       expect(tierList.tiers).toHaveLength(DEFAULT_TIERS.length);
       expect(tierList.settings).toEqual(DEFAULT_SETTINGS);
     });
