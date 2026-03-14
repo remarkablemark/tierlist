@@ -162,15 +162,6 @@ export function TierList() {
     moveDraggedItem(itemId, targetTierId, targetIndex);
   };
 
-  const handleItemReorder = (
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _itemId: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _newIndex: number,
-  ) => {
-    // Reorder within unassigned area (not implemented yet)
-  };
-
   const handleFileSelect = (files: File[]) => {
     void (async () => {
       const availableSlots = Math.max(0, 100 - totalItems);
@@ -476,7 +467,6 @@ export function TierList() {
               setOverTierId(tier.id);
               setReorderTarget(null);
             }}
-            onItemReorder={handleItemReorder}
             itemSize={tierList.settings.itemSize}
             showLabels={tierList.settings.showItemLabels}
           >

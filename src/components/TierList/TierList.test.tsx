@@ -107,7 +107,7 @@ vi.mock('../Tier', () => ({
     onItemDragLeave?: () => void;
     onItemDragOver?: React.DragEventHandler<HTMLDivElement>;
     onItemDrop: (itemId: string, index: number) => void;
-    onItemReorder: (itemId: string, newIndex: number) => void;
+    onItemReorder?: (itemId: string, newIndex: number) => void;
     onLabelChange: (label: string) => void;
     onMoveDown?: () => void;
     onMoveUp?: () => void;
@@ -147,7 +147,7 @@ vi.mock('../Tier', () => ({
       <button
         type="button"
         onClick={() => {
-          onItemReorder(tier.id, 1);
+          onItemReorder?.(tier.id, 1);
         }}
       >
         Reorder {tier.id}

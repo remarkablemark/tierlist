@@ -74,7 +74,7 @@ export interface TierProps {
   /**
    * Callback when item is reordered within this tier.
    */
-  onItemReorder: (itemId: string, newIndex: number) => void;
+  onItemReorder?: (itemId: string, newIndex: number) => void;
   /**
    * Optional custom item content.
    */
