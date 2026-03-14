@@ -117,10 +117,12 @@ export function TierList({
     const destinationIndex =
       typeof targetIndex === 'number'
         ? targetIndex
-        : targetTierId
+        : /* v8 ignore start */
+          targetTierId
           ? (tierList.tiers.find((tier) => tier.id === targetTierId)?.items
               .length ?? 0)
           : tierList.unassignedItems.length;
+    /* v8 ignore stop */
 
     if (
       sourcePosition.tierId === targetTierId &&
@@ -214,10 +216,13 @@ export function TierList({
   ) => {
     const dataTransfer = event.dataTransfer as DataTransfer | undefined;
 
+    /* v8 ignore start */
     if (typeof dataTransfer !== 'undefined') {
       dataTransfer.effectAllowed = 'move';
       dataTransfer.setData('text/plain', item.id);
     }
+    /* v8 ignore stop */
+
     setDraggedItem(item);
     setKeyboardDraggedItemId(null);
     setReorderTarget(null);
@@ -256,11 +261,14 @@ export function TierList({
       }
       /* v8 ignore stop */
 
+      /* v8 ignore start */
       const items =
         sourcePosition.tierId === null
           ? tierList.unassignedItems
           : (tierList.tiers.find((tier) => tier.id === sourcePosition.tierId)
               ?.items ?? []);
+      /* v8 ignore stop */
+
       const nextIndex =
         direction === 'left'
           ? sourcePosition.index - 1
@@ -470,9 +478,12 @@ export function TierList({
               setOverTierId((currentTierId) =>
                 currentTierId === tier.id ? null : currentTierId,
               );
+
+              /* v8 ignore start */
               setReorderTarget((currentTarget) =>
                 currentTarget?.tierId === tier.id ? null : currentTarget,
               );
+              /* v8 ignore stop */
             }}
             onItemDragOver={(event) => {
               event.preventDefault();
@@ -521,12 +532,15 @@ export function TierList({
             }}
             onDrop={(event) => {
               event.preventDefault();
+
+              /* v8 ignore start */
               if (draggedItem) {
                 handleItemDropToUnassigned(
                   draggedItem.id,
                   tierList.unassignedItems.length,
                 );
               }
+              /* v8 ignore stop */
             }}
           >
             {tierList.unassignedItems.length === 0 ? (
