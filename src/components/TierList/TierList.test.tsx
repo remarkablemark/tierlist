@@ -483,32 +483,30 @@ describe('TierList', () => {
     ).toBeInTheDocument();
   });
 
-  it('allows adding a new tier', async () => {
-    const user = userEvent.setup();
+  it('allows adding a new tier', () => {
     render(<TierList />, { wrapper: TestWrapper });
 
     const addTierButton = screen.getByRole('button', { name: /add tier/i });
-    await user.click(addTierButton);
+    fireEvent.click(addTierButton);
 
     // Verify undo is now enabled (indicating state change)
     const undoButton = screen.getByRole('button', { name: /undo/i });
     expect(undoButton).toBeEnabled();
   });
 
-  it('supports undo/redo', async () => {
-    const user = userEvent.setup();
+  it('supports undo/redo', () => {
     render(<TierList />, { wrapper: TestWrapper });
 
     // Add a tier
     const addTierButton = screen.getByRole('button', { name: /add tier/i });
-    await user.click(addTierButton);
+    fireEvent.click(addTierButton);
 
     // Undo button should be enabled
     const undoButton = screen.getByRole('button', { name: /undo/i });
     expect(undoButton).toBeEnabled();
 
     // Click undo
-    await user.click(undoButton);
+    fireEvent.click(undoButton);
 
     // Redo button should be enabled
     const redoButton = screen.getByRole('button', { name: /redo/i });
@@ -892,8 +890,7 @@ describe('TierList', () => {
     });
   });
 
-  it('deletes a tier from the list', async () => {
-    const user = userEvent.setup();
+  it('deletes a tier from the list', () => {
     const mockTierList = createMockTierListWithItems(0);
     render(<TierList />, {
       wrapper: (props) => (
@@ -903,15 +900,12 @@ describe('TierList', () => {
 
     expect(screen.getAllByRole('region')).toHaveLength(7);
 
-    await user.click(
-      screen.getAllByRole('button', { name: /delete tier/i })[0],
-    );
+    fireEvent.click(screen.getAllByRole('button', { name: /delete tier/i })[0]);
 
     expect(screen.getAllByRole('region')).toHaveLength(6);
   });
 
-  it('deletes an item from the unassigned area', async () => {
-    const user = userEvent.setup();
+  it('deletes an item from the unassigned area', () => {
     const mockTierList = createMockTierListWithUnassignedItems(1);
     render(<TierList />, {
       wrapper: (props) => (
@@ -919,7 +913,7 @@ describe('TierList', () => {
       ),
     });
 
-    await user.click(screen.getByRole('button', { name: /delete item/i }));
+    fireEvent.click(screen.getByRole('button', { name: /delete item/i }));
 
     expect(screen.getByText('No unassigned items')).toBeInTheDocument();
   });
@@ -1144,8 +1138,7 @@ describe('TierList', () => {
     expect(screen.getByText('No unassigned items')).toBeInTheDocument();
   });
 
-  it('customizes tier color and persist the change', async () => {
-    const user = userEvent.setup();
+  it('customizes tier color and persist the change', () => {
     const mockTierList = createMockTierListWithItems(0);
     render(<TierList />, {
       wrapper: (props) => (
@@ -1157,21 +1150,20 @@ describe('TierList', () => {
     const colorPickerButton = screen.getAllByRole('button', {
       name: /tier color/i,
     })[0];
-    await user.click(colorPickerButton);
+    fireEvent.click(colorPickerButton);
 
     // Select a different color from palette
     const colorOption = screen.getByRole('button', {
       name: /#ff0000/i,
     });
-    await user.click(colorOption);
+    fireEvent.click(colorOption);
 
     // Tier should have new background color
     const tier = screen.getAllByRole('region')[0];
     expect(tier).toHaveStyle('background-color: #ff0000');
   });
 
-  it('customizes tier label and persist the change', async () => {
-    const user = userEvent.setup();
+  it('customizes tier label and persist the change', () => {
     const mockTierList = createMockTierListWithItems(0);
     render(<TierList />, {
       wrapper: (props) => (
@@ -1184,22 +1176,14 @@ describe('TierList', () => {
     const firstLabelInput = labelInputs[0];
 
     // Change the label
-    await user.clear(firstLabelInput);
-    await user.type(firstLabelInput, 'Custom Tier');
-
-    // Wait for React to process state updates
-    await waitFor(() => {
-      expect(firstLabelInput).toHaveValue('Custom Tier');
-    });
-
-    await user.tab(); // Blur to trigger change
+    fireEvent.change(firstLabelInput, { target: { value: 'Custom Tier' } });
+    fireEvent.blur(firstLabelInput);
 
     // Label should be updated
     expect(firstLabelInput).toHaveValue('Custom Tier');
   });
 
-  it('resets tier to default values', async () => {
-    const user = userEvent.setup();
+  it('resets tier to default values', () => {
     const mockTierList = createMockTierListWithItems(0);
     // Start with custom tier - modify the first tier's label and color
     const originalFirstTier = mockTierList.tiers[0];
@@ -1221,7 +1205,7 @@ describe('TierList', () => {
     // Find reset button for first tier
     const resetButtons = screen.getAllByRole('button', { name: /reset tier/i });
     const firstResetButton = resetButtons[0];
-    await user.click(firstResetButton);
+    fireEvent.click(firstResetButton);
 
     // After reset, the tier should use default label from DEFAULT_TIERS
     // The component re-renders with updated tier data
@@ -1249,18 +1233,15 @@ describe('TierList mocked wiring', () => {
   });
 
   it('invokes persistence callbacks exposed through save and load controls', async () => {
-    const user = userEvent.setup();
     const { createNewSpy, deleteSavedSpy, loadSpy, saveSpy } =
       await renderMockedTierList();
 
-    await user.click(screen.getByRole('button', { name: 'Trigger Save' }));
-    await user.click(screen.getByRole('button', { name: 'Trigger Load' }));
-    await user.click(
+    fireEvent.click(screen.getByRole('button', { name: 'Trigger Save' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Trigger Load' }));
+    fireEvent.click(
       screen.getByRole('button', { name: 'Trigger Delete Saved' }),
     );
-    await user.click(
-      screen.getByRole('button', { name: 'Trigger Create New' }),
-    );
+    fireEvent.click(screen.getByRole('button', { name: 'Trigger Create New' }));
 
     expect(saveSpy).toHaveBeenCalledTimes(1);
     expect(loadSpy).toHaveBeenCalledWith('saved-tier-id');
@@ -1284,12 +1265,11 @@ describe('TierList mocked wiring', () => {
   });
 
   it('surfaces export failures from the export utility', async () => {
-    const user = userEvent.setup();
     await renderMockedTierList({
       exportResult: { success: false, error: 'PNG export failed' },
     });
 
-    await user.click(screen.getByRole('button', { name: /export as png/i }));
+    fireEvent.click(screen.getByRole('button', { name: /export as png/i }));
 
     expect(await screen.findByRole('alert')).toHaveTextContent(
       'PNG export failed',
@@ -1312,7 +1292,7 @@ describe('TierList mocked wiring', () => {
       exportResult: { success: false },
     });
 
-    await user.click(screen.getByRole('button', { name: /export as png/i }));
+    fireEvent.click(screen.getByRole('button', { name: /export as png/i }));
     expect(await screen.findByRole('alert')).toHaveTextContent('Export failed');
   });
 
@@ -1327,7 +1307,6 @@ describe('TierList mocked wiring', () => {
   });
 
   it('covers internal drag guard branches through mocked item controls', async () => {
-    const user = userEvent.setup();
     const now = Date.now();
     const harnessTierList: TierListData = {
       id: generateId(),
@@ -1365,46 +1344,46 @@ describe('TierList mocked wiring', () => {
 
     const { moveItemSpy } = await renderMockedDragHarness(harnessTierList);
 
-    await user.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Move Up Harness Item 1' }),
     );
-    await user.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Confirm Drop Harness Item 1' }),
     );
-    await user.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Drop Missing Item S' }),
     );
-    await user.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Trigger Reorder Handler S' }),
     );
-    await user.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Pointer Start Harness Item 1' }),
     );
-    await user.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Pointer End Harness Item 1' }),
     );
-    await user.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Keyboard Start Harness Item 1' }),
     );
-    await user.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Move Left Harness Item 1' }),
     );
-    await user.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Move Up Harness Item 1' }),
     );
-    await user.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Cancel Drop Harness Item 1' }),
     );
-    await user.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Keyboard Start Harness Item 1' }),
     );
-    await user.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Pointer End Harness Item 1' }),
     );
-    await user.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Keyboard Start Harness Item 1' }),
     );
-    await user.click(
+    fireEvent.click(
       screen.getByRole('button', { name: 'Move Right Harness Item 1' }),
     );
 
