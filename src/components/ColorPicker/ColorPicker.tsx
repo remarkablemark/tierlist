@@ -3,7 +3,7 @@
  * @packageDocumentation
  */
 
-import { type MouseEvent, useState } from 'react';
+import { useState } from 'react';
 
 import { COLOR_PALETTE, type ColorPickerProps } from './ColorPicker.types';
 
@@ -19,7 +19,7 @@ export function ColorPicker({
 
   const handleColorClick = (
     paletteColor: string,
-    event: MouseEvent<HTMLButtonElement>,
+    event: React.MouseEvent<HTMLButtonElement>,
   ) => {
     event.stopPropagation();
     onColorSelect(paletteColor);
@@ -32,7 +32,9 @@ export function ColorPicker({
     setCustomColor(event.target.value);
   };
 
-  const handleCustomColorSubmit = (event: MouseEvent<HTMLButtonElement>) => {
+  const handleCustomColorSubmit = (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => {
     event.stopPropagation();
     onColorSelect(customColor);
     onToggle?.();
@@ -60,15 +62,21 @@ export function ColorPicker({
       </div>
 
       <div className="mt-3 flex items-center gap-2">
-        <input
-          type="color"
-          value={customColor}
-          onChange={handleCustomColorChange}
-          className="h-8 w-8 cursor-pointer rounded-md border border-slate-300 dark:border-slate-600"
-          aria-label="Custom color picker"
-        />
+        <div
+          className="h-8 w-8 overflow-hidden rounded-md border-2 border-transparent transition-all hover:scale-110"
+          style={{ backgroundColor: customColor }}
+        >
+          <input
+            type="color"
+            value={customColor}
+            onChange={handleCustomColorChange}
+            className="h-[160%] w-[160%] -translate-x-[18%] -translate-y-[18%] cursor-pointer border-0 p-0"
+            aria-label="Custom color picker"
+          />
+        </div>
+
         <button
-          className="rounded-md bg-slate-100 px-3 py-1 text-slate-700 transition-colors hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
+          className="cursor-pointer rounded-md bg-slate-100 px-3 py-1 text-slate-700 transition-colors hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
           onClick={handleCustomColorSubmit}
           type="button"
         >
