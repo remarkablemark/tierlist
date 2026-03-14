@@ -281,10 +281,13 @@ describe('Tier', () => {
     expect(tier).toHaveClass('opacity-50');
   });
 
-  it('shows "Drop items here" when tier has no items', () => {
+  it('keeps the empty drop zone without placeholder copy when tier has no items', () => {
     render(<Tier {...mockProps} />);
 
-    expect(screen.getByText('Drop items here')).toBeInTheDocument();
+    expect(
+      screen.getByRole('list', { name: /tier items/i }),
+    ).toBeInTheDocument();
+    expect(screen.queryByText('Drop items here')).not.toBeInTheDocument();
   });
 
   it('calls onLabelChange on blur when label changes', async () => {

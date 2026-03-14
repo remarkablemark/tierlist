@@ -241,9 +241,7 @@ export function Tier({
         }}
       >
         {tier.items.length === 0 ? (
-          <div className="flex h-20 items-center justify-center text-slate-400 dark:text-slate-500">
-            <span className="text-sm">Drop items here</span>
-          </div>
+          <div className="h-20" aria-hidden="true" />
         ) : (
           <div className="flex flex-wrap gap-2">
             {children ??
