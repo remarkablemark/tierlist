@@ -138,7 +138,6 @@
 
 - No backend required - all data stored client-side in IndexedDB
 - React SPA with Vite build tool (from AGENTS.md)
-- Export to PNG happens client-side via canvas
 - Tab-local isolation means no server coordination needed (FR-020)
 
 **Structure**: Single-page application with feature-based organization
@@ -166,12 +165,10 @@
 - Use CSS transforms for drag animations (GPU accelerated)
 - Avoid state updates during drag - use @dnd-kit collision detection
 - Virtual scrolling NOT needed for <100 items (FR-020)
-- Canvas export off main thread if possible
 
 **Alternatives Considered**:
 
 - RequestAnimationFrame for animations: Rejected as @dnd-kit handles this
-- Web Workers for export: Could be added if needed, not in initial scope
 
 ---
 
@@ -300,28 +297,6 @@ async function saveTierList(tierList: TierList) {
   const tx = db.transaction('tierLists', 'readwrite');
   await tx.store.put(tierList);
   await tx.done;
-}
-```
-
-### Export-to-Image Pattern
-
-**Decision**: HTML5 Canvas with dom-to-image or manual rendering
-
-**Rationale**:
-
-- PNG export required (FR-015)
-- Canvas provides pixel-perfect control
-- dom-to-image simplifies DOM to canvas conversion
-
-**Pattern**:
-
-```typescript
-async function exportToPNG(containerRef: React.RefObject<HTMLDivElement>) {
-  const canvas = await html2canvas(containerRef.current!, {
-    backgroundColor: theme.backgroundColor,
-    scale: 2, // Retina display support
-  });
-  // Download canvas as PNG
 }
 ```
 
@@ -471,23 +446,10 @@ try {
   await saveTierList(tierList);
 } catch (error) {
   if (error.name === 'QuotaExceededError') {
-    showError('Storage full. Please export and delete old tier lists.');
+    showError('Storage full. Please delete old tier lists.');
   } else {
-    showError('Failed to save. Please export your work.');
+    showError('Failed to save.');
   }
-}
-```
-
-### Export Failures
-
-**Pattern**: Hard fail with error message only
-
-```typescript
-try {
-  await exportToPNG();
-} catch (error) {
-  showError('Export failed. Tier list may be too large.');
-  // No retry button, no fallback
 }
 ```
 
@@ -580,7 +542,6 @@ const url = URL.createObjectURL(record.blob);
 | Testing          | Vitest 4 + Testing Library    | Project standard, TDD support                     |
 | Styling          | Tailwind CSS 4                | Constitution requirement                          |
 | Build Tool       | Vite 7                        | Project standard                                  |
-| Export           | HTML5 Canvas + html2canvas    | Client-side PNG generation                        |
 | Accessibility    | @dnd-kit/accessibility + ARIA | Keyboard nav, screen reader support               |
 
 ---
@@ -591,7 +552,6 @@ const url = URL.createObjectURL(record.blob);
 | --------------------------------- | ------ | ----------------------------------------------- |
 | @dnd-kit learning curve           | Medium | Study examples, use sortable presets            |
 | IndexedDB browser inconsistencies | Low    | Use idb library which abstracts differences     |
-| Canvas export size limits         | Medium | Test with max items, show error if exceeded     |
 | Touch drag-and-drop complexity    | Medium | @dnd-kit touch sensor handles most cases        |
 | Performance with 100 items        | Medium | Monitor, optimize with React Compiler if needed |
 

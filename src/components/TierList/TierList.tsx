@@ -11,12 +11,10 @@ import {
   type Tier as TierType,
   type TierListItem as TierItemType,
 } from 'src/types/tierList.types';
-import { exportTierListToPng } from 'src/utils/exportToPng';
 import { generateId } from 'src/utils/generateId';
 import { fileToDataUrl } from 'src/utils/imageUpload';
 
 import { AddItemButton } from '../AddItemButton';
-import { ExportButton } from '../ExportButton';
 import { SaveLoadControls } from '../SaveLoadControls';
 import { Tier } from '../Tier';
 import { TierListItem } from '../TierListItem';
@@ -56,7 +54,6 @@ export function TierList({
   } = useTierList();
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isExporting, setIsExporting] = useState(false);
 
   // Auto-save hook - wires into lifecycle for debounced saves
   const {
@@ -229,28 +226,6 @@ export function TierList({
         addItem(newItem);
       }
     })();
-  };
-
-  const handleExport = async () => {
-    if (!containerRef.current) {
-      throw new Error('Container not available for export');
-    }
-
-    setIsExporting(true);
-    try {
-      const result = await exportTierListToPng(containerRef.current, {
-        format: 'png',
-        scale: 2,
-        minWidth: 1080,
-        fileName: tierList.name.replace(/[^a-z0-9]/gi, '-').toLowerCase(),
-      });
-
-      if (!result.success) {
-        throw new Error(result.error ?? 'Export failed');
-      }
-    } finally {
-      setIsExporting(false);
-    }
   };
 
   const handleSaveClick = async (): Promise<void> => {
@@ -467,13 +442,6 @@ export function TierList({
               onCreateNew={handleCreateNewClick}
               savedTierLists={savedTierLists}
               currentTierList={tierList}
-            />
-
-            {/* Export Button */}
-            <ExportButton
-              onExport={handleExport}
-              isLoading={isExporting}
-              disabled={tierList.tiers.length === 0}
             />
 
             {/* Undo/Redo */}

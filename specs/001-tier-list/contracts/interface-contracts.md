@@ -163,27 +163,6 @@ interface UndoRedoControlsProps {
 
 ---
 
-### ExportButtonProps
-
-Export to PNG button.
-
-```typescript
-interface ExportButtonProps {
-  onExport: () => Promise<void>;
-  disabled?: boolean;
-  isLoading?: boolean;
-}
-```
-
-**Behavior**:
-
-- Generates PNG image of tier list canvas
-- Shows loading state during export
-- Shows error on failure (no retry)
-- Downloads file as `{tier-list-name}.png`
-
----
-
 ## Hook API Contracts
 
 ### useTierList
@@ -235,9 +214,6 @@ interface UseTierListReturn {
   save: () => Promise<void>;
   load: (id: string) => Promise<void>;
   createNew: (name?: string) => void;
-
-  // Export
-  exportToPng: () => Promise<void>;
 }
 
 function useTierList(): UseTierListReturn;
@@ -314,32 +290,6 @@ function useIndexedDB(dbName?: string, version?: number): UseIndexedDBReturn;
 - QuotaExceededError → throws with user-friendly message
 - NotFoundError → returns undefined
 - All errors include original error for debugging
-
----
-
-### useExportToPng
-
-Hook for image export.
-
-```typescript
-interface UseExportToPngReturn {
-  export: (
-    containerRef: React.RefObject<HTMLDivElement>,
-    fileName: string,
-  ) => Promise<void>;
-  isExporting: boolean;
-  error: string | null;
-}
-
-function useExportToPng(): UseExportToPngReturn;
-```
-
-**Behavior**:
-
-- Uses html2canvas or similar library
-- Renders at 2x scale for retina displays
-- Minimum 1080px width (SC-006)
-- Throws on failure (no fallback)
 
 ---
 
@@ -437,51 +387,6 @@ type StorageError =
   | { type: 'INVALID_DATA'; reason: string }
   | { type: 'UNKNOWN'; error: Error };
 ```
-
----
-
-## Export API Contract
-
-### Export Options
-
-```typescript
-interface ExportOptions {
-  format: 'png';
-  scale?: number; // Default: 2 (retina)
-  minWidth?: number; // Default: 1080
-  backgroundColor?: string; // Default: from theme
-  fileName?: string; // Default: tier list name
-}
-```
-
-### Export Result
-
-```typescript
-interface ExportResult {
-  success: boolean;
-  blob?: Blob;
-  url?: string;
-  error?: string;
-  width: number;
-  height: number;
-}
-```
-
-### Export Function Signature
-
-```typescript
-async function exportTierListToPng(
-  container: HTMLDivElement,
-  options?: ExportOptions,
-): Promise<ExportResult>;
-```
-
-**Requirements**:
-
-- MUST generate PNG format only (FR-015)
-- MUST maintain visual fidelity (FR-015)
-- MUST handle large tier lists (SC-006)
-- MUST throw on failure (FR-023)
 
 ---
 

@@ -27,7 +27,6 @@
 
 - [x] T001 Verify Node.js 24, npm, and existing project structure
 - [x] T002 Install idb library for IndexedDB: `npm install idb`
-- [x] T003 [P] Install html2canvas for PNG export: `npm install html2canvas`
 - [x] T004 [P] Install fake-indexeddb for testing: `npm install --save-dev fake-indexeddb`
 
 ---
@@ -180,34 +179,6 @@
 
 ---
 
-## Phase 7: User Story 5 - Export Tier List as Image (Priority: P3)
-
-**Goal**: Users can export their tier list as a downloadable PNG image file that accurately represents the visual layout
-
-**Independent Test**: User can generate a downloadable PNG image file from their completed tier list that accurately represents the visual layout
-
-### Tests for User Story 5 ⚠️
-
-> **NOTE: Write these tests FIRST, ensure they FAIL before implementation. Do not start T068-T074 while these tests are red.**
-
-- [ ] T068 [P] [US5] Integration test: Export generates PNG file in `src/components/ExportButton/ExportButton.test.tsx`
-- [ ] T069 [P] [US5] Error test: Export failure shows error message in `src/components/ExportButton/ExportButton.test.tsx`
-- [ ] T070 [P] [US5] Validation test: Export enforces ≥1080px width, 2x scale, and displays standardized error banner copy in `src/components/ExportButton/ExportButton.test.tsx`
-
-### Implementation for User Story 5
-
-- [x] T071 [P] [US5] Create export utility: `src/utils/exportToPng.ts` with exportTierListToPng function using html2canvas, enforcing ≥1080px width, 2x scale, and returning standardized error messages plus failure logging hook
-- [x] T072 [P] [US5] Write export utility tests: `src/utils/exportToPng.test.ts` mocking html2canvas
-- [x] T073 [US5] Create ExportButton component: `src/components/ExportButton/ExportButton.tsx` with loading state, standardized error banner messaging, download trigger, and logging of failures to IndexedDB
-- [x] T074 [US5] Create ExportButton types: `src/components/ExportButton/ExportButton.types.ts` with ExportButtonProps interface
-- [x] T075 [US5] Create barrel export: `src/components/ExportButton/index.ts`
-- [x] T076 [US5] Extend useTierList hook with exportToPng operation
-- [x] T077 [US5] Add export container ref for capturing tier list canvas at full resolution
-
-**Checkpoint**: User Story 5 complete - export functional independently
-
----
-
 ## Phase 8: Undo/Redo (Cross-Cutting - Priority: P1)
 
 **Goal**: Users can undo and redo all state-changing actions with a 50-action history limit using circular buffer
@@ -271,9 +242,9 @@
 - [ ] T102 [P] Add responsive design: mobile-first Tailwind breakpoints (sm:, md:, lg:, xl:) for 320px-1920px viewport
 - [ ] T103 [P] Implement dark mode support: system-preference only via prefers-color-scheme media query, dark: prefix classes
 - [ ] T104 [P] Add performance warning: display toast when item count >= 50, hard stop at 100 items
-- [ ] T105 [P] Add loading states: skeleton loaders for tier list, items, export
+- [ ] T105 [P] Add loading states: skeleton loaders for tier list and items
 - [ ] T106 [P] Add error boundaries: component-level error boundaries with fallback UI
-- [ ] T107 [P] Write integration tests: complete user journey from create to save to export
+- [ ] T107 [P] Write integration tests: complete user journey from create to save
 - [ ] T108 [P] Run test coverage: `npm run test:ci` and verify 100% coverage (excluding barrel exports)
 - [ ] T109 [P] Run type check: `npm run lint:tsc` with zero errors
 - [ ] T110 [P] Run linter: `npm run lint` with zero errors
@@ -302,7 +273,6 @@
 - **User Story 2 (P1)**: Can start after Foundational (Phase 2) - Independent but integrates with US1
 - **User Story 3 (P2)**: Can start after Foundational (Phase 2) - Independent customization
 - **User Story 4 (P2)**: Can start after Foundational (Phase 2) - Independent persistence
-- **User Story 5 (P3)**: Can start after Foundational (Phase 2) - Independent export
 
 ### Within Each User Story
 
@@ -315,7 +285,7 @@
 
 **Setup Phase**:
 
-- T003 (html2canvas) and T004 (fake-indexeddb) can install in parallel
+- T004 (fake-indexeddb) can install in parallel
 
 **Foundational Phase**:
 
@@ -341,11 +311,6 @@
 
 - T054, T055, T056, T057 (tests) can run in parallel
 - T058 (useAutoSave) and T059 (SaveLoadControls) can develop in parallel
-
-**User Story 5**:
-
-- T068, T069, T070 (tests) can run in parallel
-- T071 (exportToPng) and T073 (ExportButton) can develop in parallel
 
 **Undo/Redo**:
 

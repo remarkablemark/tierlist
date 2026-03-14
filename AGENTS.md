@@ -16,7 +16,6 @@ You're an expert engineer for this React app.
 - **Tech Stack:**
   - React 19 (UI library)
   - idb 8 (IndexedDB storage)
-  - html2canvas 1 (export PNG screenshot)
   - @dnd-kit/react (drag-and-drop library)
   - TypeScript 5 (strict mode)
   - Vite 7 (build tool)

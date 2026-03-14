@@ -7,7 +7,7 @@
 
 ## Summary
 
-Build a client-side React application for creating and managing tier lists with drag-and-drop functionality. Users can create ranked tiers, add items with images, categorize items into tiers, customize appearance, save/load from IndexedDB, and export as PNG. Technical approach: React 19 with @dnd-kit for accessible drag-and-drop, useReducer + Context API for state management, IndexedDB for persistence, and Tailwind CSS for styling.
+Build a client-side React application for creating and managing tier lists with drag-and-drop functionality. Users can create ranked tiers, add items with images, categorize items into tiers, customize appearance, and save/load from IndexedDB. Technical approach: React 19 with @dnd-kit for accessible drag-and-drop, useReducer + Context API for state management, IndexedDB for persistence, and Tailwind CSS for styling.
 
 ## Technical Context
 
@@ -17,7 +17,7 @@ Build a client-side React application for creating and managing tier lists with 
 **Testing**: Vitest 4 + @testing-library/react + @testing-library/user-event
 **Target Platform**: Modern web browsers (Chrome, Firefox, Safari, Edge) - last 2 versions
 **Project Type**: Frontend-only web application (SPA)
-**Performance Goals**: 60fps drag-and-drop, <100ms visual feedback, 1080px minimum export width
+**Performance Goals**: 60fps drag-and-drop, <100ms visual feedback
 **Constraints**: Responsive 320px-1920px, 100 items max (soft warning at 50+), 50-action undo limit, system-preference dark mode only
 **Scale/Scope**: Single-page React app with feature-based organization, tab-local isolation (no cross-tab sync)
 
@@ -99,11 +99,6 @@ src/
 │   │   ├── UndoRedoControls.types.ts
 │   │   ├── UndoRedoControls.test.tsx
 │   │   └── index.ts
-│   ├── ExportButton/
-│   │   ├── ExportButton.tsx
-│   │   ├── ExportButton.types.ts
-│   │   ├── ExportButton.test.tsx
-│   │   └── index.ts
 │   └── SaveLoadControls/
 │       ├── SaveLoadControls.tsx
 │       ├── SaveLoadControls.types.ts
@@ -126,9 +121,7 @@ src/
     ├── escapeHtml.ts
     ├── escapeHtml.test.ts
     ├── validation.ts
-    ├── validation.test.ts
-    ├── exportToPng.ts
-    └── exportToPng.test.ts
+    └── validation.test.ts
 ```
 
 **Structure Decision**: Flat structure without feature directories. Since this app has a single feature (the tier list), the extra nesting of `features/tier-list/` is unnecessary overhead. Components live in `src/components/`, with shared utilities in `src/hooks/`, `src/services/`, `src/store/`, and `src/utils/`. This matches the existing `src/components/App/` pattern and keeps navigation simple. Refactor to feature-based structure only if genuinely separate features are added later.
@@ -195,19 +188,14 @@ No violations detected. All constitution principles are satisfied by this plan.
 - Save/load UI
 - Error handling
 
-**Phase 2.6: Export**
-
-- PNG export implementation
-- Export button component
-
-**Phase 2.7: Accessibility**
+**Phase 2.6: Accessibility**
 
 - Keyboard navigation
 - Screen reader announcements
 - ARIA labels
 - Touch target sizing
 
-**Phase 2.8: Testing & Polish**
+**Phase 2.7: Testing & Polish**
 
 - Unit tests for reducer
 - Component tests

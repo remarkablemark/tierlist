@@ -112,8 +112,6 @@ function TestWrapper({
 interface MockedTierListOptions {
   autoSaveError?: string | null;
   autoSaveStatus?: 'idle' | 'saving' | 'saved' | 'error' | 'quota-exceeded';
-  exportResult?: { success: boolean; error?: string };
-  mockContainerRef?: boolean;
   savedTierListName?: string;
   tierList?: TierListData;
 }
@@ -121,8 +119,6 @@ interface MockedTierListOptions {
 interface MockedTierListRenderResult {
   createNewSpy: ReturnType<typeof vi.fn>;
   deleteSavedSpy: ReturnType<typeof vi.fn>;
-  exportSpy: ReturnType<typeof vi.fn>;
-  exportTriggerPromise: Promise<void> | null;
   loadSpy: ReturnType<typeof vi.fn>;
   saveSpy: ReturnType<typeof vi.fn>;
 }
@@ -172,10 +168,6 @@ async function renderMockedDragHarness(
 
   vi.doMock('src/hooks/useAutoSave', () => ({
     useAutoSave: mockAutoSaveHook,
-  }));
-
-  vi.doMock('../ExportButton', () => ({
-    ExportButton: () => <div>Mock Export</div>,
   }));
 
   vi.doMock('../SaveLoadControls', () => ({
@@ -322,10 +314,6 @@ async function renderMockedTierList(
   const loadSpy = vi.fn().mockResolvedValue(undefined);
   const deleteSavedSpy = vi.fn().mockResolvedValue(undefined);
   const createNewSpy = vi.fn();
-  const exportSpy = vi
-    .fn()
-    .mockResolvedValue(options.exportResult ?? { success: true });
-  let exportTriggerPromise: Promise<void> | null = null;
   const savedTierListName = options.savedTierListName ?? 'Saved Mock Tier';
   const tierList = options.tierList ?? createDefaultTierList();
   const mockTierListHook = () => ({
@@ -369,10 +357,6 @@ async function renderMockedTierList(
     useAutoSave: mockAutoSaveHook,
   }));
 
-  vi.doMock('src/utils/exportToPng', () => ({
-    exportTierListToPng: exportSpy,
-  }));
-
   vi.doMock('src/utils/imageUpload', () => ({
     fileToDataUrl: vi.fn().mockResolvedValue('data:image/png;base64,mocked'),
   }));
@@ -411,23 +395,12 @@ async function renderMockedTierList(
     ),
   }));
 
-  if (options.mockContainerRef) {
-    vi.doMock('../ExportButton', () => ({
-      ExportButton: ({ onExport }: { onExport: () => Promise<void> }) => {
-        exportTriggerPromise ??= onExport();
-        return <div>Render-triggered export</div>;
-      },
-    }));
-  }
-
   const { TierList: MockedTierList } = await import('./TierList');
   render(<MockedTierList />);
 
   return {
     createNewSpy,
     deleteSavedSpy,
-    exportSpy,
-    exportTriggerPromise,
     loadSpy,
     saveSpy,
   };
@@ -1224,9 +1197,7 @@ describe('TierList mocked wiring', () => {
     vi.restoreAllMocks();
     vi.doUnmock('src/hooks/useTierList');
     vi.doUnmock('src/hooks/useAutoSave');
-    vi.doUnmock('src/utils/exportToPng');
     vi.doUnmock('src/utils/imageUpload');
-    vi.doUnmock('../ExportButton');
     vi.doUnmock('../SaveLoadControls');
     vi.doUnmock('../Tier');
     vi.doUnmock('../TierListItem');
@@ -1262,48 +1233,6 @@ describe('TierList mocked wiring', () => {
     });
 
     expect(screen.getByRole('alert')).toHaveTextContent('Auto-save failed');
-  });
-
-  it('surfaces export failures from the export utility', async () => {
-    await renderMockedTierList({
-      exportResult: { success: false, error: 'PNG export failed' },
-    });
-
-    fireEvent.click(screen.getByRole('button', { name: /export as png/i }));
-
-    expect(await screen.findByRole('alert')).toHaveTextContent(
-      'PNG export failed',
-    );
-  });
-
-  it('allows successful export calls and falls back to the default export error message', async () => {
-    const user = userEvent.setup();
-    const successResult = await renderMockedTierList({
-      exportResult: { success: true },
-    });
-
-    await user.click(screen.getByRole('button', { name: /export as png/i }));
-    expect(successResult.exportSpy).toHaveBeenCalledTimes(1);
-
-    vi.resetModules();
-    document.body.innerHTML = '';
-
-    await renderMockedTierList({
-      exportResult: { success: false },
-    });
-
-    fireEvent.click(screen.getByRole('button', { name: /export as png/i }));
-    expect(await screen.findByRole('alert')).toHaveTextContent('Export failed');
-  });
-
-  it('surfaces the missing container guard during export', async () => {
-    const { exportTriggerPromise } = await renderMockedTierList({
-      mockContainerRef: true,
-    });
-
-    await expect(exportTriggerPromise).rejects.toThrow(
-      'Container not available for export',
-    );
   });
 
   it('covers internal drag guard branches through mocked item controls', async () => {

@@ -18,13 +18,11 @@
 - Q: How should users provide images for tier list items? → A: File picker dialog (local files via `<input type="file">`)
 - Q: How should the tier list application handle mobile and touch device interactions? → A: Responsive with touch support: Full functionality on mobile/tablet with touch-optimized drag-and-drop using @dnd-kit touch sensors
 - Q: What is the maximum number of items a user should be able to add to a single tier list? → A: 100 items with soft warning at 50+
-- Q: What export formats should the tier list image export support? → A: PNG only: Standard format for tier list memes across platforms
 - Q: What should be the undo/redo history limit? → A: 50 actions with circular buffer
 - Q: How should the application handle IndexedDB save failures? → A: Show error immediately, no retry: Fast failure, user must act
 - Q: How should the application handle dark mode / theme switching? → A: System-preference only: Auto-detect via `prefers-color-scheme` media query, no manual toggle
 - Q: How should the application handle security and data sanitization for user-provided content (tier labels, item names)? → A: Minimal sanitization: Escape HTML entities only (`<`, `>`, `&`) to prevent XSS
 - Q: How should the application handle concurrent editing of the same tier list in multiple browser tabs? → A: Tab-local isolation: Each tab works independently; changes only visible after manual refresh
-- Q: How should the application handle export-to-image failures (e.g., canvas size limits, rendering errors)? → A: Hard fail: Show error only, no fallback or retry options
 - Q: What level of screen reader accessibility support should the application provide for drag-and-drop operations? → A: Guided: Announce available actions, provide step-by-step audio cues during drag (e.g., "Press Enter to pick up, arrow keys to move")
 
 ## User Scenarios & Testing
@@ -94,31 +92,14 @@ As a user, I want to save my tier list configurations and reload them later so t
 
 ---
 
-### User Story 5 - Export Tier List as Image (Priority: P3)
-
-As a user, I want to export my tier list as an image so that I can share it on social media or with others.
-
-**Why this priority**: Sharing enhances the viral potential and utility of the application, but the core creation functionality works without export.
-
-**Independent Test**: User can generate a downloadable PNG image file from their completed tier list that accurately represents the visual layout.
-
-**Acceptance Scenarios**:
-
-1. **Given** a completed tier list, **When** the user exports as image, **Then** a downloadable PNG image file is generated
-2. **Given** a tier list with custom colors and items, **When** exported, **Then** the image accurately reflects all visual customizations
-3. **Given** a large tier list, **When** exported, **Then** the image maintains readable quality at appropriate dimensions
-
----
-
 ### Edge Cases
 
 - When a tier containing items is deleted, items are moved to an "Unassigned" area below the tiers for user reassignment
 - How does the system handle very long item names or tier labels? Text should truncate gracefully or wrap without breaking layout
 - What happens when the browser is refreshed during editing? Work-in-progress should be auto-saved to prevent data loss (debounced save after each reducer commit and restore flow on load)
 - How does the system handle attempting to drop items outside of valid drop zones? Drop should be prevented with visual feedback
-- What happens when saving fails (e.g., storage full)? User should receive immediate error message with options to manually export or free storage
+- What happens when saving fails (e.g., storage full)? User should receive immediate error message to free storage
 - When the same tier list is edited in multiple browser tabs simultaneously, each tab operates independently with changes only visible after manual refresh
-- When image export fails (e.g., canvas size exceeded, rendering error), display error message only without retry or fallback options
 
 ## Requirements
 
@@ -134,12 +115,11 @@ As a user, I want to export my tier list as an image so that I can share it on s
 - **FR-007**: System MUST support drag-and-drop interaction for rearranging items within a tier
 - **FR-008**: System MUST visually distinguish between different tiers using color and labels
 - **FR-009**: System MUST persist tier list configurations to IndexedDB to allow saving and loading
-- **FR-009a**: System MUST display an immediate error notification if IndexedDB save fails, prompting user to manually export or free storage
+- **FR-009a**: System MUST display an immediate error notification if IndexedDB save fails, prompting user to free storage
 - **FR-010**: System MUST provide undo/redo functionality for all state-changing actions including tier operations, item operations, and customization changes with a history limit of 50 actions using circular buffer
 - **FR-011**: System MUST auto-save work-in-progress within 5 seconds of the last state change using a debounced save (≤500ms delay after idle) and persist state when the tab is closed (`beforeunload` listener) while displaying a non-blocking status indicator
 - **FR-012**: System MUST allow users to delete tiers and items with confirmation
 - **FR-012a**: System MUST move items from a deleted tier to an "Unassigned" area below the tiers for user reassignment
-- **FR-013**: System MUST export tier list as a downloadable PNG image file at ≥1080px width with 2x scaling to preserve readability of tier labels and item images
 - **FR-014**: System MUST provide visual feedback during drag-and-drop operations (hover states, drop zones)
 - **FR-015**: System MUST be fully accessible via keyboard navigation (tab, enter, arrow keys) with step-by-step screen reader audio cues during drag operations (e.g., "Press Enter to pick up, arrow keys to move")
 - **FR-016**: System MUST support touch-based drag-and-drop interactions on mobile and tablet devices using @dnd-kit touch sensors
@@ -147,7 +127,6 @@ As a user, I want to export my tier list as an image so that I can share it on s
 - **FR-018**: System MUST allow up to 100 items per tier list and display a soft performance warning when 50+ items are added
 - **FR-019**: System MUST automatically adapt to user's system color scheme preference (light/dark) using `prefers-color-scheme` media query
 - **FR-020**: System MUST escape HTML entities (`<`, `>`, `&`) in all user-provided text content (tier labels, item names) to prevent XSS attacks
-- **FR-021**: System MUST display a standardized error banner (“Export failed due to browser limits. Reduce the number of tiers/items and try again.”) when image export fails (e.g., canvas size exceeded, rendering error) without offering retry or fallback options and MUST log the failure in IndexedDB for later diagnostics
 
 ### Non-Functional Requirements
 
@@ -174,7 +153,6 @@ As a user, I want to export my tier list as an image so that I can share it on s
 - **SC-003**: Drag-and-drop operations complete with visual feedback in under 100 milliseconds
 - **SC-004**: System supports tier lists with up to 100 items and 10 tiers without performance degradation; soft warning displayed at 50+ items
 - **SC-005**: In moderated usability tests (n ≥ 20 participants) using a 5-point Likert scale, at least 90% of users rate the creation experience as "intuitive" or "very intuitive"
-- **SC-006**: Exported images render accurately at resolutions suitable for social media sharing (minimum 1080px width)
 - **SC-007**: Auto-save preserves work-in-progress with less than 5 seconds of potential data loss
 - **SC-008**: All interactive elements are accessible via keyboard with visible focus indicators
 - **SC-009**: Touch drag-and-drop operations function correctly on viewports from 320px width with touch targets minimum 44x44px

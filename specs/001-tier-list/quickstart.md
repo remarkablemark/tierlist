@@ -57,8 +57,7 @@ src/
 │   ├── Tier/            # Individual tier component
 │   ├── TierListItem/    # Individual item component
 │   ├── AddItemButton/   # File upload button
-│   ├── UndoRedoControls/# Undo/redo buttons
-│   └── ExportButton/    # Export to PNG button
+│   └── UndoRedoControls/# Undo/redo buttons
 ├── hooks/
 │   └── useTierList.ts   # Main hook for state management
 ├── services/
@@ -252,14 +251,7 @@ export function useTierListContext() {
 - [ ] Handle IndexedDB errors
 - [ ] Add quota exceeded handling
 
-### Phase 6: Export
-
-- [ ] Install html2canvas or similar
-- [ ] Implement export to PNG
-- [ ] Add export button component
-- [ ] Handle export errors
-
-### Phase 7: Accessibility
+### Phase 6: Accessibility
 
 - [ ] Add keyboard navigation
 - [ ] Implement screen reader announcements
