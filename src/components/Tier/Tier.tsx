@@ -85,7 +85,7 @@ export function Tier({
             defaultValue={tier.label}
             onBlur={handleLabelBlur}
             onKeyDown={handleKeyDown}
-            className="w-32 rounded-md border border-slate-300 bg-white px-2 py-1 text-sm font-semibold text-slate-900 focus:border-slate-500 focus:ring-2 focus:ring-slate-500 focus:outline-none dark:border-slate-600 dark:bg-slate-800 dark:text-white"
+            className="w-32 rounded-md border border-slate-300 bg-white px-2 py-1 font-semibold text-slate-900 focus:border-slate-500 focus:ring-2 focus:ring-slate-500 focus:outline-none dark:border-slate-600 dark:bg-slate-800 dark:text-white"
             aria-label="Tier label"
           />
         ) : (

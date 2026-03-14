@@ -53,33 +53,18 @@ export function AddItemButton({
       } ${hasReachedLimit ? 'opacity-50' : ''}`}
     >
       <button
-        className="flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-blue-600"
+        className="cursor-pointer rounded-md bg-blue-600 px-4 py-2 font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-blue-600"
         onClick={handleClick}
         disabled={isDisabled}
         aria-label="Add item"
         aria-describedby={hasWarning ? 'item-warning' : undefined}
         type="button"
       >
-        <svg
-          data-testid="plus-icon"
-          className="h-5 w-5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          aria-hidden="true"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M12 4v16m8-8H4"
-          />
-        </svg>
-        <span>Add Item</span>
+        + Add Item
       </button>
 
       {/* Item count display */}
-      <div className="text-sm text-slate-600 dark:text-slate-400">
+      <div className="text-slate-600 dark:text-slate-400">
         <span className="font-medium">{itemCount}</span>/{maxItems} items
       </div>
 

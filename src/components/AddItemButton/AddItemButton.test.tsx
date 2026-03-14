@@ -323,21 +323,6 @@ describe('AddItemButton', () => {
     expect(container.textContent).toContain('100');
   });
 
-  it('has plus icon', () => {
-    const onFileSelect = vi.fn();
-    render(
-      <AddItemButton
-        onFileSelect={onFileSelect}
-        itemCount={0}
-        maxItems={100}
-      />,
-    );
-
-    // Check for plus icon (svg with path containing the plus shape)
-    const icon = screen.getByTestId('plus-icon');
-    expect(icon).toBeInTheDocument();
-  });
-
   it('applies disabled styling when max items reached', () => {
     const onFileSelect = vi.fn();
     render(

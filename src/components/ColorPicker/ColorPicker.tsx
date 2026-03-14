@@ -68,7 +68,7 @@ export function ColorPicker({
           aria-label="Custom color picker"
         />
         <button
-          className="rounded-md bg-slate-100 px-3 py-1 text-sm text-slate-700 transition-colors hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
+          className="rounded-md bg-slate-100 px-3 py-1 text-slate-700 transition-colors hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
           onClick={handleCustomColorSubmit}
           type="button"
         >
