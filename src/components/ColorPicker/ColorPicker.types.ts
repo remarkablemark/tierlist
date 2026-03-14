@@ -29,13 +29,13 @@ export interface ColorPickerProps {
  * Predefined color palette for tier colors.
  */
 export const COLOR_PALETTE: string[] = [
-  '#ff7f7f',
-  '#ffbf7f',
-  '#ffff7f',
-  '#bfff7f',
-  '#7fff7f',
-  '#7fbfff',
-  '#bf7fff',
+  '#e57373',
+  '#ffb74d',
+  '#fff176',
+  '#aed581',
+  '#81c784',
+  '#64b5f6',
+  '#ba68c8',
   '#ff7fff',
   '#7f7fff',
   '#7fffff',

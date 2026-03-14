@@ -43,13 +43,13 @@ describe('createDefaultTierList', () => {
     const tierList = createDefaultTierList();
 
     expect(tierList.tiers.map((t) => t.color)).toEqual([
-      '#ff7f7f',
-      '#ffbf7f',
-      '#ffff7f',
-      '#bfff7f',
-      '#7fff7f',
-      '#7fbfff',
-      '#bf7fff',
+      '#e57373',
+      '#ffb74d',
+      '#fff176',
+      '#aed581',
+      '#81c784',
+      '#64b5f6',
+      '#ba68c8',
     ]);
   });
 

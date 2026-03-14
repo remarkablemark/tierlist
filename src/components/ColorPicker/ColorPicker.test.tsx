@@ -9,7 +9,7 @@ import { userEvent } from '@testing-library/user-event';
 import { ColorPicker } from './ColorPicker';
 
 const mockProps = {
-  color: '#ff7f7f',
+  color: '#e57373',
   onColorSelect: vi.fn(),
   onToggle: vi.fn(),
 };
@@ -66,7 +66,7 @@ describe('ColorPicker', () => {
     const applyButton = screen.getByRole('button', { name: /apply/i });
     await user.click(applyButton);
 
-    expect(onColorSelect).toHaveBeenCalledWith('#ff7f7f');
+    expect(onColorSelect).toHaveBeenCalledWith('#e57373');
   });
 
   it('calls onColorSelect with custom color when Apply is clicked', async () => {
@@ -77,7 +77,7 @@ describe('ColorPicker', () => {
     const applyButton = screen.getByRole('button', { name: /apply/i });
     await user.click(applyButton);
 
-    expect(onColorSelect).toHaveBeenCalledWith('#ff7f7f');
+    expect(onColorSelect).toHaveBeenCalledWith('#e57373');
   });
 
   it('calls onToggle when Apply is clicked', async () => {
@@ -96,7 +96,7 @@ describe('ColorPicker', () => {
 
     // The selected color should have a border
     const selectedButton = screen.getByRole('button', {
-      name: /#ff7f7f/i,
+      name: /#e57373/i,
     });
     expect(selectedButton).toHaveClass('border-slate-900');
   });
