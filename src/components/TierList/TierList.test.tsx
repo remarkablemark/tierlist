@@ -366,7 +366,7 @@ function createMockHookResult(
 
 function renderSubject(overrides: Partial<MockUseTierListResult> = {}) {
   mockState.tierListState = createMockHookResult(overrides);
-  return render(<TierList className="test-class" />);
+  return render(<TierList />);
 }
 
 function getHookState(): MockUseTierListResult {
@@ -724,7 +724,7 @@ describe('TierList', () => {
   });
 
   it('renders the configured warning states and empty unassigned message', () => {
-    const { container } = renderSubject({
+    renderSubject({
       hasItemLimitWarning: true,
       hasReachedItemLimit: false,
       totalItems: 50,
@@ -743,7 +743,6 @@ describe('TierList', () => {
       screen.getByText('Warning: 50 items may affect performance.'),
     ).toBeVisible();
     expect(screen.getByText('No unassigned items')).toBeVisible();
-    expect(container.querySelector('.test-class')).not.toBeNull();
   });
 
   it('renders the maximum item warning when the limit is reached', () => {

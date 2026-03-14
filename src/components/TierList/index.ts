@@ -4,4 +4,3 @@
  */
 
 export { TierList } from './TierList';
-export type { TierListProps } from './TierList.types';

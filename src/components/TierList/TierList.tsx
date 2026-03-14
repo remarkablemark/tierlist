@@ -20,11 +20,7 @@ import { TierListItem } from '../TierListItem';
 /**
  * TierList component that renders the complete tier list canvas.
  */
-export function TierList({
-  className,
-}: {
-  className?: string;
-}): React.ReactElement {
+export function TierList() {
   const {
     addTier,
     deleteTier,
@@ -387,10 +383,7 @@ export function TierList({
 
   return (
     <DragDropProvider>
-      <div
-        ref={containerRef}
-        className={`mx-auto max-w-6xl p-4 ${className ?? ''}`}
-      >
+      <div ref={containerRef} className="mx-auto max-w-6xl p-4">
         {/* Header */}
         <div className="mb-6 flex items-center justify-between">
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
