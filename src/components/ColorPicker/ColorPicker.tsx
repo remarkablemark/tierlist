@@ -35,7 +35,7 @@ export function ColorPicker({
   color,
   onColorSelect,
   onToggle,
-}: ColorPickerProps): React.ReactElement {
+}: ColorPickerProps) {
   const [customColor, setCustomColor] = useState(color);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -87,7 +87,7 @@ export function ColorPicker({
             className={`h-8 w-8 cursor-pointer rounded-md border-2 transition-all hover:scale-110 ${
               color === paletteColor
                 ? 'border-slate-900 dark:border-white'
-                : 'border-transparent'
+                : 'border-slate-300 dark:border-slate-600'
             }`}
             style={{ backgroundColor: paletteColor }}
             onClick={(event) => {
@@ -102,7 +102,7 @@ export function ColorPicker({
 
       <div className="mt-3 flex items-center gap-2">
         <div
-          className="h-8 w-8 overflow-hidden rounded-md border-2 border-transparent transition-all hover:scale-110"
+          className="h-8 w-8 overflow-hidden rounded-md border-2 border-slate-300 transition-all hover:scale-110 dark:border-slate-600"
           style={{ backgroundColor: customColor }}
         >
           <input
