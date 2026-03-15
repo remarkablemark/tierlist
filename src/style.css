@@ -1,5 +1,15 @@
 @import 'tailwindcss';
 
+.github-corner {
+  @apply hidden;
+}
+
+@media (min-width: 1200px) {
+  .github-corner {
+    @apply block;
+  }
+}
+
 .github-corner > svg {
   @apply opacity-50 transition-opacity duration-400;
 }
