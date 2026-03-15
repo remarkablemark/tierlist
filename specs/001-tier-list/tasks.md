@@ -188,7 +188,6 @@
 - [x] T095 Add ARIA labels to all interactive elements: TierList (role="application"), Tier (role="region"), TierListItem (role="listitem")
 - [x] T096 Add aria-grabbed to draggable items, aria-dropeffect to drop zones
 - [x] T097 Create live region for screen reader announcements during drag operations
-- [ ] T098 Implement step-by-step audio cues: "Press Enter to pick up, arrow keys to move, Enter to drop"
 - [x] T099 Ensure 44x44px minimum touch targets via Tailwind classes (min-h-11 min-w-11)
 - [x] T100 Add visible focus indicators: focus:ring-2 focus:ring-offset-2 on all interactive elements
 - [x] T101 Add keyboard instructions to aria-describedby for draggable items
@@ -204,13 +203,10 @@
 - [x] T102 [P] Add responsive design: mobile-first Tailwind breakpoints (sm:, md:, lg:, xl:) for 320px-1920px viewport
 - [x] T103 [P] Implement dark mode support: system-preference only via prefers-color-scheme media query, dark: prefix classes
 - [x] T104 [P] Add performance warning: display toast when item count >= 50, hard stop at 100 items
-- [ ] T105 [P] Add loading states: skeleton loaders for tier list and items
-- [ ] T106 [P] Add error boundaries: component-level error boundaries with fallback UI
 - [x] T107 [P] Write integration tests: complete user journey from create to save
 - [x] T108 [P] Run test coverage: `npm run test:ci` and verify 100% coverage (excluding barrel exports)
 - [x] T109 [P] Run type check: `npm run lint:tsc` with zero errors
 - [x] T110 [P] Run linter: `npm run lint` with zero errors
-- [ ] T111 [P] Update quickstart.md: validate all commands and paths work correctly
 - [x] T112 [P] Add TSDoc comments to all public APIs: components, hooks, utilities
 - [x] T113 [P] Code cleanup: remove unused imports, dead code, console statements
 
@@ -361,9 +357,9 @@ With multiple developers:
 | Phase 4   | User Story 2 (P1) | 15         |
 | Phase 5   | User Story 3 (P2) | 9          |
 | Phase 8   | Undo/Redo         | 12         |
-| Phase 9   | Accessibility     | 12         |
-| Phase 10  | Polish            | 12         |
-| **Total** |                   | **85**     |
+| Phase 9   | Accessibility     | 11         |
+| Phase 10  | Polish            | 9          |
+| **Total** |                   | **81**     |
 
 ### Task Count per User Story
 
