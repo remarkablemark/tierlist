@@ -10,8 +10,6 @@ import {
   waitFor,
   within,
 } from '@testing-library/react';
-import type React from 'react';
-import { type ReactElement } from 'react';
 import { type TierListItemComponentProps } from 'src/components/TierListItem/TierListItem.types';
 import { type Tier } from 'src/types/tierList';
 
@@ -69,7 +67,7 @@ vi.mock('../AddItemButton', () => ({
     onFileSelect,
   }: {
     onFileSelect: (files: File[]) => void;
-  }): ReactElement => (
+  }) => (
     <button
       type="button"
       onClick={() => {
@@ -112,7 +110,7 @@ vi.mock('../Tier', () => ({
     onMoveDown?: () => void;
     onMoveUp?: () => void;
     tier: Tier;
-  }): ReactElement => (
+  }) => (
     <section
       data-is-over={String(isOver ?? false)}
       data-testid={`tier-${tier.id}`}
@@ -186,7 +184,7 @@ vi.mock('../TierListItem', () => ({
     onMove,
     onPointerDragEnd,
     onPointerDragStart,
-  }: TierListItemComponentProps): ReactElement => (
+  }: TierListItemComponentProps) => (
     <div
       aria-label={item.label}
       data-dragging={String(isDragging)}

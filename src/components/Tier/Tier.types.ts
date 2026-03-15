@@ -3,9 +3,7 @@
  * @packageDocumentation
  */
 
-import { type DragEventHandler, type ReactNode } from 'react';
-
-import { type Tier as TierType } from '../../types/tierList';
+import { type Tier as TierType } from 'src/types/tierList';
 
 /**
  * Props for the Tier component.
@@ -70,7 +68,7 @@ export interface TierProps {
   /**
    * Native drag-over handler for the drop zone.
    */
-  onItemDragOver?: DragEventHandler<HTMLDivElement>;
+  onItemDragOver?: React.DragEventHandler<HTMLDivElement>;
   /**
    * Callback when item is reordered within this tier.
    */
@@ -78,7 +76,7 @@ export interface TierProps {
   /**
    * Optional custom item content.
    */
-  children?: ReactNode;
+  children?: React.ReactNode;
   /**
    * Size of items to display.
    */

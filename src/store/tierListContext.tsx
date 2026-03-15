@@ -5,13 +5,7 @@
 
 /* eslint-disable react-refresh/only-export-components */
 
-import {
-  createContext,
-  type ReactNode,
-  use,
-  useCallback,
-  useReducer,
-} from 'react';
+import { createContext, use, useCallback, useReducer } from 'react';
 
 import { DEFAULT_SETTINGS, DEFAULT_TIERS } from '../constants/tierList';
 import {
@@ -39,7 +33,7 @@ export const TierListContext = createContext<TierListContextValue | null>(null);
  * Props for the TierListProvider component.
  */
 export interface TierListProviderProps {
-  children: ReactNode;
+  children: React.ReactNode;
   initialTierList?: TierList;
 }
 

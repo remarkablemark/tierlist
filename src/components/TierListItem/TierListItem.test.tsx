@@ -5,8 +5,8 @@
 
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { type TierListItem as TierItemType } from 'src/types/tierList';
 
-import { type TierListItem as TierItemType } from '../../types/tierList';
 import { TierListItem } from './TierListItem';
 
 const createMockItem = (overrides?: Partial<TierItemType>): TierItemType => ({

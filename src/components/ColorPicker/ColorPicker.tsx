@@ -4,13 +4,12 @@
  */
 
 import { useEffect, useRef, useState } from 'react';
-
-import { COLOR_PALETTE } from '../../constants/colorPalette';
+import { COLOR_PALETTE } from 'src/constants/colorPalette';
 
 /**
  * Props for the ColorPicker component.
  */
-export interface ColorPickerProps {
+interface ColorPickerProps {
   /**
    * Currently selected color.
    */

@@ -3,9 +3,7 @@
  * @packageDocumentation
  */
 
-import { type DragEventHandler } from 'react';
-
-import { type TierListItem as TierItemType } from '../../types/tierList';
+import { type TierListItem as TierItemType } from 'src/types/tierList';
 
 /**
  * Props for the TierListItem component.
@@ -50,11 +48,11 @@ export interface TierListItemComponentProps {
   /**
    * Callback for native drag start events.
    */
-  onPointerDragStart?: DragEventHandler<HTMLDivElement>;
+  onPointerDragStart?: React.DragEventHandler<HTMLDivElement>;
   /**
    * Callback for native drag end events.
    */
-  onPointerDragEnd?: DragEventHandler<HTMLDivElement>;
+  onPointerDragEnd?: React.DragEventHandler<HTMLDivElement>;
   /**
    * Size of the item display.
    */
