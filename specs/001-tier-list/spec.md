@@ -2,7 +2,7 @@
 
 **Feature Branch**: `001-tier-list`
 **Created**: 2026-03-11
-**Status**: Draft
+**Status**: Done
 **Input**: User description: "tier list"
 
 ## Clarifications
