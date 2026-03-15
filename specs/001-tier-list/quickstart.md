@@ -57,16 +57,23 @@ src/
 │   ├── Tier/            # Individual tier component
 │   ├── TierListItem/    # Individual item component
 │   ├── AddItemButton/   # File upload button
-│   └── UndoRedoControls/# Undo/redo buttons
+│   └── ColorPicker/     # Tier color picker
 ├── hooks/
 │   └── useTierList.ts   # Main hook for state management
 ├── store/
 │   ├── tierListReducer.ts    # Reducer for all actions
 │   └── tierListContext.tsx   # Context provider
+├── constants/
+│   ├── tierList.ts      # Default tiers and settings
+│   └── colorPalette.ts  # Color options
+├── types/
+│   └── tierList.ts      # TypeScript type definitions
 └── utils/
     ├── generateId.ts    # UUID generation helper
-    └── imageUpload.ts   # File and image helpers
+    └── imageUpload.ts   # File to data URL conversion
 ```
+
+**Note**: Dead-code cleanup removed unused utilities (`escapeHtml`, `validation`, `createDefaultTierList`) and unused hook exports (`resetTier`, `reorderItem`). Default tier-list initialization now lives in `src/store/tierListContext.tsx`.
 
 ---
 
@@ -309,6 +316,8 @@ function createDefaultTierList(): TierList {
   };
 }
 ```
+
+**Note**: This function is now defined inline within `src/store/tierListContext.tsx` rather than as a standalone utility module.
 
 ---
 

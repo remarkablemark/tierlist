@@ -108,11 +108,7 @@ src/
 │       ├── SaveLoadControls.test.tsx
 │       └── index.ts
 ├── hooks/
-│   ├── useTierList.ts
-│   └── useTierList.test.ts
-├── services/
-│   ├── storage.ts
-│   └── storage.test.ts
+│   └── useTierList.ts
 ├── store/
 │   ├── tierListReducer.ts
 │   ├── tierListReducer.test.ts
@@ -130,7 +126,7 @@ src/
     └── imageUpload.test.ts
 ```
 
-**Structure Decision**: Flat structure without feature directories. Since this app has a single feature (the tier list), the extra nesting of `features/tier-list/` is unnecessary overhead. Components live in `src/components/`, with shared utilities in `src/hooks/`, `src/services/`, `src/store/`, and `src/utils/`. This matches the existing `src/components/App/` pattern and keeps navigation simple. Default tier-list state is initialized in `src/store/tierListContext.tsx`; standalone validation and sanitization helpers were removed later when they proved unused by production code.
+**Structure Decision**: Flat structure without feature directories. Since this app has a single feature (the tier list), the extra nesting of `features/tier-list/` is unnecessary overhead. Components live in `src/components/`, with shared utilities in `src/hooks/`, `src/store/`, and `src/utils/`. This matches the existing `src/components/App/` pattern and keeps navigation simple. Default tier-list state is initialized in `src/store/tierListContext.tsx`. Dead-code cleanup removed unused utilities (`escapeHtml`, `validation`, `createDefaultTierList`), unused settings fields (`theme`, `tierHeight`, `enableAnimations`, `snapToGrid`), and unused hook exports (`resetTier`, `reorderItem`).
 
 ## Complexity Tracking
 

@@ -37,11 +37,11 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [x] T005 Define TypeScript types in `src/types/tierList.ts`: TierList, Tier, TierListItem, ItemMetadata, TierListSettings, TierListState, TierListAction. Create constants in `src/constants/tierList.ts`: DEFAULT_TIERS, DEFAULT_SETTINGS
+- [x] T005 Define TypeScript types in `src/types/tierList.ts`: TierList, Tier, TierListItem, ItemMetadata, TierListSettings, TierListState, TierListAction. Create constants in `src/constants/tierList.ts`: DEFAULT_TIERS, DEFAULT_SETTINGS. **Note**: Types for unused settings fields (`theme`, `tierHeight`, `enableAnimations`, `snapToGrid`) and unused action types (`DRAG_START`, `DRAG_MOVE`, `DRAG_END`) were removed during dead-code cleanup.
 - [x] T006 [P] Create utility: `src/utils/escapeHtml.ts` with escapeHtml function and tests. Later removed during dead-code cleanup.
 - [x] T007 [P] Create utility: `src/utils/validation.ts` with validateTierList, validateTier, validateItem, isValidCssColor, getTotalItemCount, findItemLocation and tests. Later removed during dead-code cleanup.
 - [x] T008 [P] Create utility: `src/utils/generateId.ts` with generateId function using crypto.randomUUID() and tests
-- [x] T009 Create tier list reducer: `src/store/tierListReducer.ts` implementing all TierListAction types (TIER_ADD, TIER_DELETE, TIER_REORDER, TIER_UPDATE_LABEL, TIER_UPDATE_COLOR, TIER_RESET, ITEM_ADD, ITEM_DELETE, ITEM_MOVE, ITEM_REORDER, ITEM_UPDATE_LABEL, DRAG_START, DRAG_MOVE, DRAG_END, UNDO, REDO, SETTINGS_UPDATE, LOAD)
+- [x] T009 Create tier list reducer: `src/store/tierListReducer.ts` implementing all TierListAction types (TIER_ADD, TIER_DELETE, TIER_REORDER, TIER_UPDATE_LABEL, TIER_UPDATE_COLOR, TIER_RESET, ITEM_ADD, ITEM_DELETE, ITEM_MOVE, ITEM_REORDER, ITEM_UPDATE_LABEL, UNDO, REDO, SETTINGS_UPDATE, LOAD). **Note**: DRAG_START, DRAG_MOVE, DRAG_END actions were removed during dead-code cleanup.
 - [x] T010 Write reducer tests: `src/store/tierListReducer.test.ts` covering all action types
 - [x] T011 Create context provider: `src/store/tierListContext.tsx` with TierListContext, TierListProvider, useTierListContext
 - [x] T012 Write context tests: `src/store/tierListContext.test.tsx` testing provider and hook
@@ -73,10 +73,10 @@
 - [x] T021 [US1] Create TierList component: `src/components/TierList/TierList.tsx` with DragDropProvider provider, renders tiers, handles tier add/delete/reorder. Types defined inline (no separate .types.ts file needed)
 - [x] T022 [US1] Create barrel export: `src/components/TierList/index.ts`
 - [x] T023A [US1] Integrate tier list into app shell: update `src/components/App/App.tsx` to render `TierList` within `TierListProvider`
-- [x] T024 [US1] Create Tier component: `src/components/Tier/Tier.tsx` with SortableContext, renders tier label, color, delete button, drop zone
-- [x] T025 [US1] Create Tier types: `src/components/Tier/Tier.types.ts` with TierProps interface
+- [x] T024 [US1] Create Tier component: `src/components/Tier/Tier.tsx` with SortableContext, renders tier label, color, delete button, drop zone. **Note**: `isDragging` prop was removed during dead-code cleanup as it was never passed from the parent component.
+- [x] T025 [US1] Create Tier types: `src/components/Tier/Tier.types.ts` with TierProps interface. **Note**: `onItemReorder` prop was removed during dead-code cleanup as it was never implemented.
 - [x] T026 [US1] Create barrel export: `src/components/Tier/index.ts`
-- [x] T027 [US1] Create useTierList hook: `src/hooks/useTierList.ts` wrapping context with tier operations (addTier, deleteTier, reorderTiers, updateTierLabel, updateTierColor, resetTier)
+- [x] T027 [US1] Create useTierList hook: `src/hooks/useTierList.ts` wrapping context with tier operations (addTier, deleteTier, reorderTiers, updateTierLabel, updateTierColor). **Note**: `resetTier` was removed during dead-code cleanup as it was only used in tests.
 - [x] T028 [US1] Write useTierList hook tests: `src/hooks/useTierList.test.ts`
 - [x] T029 [US1] Add unassigned items area UI in TierList component for items from deleted tiers
 
@@ -101,14 +101,14 @@
 
 ### Implementation for User Story 2
 
-- [x] T034 [P] [US2] Create image upload utility: `src/utils/imageUpload.ts` with fileToBlob, blobToDataUrl functions and tests
+- [x] T034 [P] [US2] Create image upload utility: `src/utils/imageUpload.ts` with fileToDataUrl function and tests. **Note**: Earlier versions included `fileToBlob` and `blobToDataUrl` functions, which were removed during dead-code cleanup as they were only used in tests.
 - [x] T035 [P] [US2] Create TierListItem component: `src/components/TierListItem/TierListItem.tsx` with SortableItem, renders image, label, drag handle
 - [x] T036 [US2] Create TierListItem types: `src/components/TierListItem/TierListItem.types.ts` with TierListItemComponentProps interface
 - [x] T037 [US2] Create barrel export: `src/components/TierListItem/index.ts`
 - [x] T038 [US2] Create AddItemButton component: `src/components/AddItemButton/AddItemButton.tsx` with file input, item count validation, warning at 50+ items
 - [x] T039 [US2] Create AddItemButton types: `src/components/AddItemButton/AddItemButton.types.ts` with AddItemButtonProps interface
 - [x] T040 [US2] Create barrel export: `src/components/AddItemButton/index.ts`
-- [x] T041 [US2] Extend useTierList hook with item operations: addItem, deleteItem, moveItem, reorderItem, updateItemLabel
+- [x] T041 [US2] Extend useTierList hook with item operations: addItem, deleteItem, moveItem, updateItemLabel. **Note**: `reorderItem` was removed during dead-code cleanup as it was only used in tests.
 - [x] T042 [US2] Implement drag-and-drop handlers in TierList component using @dnd-kit/react onDragEnd with hover/drop zone styling hooks
 - [x] T043 [US2] Add collision detection for item drops in tiers using @dnd-kit/react closestCenter
 - [x] T044 [US2] Implement item reordering within tiers using @dnd-kit/react sortable
@@ -135,8 +135,8 @@
 
 - [x] T048 [P] [US3] Create color picker component: `src/components/ColorPicker/ColorPicker.tsx` with predefined color palette (imported from `src/constants/colorPalette.ts`), custom color input, ColorPickerProps interface defined inline
 - [x] T049 [US3] Create barrel export: `src/components/ColorPicker/index.ts`
-- [x] T051 [US3] Add tier customization UI to Tier component: color picker button, label edit input, reset button
-- [x] T052 [US3] Extend useTierList hook with customization operations: updateTierColor, updateTierLabel, resetTier
+- [x] T051 [US3] Add tier customization UI to Tier component: color picker button, label edit input
+- [x] T052 [US3] Extend useTierList hook with customization operations: updateTierColor, updateTierLabel. **Note**: `resetTier` was removed during dead-code cleanup as it was only used in tests.
 - [x] T053 [US3] Add tier customization actions to reducer: TIER_UPDATE_COLOR, TIER_UPDATE_LABEL, TIER_RESET with isCustomColor and isCustomLabel flags
 
 **Checkpoint**: User Story 3 complete - tier customization functional independently

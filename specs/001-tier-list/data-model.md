@@ -103,8 +103,6 @@ interface ItemMetadata {
   originalFileName?: string; // Original uploaded file name
   fileType?: string; // MIME type (e.g., "image/png")
   fileSize?: number; // File size in bytes
-  width?: number; // Image width in pixels
-  height?: number; // Image height in pixels
   uploadedAt?: number; // Unix timestamp of upload
 }
 ```
@@ -115,6 +113,8 @@ interface ItemMetadata {
 - `fileType` MUST be valid MIME type if present
 - `fileSize` MUST be positive integer if present
 
+**Note**: Earlier schema versions included `width` and `height` fields for image dimensions. These were removed during dead-code cleanup as they were never populated by the image upload implementation.
+
 ---
 
 ### TierListSettings
@@ -123,12 +123,8 @@ Configuration for tier list display and behavior.
 
 ```typescript
 interface TierListSettings {
-  theme: 'light' | 'dark' | 'system'; // Color theme preference
-  tierHeight: number; // Height of each tier in pixels
   itemSize: 'small' | 'medium' | 'large'; // Item display size
   showItemLabels: boolean; // Whether to show item text
-  enableAnimations: boolean; // Enable drag animations
-  snapToGrid: boolean; // Snap items to grid when dropping
 }
 ```
 
@@ -136,14 +132,12 @@ interface TierListSettings {
 
 ```typescript
 const DEFAULT_SETTINGS: TierListSettings = {
-  theme: 'system',
-  tierHeight: 120,
   itemSize: 'medium',
   showItemLabels: true,
-  enableAnimations: true,
-  snapToGrid: false,
 };
 ```
+
+**Note**: Earlier schema versions included `theme`, `tierHeight`, `enableAnimations`, and `snapToGrid` fields. These were removed during dead-code cleanup as they were never used by the UI. The application uses system-preference dark mode only (via `prefers-color-scheme` media query) without a manual theme toggle.
 
 ---
 
@@ -202,22 +196,6 @@ type TierListAction =
     }
   | { type: 'ITEM_UPDATE_LABEL'; payload: { itemId: string; label: string } }
 
-  // Drag and drop operations
-  | { type: 'DRAG_START'; payload: { type: 'tier' | 'item'; id: string } }
-  | {
-      type: 'DRAG_MOVE';
-      payload: { type: 'tier' | 'item'; id: string; over: string | null };
-    }
-  | {
-      type: 'DRAG_END';
-      payload: {
-        type: 'tier' | 'item';
-        id: string;
-        over: string | null;
-        dropped: boolean;
-      };
-    }
-
   // Undo/redo
   | { type: 'UNDO' }
   | { type: 'REDO' }
@@ -231,6 +209,8 @@ type TierListAction =
   | { type: 'SAVE_SUCCESS' }
   | { type: 'SAVE_ERROR'; payload: string };
 ```
+
+**Note**: Earlier type definitions included `DRAG_START`, `DRAG_MOVE`, and `DRAG_END` actions. These were removed during dead-code cleanup because drag operations are fully handled by the `@dnd-kit` library and do not directly modify reducer state.
 
 ---
 
