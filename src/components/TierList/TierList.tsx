@@ -367,9 +367,9 @@ export function TierList() {
   return (
     <DragDropProvider>
       <div ref={containerRef} className="mx-auto max-w-6xl p-4">
-        {/* Header */}
+        {/* Header (Tier List) */}
         <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+          <h1 className="text-4xl font-bold text-slate-900 dark:text-white">
             {tierList.name}
           </h1>
 
@@ -399,9 +399,10 @@ export function TierList() {
               className="cursor-pointer rounded-md bg-blue-600 px-4 py-2 font-medium text-white transition-colors hover:bg-blue-700"
               onClick={handleAddTier}
               aria-label="Add tier"
+              title="Add tier"
               type="button"
             >
-              + Add Tier
+              + <span className="hidden sm:inline-block">Add Tier</span>
             </button>
           </div>
         </div>
