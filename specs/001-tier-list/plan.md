@@ -76,7 +76,6 @@ src/
 ├── components/
 │   ├── TierList/
 │   │   ├── TierList.tsx
-│   │   ├── TierList.types.ts
 │   │   ├── TierList.test.tsx
 │   │   └── index.ts
 │   ├── Tier/
@@ -94,6 +93,10 @@ src/
 │   │   ├── AddItemButton.types.ts
 │   │   ├── AddItemButton.test.tsx
 │   │   └── index.ts
+│   ├── ColorPicker/
+│   │   ├── ColorPicker.tsx
+│   │   ├── ColorPicker.test.tsx
+│   │   └── index.ts
 │   ├── UndoRedoControls/
 │   │   ├── UndoRedoControls.tsx
 │   │   ├── UndoRedoControls.types.ts
@@ -106,9 +109,7 @@ src/
 │       └── index.ts
 ├── hooks/
 │   ├── useTierList.ts
-│   ├── useTierList.test.ts
-│   ├── useAutoSave.ts
-│   └── useAutoSave.test.ts
+│   └── useTierList.test.ts
 ├── services/
 │   ├── storage.ts
 │   └── storage.test.ts
@@ -117,6 +118,11 @@ src/
 │   ├── tierListReducer.test.ts
 │   ├── tierListContext.tsx
 │   └── tierListContext.test.tsx
+├── constants/
+│   ├── tierList.ts
+│   └── colorPalette.ts
+├── types/
+│   └── tierList.ts
 └── utils/
     ├── escapeHtml.ts
     ├── escapeHtml.test.ts

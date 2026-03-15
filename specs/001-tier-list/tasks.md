@@ -35,7 +35,7 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [x] T005 Define TypeScript types in `src/types/tierList.types.ts`: TierList, Tier, TierListItem, ItemMetadata, TierListSettings, TierListState, TierListAction
+- [x] T005 Define TypeScript types in `src/types/tierList.ts`: TierList, Tier, TierListItem, ItemMetadata, TierListSettings, TierListState, TierListAction. Create constants in `src/constants/tierList.ts`: DEFAULT_TIERS, DEFAULT_SETTINGS
 - [x] T006 [P] Create utility: `src/utils/escapeHtml.ts` with escapeHtml function and tests
 - [x] T007 [P] Create utility: `src/utils/validation.ts` with validateTierList, validateTier, validateItem, isValidCssColor, getTotalItemCount, findItemLocation and tests
 - [x] T008 [P] Create utility: `src/utils/generateId.ts` with generateId function using crypto.randomUUID() and tests
@@ -67,10 +67,9 @@
 
 ### Implementation for User Story 1
 
-- [x] T020 [P] [US1] Create default tier list factory: `src/utils/createDefaultTierList.ts` with createDefaultTierList function and DEFAULT_TIERS array
-- [x] T021 [US1] Create TierList component: `src/components/TierList/TierList.tsx` with DragDropProvider provider, renders tiers, handles tier add/delete/reorder
-- [x] T022 [US1] Create TierList types: `src/components/TierList/TierList.types.ts` with TierListProps interface
-- [x] T023 [US1] Create barrel export: `src/components/TierList/index.ts`
+- [x] T020 [P] [US1] Create default tier list factory: `src/utils/createDefaultTierList.ts` with createDefaultTierList function. Imports DEFAULT_TIERS from `src/constants/tierList.ts`
+- [x] T021 [US1] Create TierList component: `src/components/TierList/TierList.tsx` with DragDropProvider provider, renders tiers, handles tier add/delete/reorder. Types defined inline (no separate .types.ts file needed)
+- [x] T022 [US1] Create barrel export: `src/components/TierList/index.ts`
 - [x] T023A [US1] Integrate tier list into app shell: update `src/components/App/App.tsx` to render `TierList` within `TierListProvider`
 - [x] T024 [US1] Create Tier component: `src/components/Tier/Tier.tsx` with SortableContext, renders tier label, color, delete button, drop zone
 - [x] T025 [US1] Create Tier types: `src/components/Tier/Tier.types.ts` with TierProps interface
@@ -132,9 +131,8 @@
 
 ### Implementation for User Story 3
 
-- [x] T048 [P] [US3] Create color picker component: `src/components/ColorPicker/ColorPicker.tsx` with predefined color palette, custom color input
-- [x] T049 [US3] Create ColorPicker types: `src/components/ColorPicker/ColorPicker.types.ts`
-- [x] T050 [US3] Create barrel export: `src/components/ColorPicker/index.ts`
+- [x] T048 [P] [US3] Create color picker component: `src/components/ColorPicker/ColorPicker.tsx` with predefined color palette (imported from `src/constants/colorPalette.ts`), custom color input, ColorPickerProps interface defined inline
+- [x] T049 [US3] Create barrel export: `src/components/ColorPicker/index.ts`
 - [x] T051 [US3] Add tier customization UI to Tier component: color picker button, label edit input, reset button
 - [x] T052 [US3] Extend useTierList hook with customization operations: updateTierColor, updateTierLabel, resetTier
 - [x] T053 [US3] Add tier customization actions to reducer: TIER_UPDATE_COLOR, TIER_UPDATE_LABEL, TIER_RESET with isCustomColor and isCustomLabel flags
