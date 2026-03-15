@@ -189,9 +189,10 @@ export function TierListItem({
 
       {/* Delete Button */}
       <button
-        className="absolute -top-2 -left-2 rounded-full bg-red-100 p-1.5 text-red-600 opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100 hover:bg-red-200 hover:text-red-700 focus:opacity-100 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50 dark:hover:text-red-300"
+        className="absolute -top-2 -left-2 cursor-pointer rounded-full bg-red-100 p-1.5 text-red-600 opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100 hover:bg-red-200 hover:text-red-700 focus:opacity-100 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50 dark:hover:text-red-300"
         onClick={onDelete}
         aria-label="Delete item"
+        title="Delete item"
         tabIndex={0}
         type="button"
       >

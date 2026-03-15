@@ -100,9 +100,10 @@ export function Tier({
           {/* Move Up */}
           {index > 0 && (
             <button
-              className="rounded-md p-1 text-slate-600 hover:bg-slate-200 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-white"
+              className="cursor-pointer rounded-md p-1 text-slate-600 hover:bg-slate-200 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-white"
               onClick={handleMoveUp}
               aria-label="Move up"
+              title="Move up"
               type="button"
             >
               <svg
@@ -124,9 +125,10 @@ export function Tier({
           {/* Move Down */}
           {index < totalTiers - 1 && (
             <button
-              className="rounded-md p-1 text-slate-600 hover:bg-slate-200 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-white"
+              className="cursor-pointer rounded-md p-1 text-slate-600 hover:bg-slate-200 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-white"
               onClick={handleMoveDown}
               aria-label="Move down"
+              title="Move down"
               type="button"
             >
               <svg
@@ -148,11 +150,12 @@ export function Tier({
           {/* Color Picker */}
           <div className="relative">
             <button
-              className="rounded-md p-1 text-slate-600 hover:bg-slate-200 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-white"
+              className="cursor-pointer rounded-md p-1 text-slate-600 hover:bg-slate-200 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-white"
               onClick={() => {
                 setIsColorPickerOpen(!isColorPickerOpen);
               }}
               aria-label="Tier color"
+              title="Change color"
               type="button"
             >
               <div
@@ -175,9 +178,10 @@ export function Tier({
 
           {/* Delete */}
           <button
-            className="rounded-md p-1 text-red-600 hover:bg-red-100 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-900/30 dark:hover:text-red-300"
+            className="cursor-pointer rounded-md p-1 text-red-600 hover:bg-red-100 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-900/30 dark:hover:text-red-300"
             onClick={onDelete}
             aria-label="Delete tier"
+            title="Delete tier"
             type="button"
           >
             <svg

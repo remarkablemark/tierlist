@@ -84,7 +84,7 @@ export function ColorPicker({
         {COLOR_PALETTE.map((paletteColor, index) => (
           <button
             key={`${paletteColor}-${String(index)}`}
-            className={`h-8 w-8 rounded-md border-2 transition-all hover:scale-110 ${
+            className={`h-8 w-8 cursor-pointer rounded-md border-2 transition-all hover:scale-110 ${
               color === paletteColor
                 ? 'border-slate-900 dark:border-white'
                 : 'border-transparent'
@@ -94,6 +94,7 @@ export function ColorPicker({
               handleColorClick(paletteColor, event);
             }}
             aria-label={`Select color ${paletteColor}`}
+            title={paletteColor}
             type="button"
           />
         ))}
