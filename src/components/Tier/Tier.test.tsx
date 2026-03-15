@@ -263,14 +263,6 @@ describe('Tier', () => {
     expect(tier).toHaveClass('ring-2');
   });
 
-  it('has dragging styling when isDragging is true', () => {
-    render(<Tier {...mockProps} isDragging />);
-
-    const tier = screen.getByRole('region');
-    // Dragging styling would be applied via class
-    expect(tier).toHaveClass('opacity-50');
-  });
-
   it('keeps the empty drop zone without placeholder copy when tier has no items', () => {
     render(<Tier {...mockProps} />);
 

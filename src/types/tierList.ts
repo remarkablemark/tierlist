@@ -10,8 +10,6 @@ export interface ItemMetadata {
   originalFileName?: string;
   fileType?: string;
   fileSize?: number;
-  width?: number;
-  height?: number;
   uploadedAt?: number;
 }
 
@@ -43,12 +41,8 @@ export interface Tier {
  * Configuration for tier list display and behavior.
  */
 export interface TierListSettings {
-  theme: 'light' | 'dark' | 'system';
-  tierHeight: number;
   itemSize: 'small' | 'medium' | 'large';
   showItemLabels: boolean;
-  enableAnimations: boolean;
-  snapToGrid: boolean;
 }
 
 /**
@@ -107,33 +101,9 @@ export type TierListAction =
     }
   | { type: 'ITEM_UPDATE_LABEL'; payload: { itemId: string; label: string } }
 
-  // Drag and drop operations
-  | { type: 'DRAG_START'; payload: { type: 'tier' | 'item'; id: string } }
-  | {
-      type: 'DRAG_MOVE';
-      payload: { type: 'tier' | 'item'; id: string; over: string | null };
-    }
-  | {
-      type: 'DRAG_END';
-      payload: {
-        type: 'tier' | 'item';
-        id: string;
-        over: string | null;
-        dropped: boolean;
-      };
-    }
-
   // Undo/redo
   | { type: 'UNDO' }
   | { type: 'REDO' }
 
   // Settings
   | { type: 'SETTINGS_UPDATE'; payload: Partial<TierListSettings> };
-
-/**
- * Validation result with errors and warnings.
- */
-export interface ValidationResult {
-  errors: string[];
-  warnings: string[];
-}

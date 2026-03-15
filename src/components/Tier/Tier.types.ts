@@ -22,10 +22,6 @@ export interface TierProps {
    */
   totalTiers: number;
   /**
-   * Whether this tier is currently being dragged.
-   */
-  isDragging?: boolean;
-  /**
    * Whether a drag item is over this tier.
    */
   isOver?: boolean;
@@ -69,10 +65,6 @@ export interface TierProps {
    * Native drag-over handler for the drop zone.
    */
   onItemDragOver?: React.DragEventHandler<HTMLDivElement>;
-  /**
-   * Callback when item is reordered within this tier.
-   */
-  onItemReorder?: (itemId: string, newIndex: number) => void;
   /**
    * Optional custom item content.
    */

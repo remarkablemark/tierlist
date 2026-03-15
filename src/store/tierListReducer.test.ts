@@ -279,22 +279,6 @@ describe('tierListReducer', () => {
     });
   });
 
-  describe('drag lifecycle actions', () => {
-    it.each<TierListAction['type']>(['DRAG_START', 'DRAG_MOVE', 'DRAG_END'])(
-      'returns state unchanged for %s',
-      (actionType) => {
-        const state = createMockState();
-
-        const newState = tierListReducer(state, {
-          type: actionType,
-          payload: {},
-        } as TierListAction);
-
-        expect(newState).toBe(state);
-      },
-    );
-  });
-
   describe('ITEM_ADD', () => {
     it('adds an item to unassigned when no target tier', () => {
       const state = createMockState();
@@ -716,10 +700,9 @@ describe('tierListReducer', () => {
 
       const newState = tierListReducer(state, {
         type: 'SETTINGS_UPDATE',
-        payload: { theme: 'dark', itemSize: 'large' },
+        payload: { itemSize: 'large' },
       });
 
-      expect(newState.present.settings.theme).toBe('dark');
       expect(newState.present.settings.itemSize).toBe('large');
     });
   });

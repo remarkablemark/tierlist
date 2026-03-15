@@ -409,14 +409,6 @@ export function tierListReducer(
       return state;
     }
 
-    case 'DRAG_START':
-    case 'DRAG_MOVE':
-    case 'DRAG_END': {
-      // Drag operations are handled by @dnd-kit and don't directly modify state
-      // They trigger ITEM_MOVE or TIER_REORDER actions on drop
-      return state;
-    }
-
     case 'UNDO': {
       if (state.past.length === 0) {
         return state;

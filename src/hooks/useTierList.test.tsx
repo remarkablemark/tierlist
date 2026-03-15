@@ -67,10 +67,6 @@ function createState(overrides?: Partial<TierListState>): TierListState {
       settings: {
         showItemLabels: true,
         itemSize: 'medium',
-        theme: 'light',
-        tierHeight: 160,
-        enableAnimations: true,
-        snapToGrid: false,
       },
       version: 1,
     },

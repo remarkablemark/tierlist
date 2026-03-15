@@ -9,12 +9,8 @@ import { type Tier, type TierListSettings } from '../types/tierList';
  * Default tier list settings.
  */
 export const DEFAULT_SETTINGS: TierListSettings = {
-  theme: 'system',
-  tierHeight: 120,
   itemSize: 'medium',
   showItemLabels: true,
-  enableAnimations: true,
-  snapToGrid: false,
 };
 
 /**

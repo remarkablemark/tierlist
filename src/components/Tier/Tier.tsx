@@ -15,7 +15,6 @@ export function Tier({
   tier,
   index,
   totalTiers,
-  isDragging = false,
   isOver = false,
   onLabelChange,
   onColorChange,
@@ -59,8 +58,6 @@ export function Tier({
     ? 'ring-2 ring-slate-400 ring-inset'
     : 'border-slate-200 dark:border-slate-700';
 
-  const draggingClasses = isDragging ? 'opacity-50' : 'opacity-100';
-
   // Size classes for items
   const sizeClasses = {
     small: 'h-16 w-16',
@@ -70,7 +67,7 @@ export function Tier({
 
   return (
     <div
-      className={`relative ${dropZoneClasses} ${draggingClasses} transition-all`}
+      className={`relative ${dropZoneClasses} transition-all`}
       style={{ backgroundColor: tier.color }}
       role="region"
       aria-label={`Tier ${tier.label}`}
