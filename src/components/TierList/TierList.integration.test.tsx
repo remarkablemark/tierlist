@@ -4,6 +4,7 @@
  */
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { type TierListItemComponentProps } from 'src/components/TierListItem/TierListItem.types';
 import { type Tier, type TierListItem } from 'src/types/tierList';
 
@@ -575,42 +576,45 @@ describe('TierList integration', () => {
     expect(secondTierItem).toHaveAttribute('data-drop-target', 'false');
   });
 
-  it('handles keyboard drag movement, drop, and cancel flows', () => {
+  it('handles keyboard drag movement, drop, and cancel flows', async () => {
+    const user = userEvent.setup();
     renderTierList();
 
-    fireEvent.click(
+    await user.click(
       screen.getByRole('button', { name: 'Move down free-item' }),
     );
-    fireEvent.click(screen.getByRole('button', { name: 'Pick up free-item' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Move up free-item' }));
-    fireEvent.click(
+    await user.click(screen.getByRole('button', { name: 'Pick up free-item' }));
+    await user.click(screen.getByRole('button', { name: 'Move up free-item' }));
+    await user.click(
       screen.getByRole('button', { name: 'Move down free-item' }),
     );
-    fireEvent.click(screen.getByRole('button', { name: 'Drop free-item' }));
+    await user.click(screen.getByRole('button', { name: 'Drop free-item' }));
 
-    fireEvent.click(
+    await user.click(
       screen.getByRole('button', { name: 'Pick up tier-item-1' }),
     );
-    fireEvent.click(
+    await user.click(
       screen.getByRole('button', { name: 'Move right tier-item-1' }),
     );
-    fireEvent.click(
+    await user.click(
       screen.getByRole('button', { name: 'Pick up tier-item-1' }),
     );
-    fireEvent.click(
+    await user.click(
       screen.getByRole('button', { name: 'Move left tier-item-1' }),
     );
-    fireEvent.click(
+    await user.click(
       screen.getByRole('button', { name: 'Pick up tier-item-1' }),
     );
-    fireEvent.click(
+    await user.click(
       screen.getByRole('button', { name: 'Move up tier-item-1' }),
     );
-    fireEvent.click(screen.getByRole('button', { name: 'Drop tier-item-1' }));
-    fireEvent.click(
+    await user.click(screen.getByRole('button', { name: 'Drop tier-item-1' }));
+    await user.click(
       screen.getByRole('button', { name: 'Pick up tier-item-1' }),
     );
-    fireEvent.click(screen.getByRole('button', { name: 'Cancel tier-item-1' }));
+    await user.click(
+      screen.getByRole('button', { name: 'Cancel tier-item-1' }),
+    );
 
     const state = getState();
     expect(state.moveItem).toHaveBeenCalledWith('free-item', 'tier-a', 2);
