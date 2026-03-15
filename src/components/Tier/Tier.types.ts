@@ -5,7 +5,7 @@
 
 import { type DragEventHandler, type ReactNode } from 'react';
 
-import { type Tier as TierType } from '../../types/tierList.types';
+import { type Tier as TierType } from '../../types/tierList';
 
 /**
  * Props for the Tier component.

@@ -13,7 +13,7 @@ import {
 import type React from 'react';
 import { type ReactElement } from 'react';
 import { type TierListItemComponentProps } from 'src/components/TierListItem/TierListItem.types';
-import { type Tier } from 'src/types/tierList.types';
+import { type Tier } from 'src/types/tierList';
 
 interface MockUseTierListResult {
   addItem: ReturnType<typeof vi.fn>;

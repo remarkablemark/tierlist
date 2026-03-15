@@ -5,7 +5,29 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-import { COLOR_PALETTE, type ColorPickerProps } from './ColorPicker.types';
+import { COLOR_PALETTE } from '../../constants/colorPalette';
+
+/**
+ * Props for the ColorPicker component.
+ */
+export interface ColorPickerProps {
+  /**
+   * Currently selected color.
+   */
+  color: string;
+  /**
+   * Callback when color is selected.
+   */
+  onColorSelect: (color: string) => void;
+  /**
+   * Whether the color picker is open.
+   */
+  isOpen?: boolean;
+  /**
+   * Callback to toggle the color picker.
+   */
+  onToggle?: () => void;
+}
 
 /**
  * ColorPicker component that displays a palette of predefined colors.

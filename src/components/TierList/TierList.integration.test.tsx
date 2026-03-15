@@ -4,12 +4,9 @@
  */
 
 import { fireEvent, render, screen } from '@testing-library/react';
+import { DEFAULT_SETTINGS, DEFAULT_TIERS } from 'src/constants/tierList';
 import { TierListProvider } from 'src/store/tierListContext';
-import {
-  DEFAULT_SETTINGS,
-  DEFAULT_TIERS,
-  type TierList as TierListData,
-} from 'src/types/tierList.types';
+import { type TierList as TierListData } from 'src/types/tierList';
 import { generateId } from 'src/utils/generateId';
 
 import { TierList } from './TierList';

@@ -8,7 +8,7 @@ import type {
   TierList,
   TierListItem,
   ValidationResult,
-} from '../types/tierList.types';
+} from '../types/tierList';
 import { escapeHtml } from './escapeHtml';
 
 /**

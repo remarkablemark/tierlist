@@ -5,7 +5,7 @@
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
-import { type Tier as TierType } from 'src/types/tierList.types';
+import { type Tier as TierType } from 'src/types/tierList';
 import { generateId } from 'src/utils/generateId';
 
 import { Tier } from './Tier';

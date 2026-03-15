@@ -2,7 +2,7 @@
  * Tests for the validation utility functions.
  */
 
-import type { Tier, TierList, TierListItem } from '../types/tierList.types';
+import type { Tier, TierList, TierListItem } from '../types/tierList';
 import {
   findItemLocation,
   getTotalItemCount,

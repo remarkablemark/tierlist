@@ -3,12 +3,8 @@
  * @packageDocumentation
  */
 
-import {
-  DEFAULT_SETTINGS,
-  DEFAULT_TIERS,
-  type Tier,
-  type TierList,
-} from '../types/tierList.types';
+import { DEFAULT_SETTINGS, DEFAULT_TIERS } from '../constants/tierList';
+import { type Tier, type TierList } from '../types/tierList';
 import { escapeHtml } from './escapeHtml';
 import { generateId } from './generateId';
 

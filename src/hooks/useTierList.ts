@@ -6,7 +6,7 @@
 import { useCallback } from 'react';
 
 import { useTierListContext } from '../store/tierListContext';
-import { type TierList, type TierListItem } from '../types/tierList.types';
+import { type TierList, type TierListItem } from '../types/tierList';
 
 /**
  * Return type for the useTierList hook.

@@ -3,14 +3,14 @@
  * @packageDocumentation
  */
 
+import { DEFAULT_TIERS } from '../constants/tierList';
 import {
-  DEFAULT_TIERS,
   type Tier,
   type TierList,
   type TierListAction,
   type TierListItem,
   type TierListState,
-} from '../types/tierList.types';
+} from '../types/tierList';
 import { generateId } from '../utils/generateId';
 
 /**

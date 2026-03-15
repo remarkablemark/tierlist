@@ -5,7 +5,7 @@
 
 import { type DragEventHandler } from 'react';
 
-import { type TierListItem as TierItemType } from '../../types/tierList.types';
+import { type TierListItem as TierItemType } from '../../types/tierList';
 
 /**
  * Props for the TierListItem component.

@@ -6,7 +6,7 @@
 import { DragDropProvider } from '@dnd-kit/react';
 import { type DragEvent, useRef, useState } from 'react';
 import { useTierList } from 'src/hooks/useTierList';
-import { type TierListItem as TierItemType } from 'src/types/tierList.types';
+import { type TierListItem as TierItemType } from 'src/types/tierList';
 import { generateId } from 'src/utils/generateId';
 import { fileToDataUrl } from 'src/utils/imageUpload';
 

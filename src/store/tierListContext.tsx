@@ -13,13 +13,12 @@ import {
   useReducer,
 } from 'react';
 
+import { DEFAULT_SETTINGS, DEFAULT_TIERS } from '../constants/tierList';
 import {
-  DEFAULT_SETTINGS,
-  DEFAULT_TIERS,
   type TierList,
   type TierListAction,
   type TierListState,
-} from '../types/tierList.types';
+} from '../types/tierList';
 import { generateId } from '../utils/generateId';
 import { tierListReducer } from './tierListReducer';
 

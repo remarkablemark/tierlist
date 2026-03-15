@@ -3,7 +3,7 @@
  * @packageDocumentation
  */
 
-import { DEFAULT_SETTINGS, DEFAULT_TIERS } from '../types/tierList.types';
+import { DEFAULT_SETTINGS, DEFAULT_TIERS } from '../constants/tierList';
 import { createDefaultTierList } from './createDefaultTierList';
 
 describe('createDefaultTierList', () => {

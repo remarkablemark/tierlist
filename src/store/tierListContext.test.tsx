@@ -5,11 +5,8 @@
 
 import { act, renderHook } from '@testing-library/react';
 
-import {
-  DEFAULT_SETTINGS,
-  DEFAULT_TIERS,
-  type TierList,
-} from '../types/tierList.types';
+import { DEFAULT_SETTINGS, DEFAULT_TIERS } from '../constants/tierList';
+import { type TierList } from '../types/tierList';
 import { generateId } from '../utils/generateId';
 import { TierListProvider, useTierListContext } from './tierListContext';
 
