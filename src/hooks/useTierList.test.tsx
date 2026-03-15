@@ -151,7 +151,6 @@ describe('useTierList', () => {
     result.current.deleteTier('tier-a');
     result.current.updateTierLabel('tier-a', 'Updated');
     result.current.updateTierColor('tier-a', '#fedcba');
-    result.current.resetTier('tier-a');
     result.current.addItem(newItem, 'tier-a');
     result.current.deleteItem('tier-item');
     result.current.updateItemLabel('tier-item', 'Edited');
@@ -173,7 +172,6 @@ describe('useTierList', () => {
           payload: { tierId: 'tier-a', color: '#fedcba' },
         },
       ],
-      [{ type: 'TIER_RESET', payload: { tierId: 'tier-a' } }],
       [
         {
           type: 'ITEM_ADD',
@@ -234,77 +232,6 @@ describe('useTierList', () => {
         targetIndex: 1,
       },
     });
-  });
-
-  it('dispatches reorderItem with up and down directions', () => {
-    const dispatch = vi.fn();
-    const state = createState({
-      present: {
-        ...createState().present,
-        tiers: [
-          {
-            ...createState().present.tiers[0],
-            items: [
-              {
-                id: 'first',
-                label: 'First',
-                imageUrl: null,
-                imageBlobId: null,
-                createdAt: 1,
-                metadata: {},
-              },
-              {
-                id: 'second',
-                label: 'Second',
-                imageUrl: null,
-                imageBlobId: null,
-                createdAt: 1,
-                metadata: {},
-              },
-            ],
-          },
-        ],
-      },
-    });
-
-    mockUseTierListContext.mockReturnValue({
-      state,
-      dispatch,
-    });
-
-    const { result } = renderHook(() => useTierList());
-
-    result.current.reorderItem('tier-a', 'second', 0);
-    result.current.reorderItem('tier-a', 'first', 1);
-
-    expect(dispatch.mock.calls).toEqual([
-      [
-        {
-          type: 'ITEM_REORDER',
-          payload: { tierId: 'tier-a', itemId: 'second', direction: 'up' },
-        },
-      ],
-      [
-        {
-          type: 'ITEM_REORDER',
-          payload: { tierId: 'tier-a', itemId: 'first', direction: 'down' },
-        },
-      ],
-    ]);
-  });
-
-  it('returns early when reorderItem receives an unknown tier', () => {
-    const dispatch = vi.fn();
-    mockUseTierListContext.mockReturnValue({
-      state: createState(),
-      dispatch,
-    });
-
-    const { result } = renderHook(() => useTierList());
-
-    result.current.reorderItem('missing-tier', 'tier-item', 0);
-
-    expect(dispatch).not.toHaveBeenCalled();
   });
 
   it('dispatches reorderTiers with up and down directions', () => {

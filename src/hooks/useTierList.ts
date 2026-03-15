@@ -26,7 +26,6 @@ export interface UseTierListReturn {
   reorderTiers: (tierId: string, newIndex: number) => void;
   updateTierLabel: (tierId: string, label: string) => void;
   updateTierColor: (tierId: string, color: string) => void;
-  resetTier: (tierId: string) => void;
 
   // Item operations
   addItem: (item: TierListItem, targetTierId?: string) => void;
@@ -36,7 +35,6 @@ export interface UseTierListReturn {
     targetTierId: string | null,
     targetIndex: number,
   ) => void;
-  reorderItem: (tierId: string, itemId: string, newIndex: number) => void;
   updateItemLabel: (itemId: string, label: string) => void;
 
   // Undo/redo
@@ -117,16 +115,6 @@ export function useTierList(): UseTierListReturn {
     [dispatch],
   );
 
-  const resetTier = useCallback(
-    (tierId: string) => {
-      dispatch({
-        type: 'TIER_RESET',
-        payload: { tierId },
-      });
-    },
-    [dispatch],
-  );
-
   // Item operations
   const addItem = useCallback(
     (item: TierListItem, targetTierId?: string) => {
@@ -175,22 +163,6 @@ export function useTierList(): UseTierListReturn {
     [dispatch, state.present.tiers],
   );
 
-  const reorderItem = useCallback(
-    (tierId: string, itemId: string, newIndex: number) => {
-      const tier = state.present.tiers.find((t) => t.id === tierId);
-      if (!tier) return;
-
-      const currentIndex = tier.items.findIndex((i) => i.id === itemId);
-      const direction = newIndex < currentIndex ? 'up' : 'down';
-
-      dispatch({
-        type: 'ITEM_REORDER',
-        payload: { tierId, itemId, direction },
-      });
-    },
-    [dispatch, state.present.tiers],
-  );
-
   const updateItemLabel = useCallback(
     (itemId: string, label: string) => {
       dispatch({
@@ -222,11 +194,9 @@ export function useTierList(): UseTierListReturn {
     reorderTiers,
     updateTierLabel,
     updateTierColor,
-    resetTier,
     addItem,
     deleteItem,
     moveItem,
-    reorderItem,
     updateItemLabel,
     undo,
     redo,

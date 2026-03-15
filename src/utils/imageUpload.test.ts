@@ -3,91 +3,9 @@
  * @packageDocumentation
  */
 
-import { blobToDataUrl, fileToBlob, fileToDataUrl } from './imageUpload';
+import { fileToDataUrl } from './imageUpload';
 
 describe('imageUpload', () => {
-  describe('fileToBlob', () => {
-    it('converts a file to a blob', () => {
-      const file = new File(['test content'], 'test.png', {
-        type: 'image/png',
-      });
-
-      const blob = fileToBlob(file);
-
-      expect(blob).toBeInstanceOf(Blob);
-      expect(blob.type).toBe('image/png');
-      expect(blob.size).toBe(file.size);
-    });
-
-    it('preserves the file content', async () => {
-      const file = new File(['hello world'], 'test.txt', {
-        type: 'text/plain',
-      });
-
-      const blob = fileToBlob(file);
-      const text = await blob.text();
-
-      expect(text).toBe('hello world');
-    });
-
-    it('handles empty files', () => {
-      const file = new File([], 'empty.png', { type: 'image/png' });
-
-      const blob = fileToBlob(file);
-
-      expect(blob).toBeInstanceOf(Blob);
-      expect(blob.size).toBe(0);
-    });
-
-    it('handles different mime types', () => {
-      const types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-
-      types.forEach((type) => {
-        const file = new File(['test'], 'test', { type });
-        const blob = fileToBlob(file);
-        expect(blob.type).toBe(type);
-      });
-    });
-  });
-
-  describe('blobToDataUrl', () => {
-    it('converts a blob to a data URL', async () => {
-      const blob = new Blob(['test content'], { type: 'text/plain' });
-
-      const dataUrl = await blobToDataUrl(blob);
-
-      expect(dataUrl).toMatch(/^data:text\/plain;base64,/);
-      expect(atob(dataUrl.split(',')[1])).toBe('test content');
-    });
-
-    it('handles image blobs', async () => {
-      // Create a simple PNG-like blob (not a valid PNG, but tests the conversion)
-      const blob = new Blob(['image data'], { type: 'image/png' });
-
-      const dataUrl = await blobToDataUrl(blob);
-
-      expect(dataUrl).toMatch(/^data:image\/png;base64,/);
-    });
-
-    it('handles empty blobs', async () => {
-      const blob = new Blob([]);
-
-      const dataUrl = await blobToDataUrl(blob);
-
-      expect(dataUrl).toMatch(/^data:application\/octet-stream;base64,/);
-      expect(atob(dataUrl.split(',')[1])).toBe('');
-    });
-
-    it('handles binary data', async () => {
-      const binaryData = new Uint8Array([0, 1, 2, 3, 4, 5]);
-      const blob = new Blob([binaryData]);
-
-      const dataUrl = await blobToDataUrl(blob);
-
-      expect(dataUrl).toMatch(/^data:application\/octet-stream;base64,/);
-    });
-  });
-
   describe('fileToDataUrl', () => {
     it('converts a file to a data URL', async () => {
       const file = new File(['test content'], 'test.txt', {
@@ -148,42 +66,6 @@ describe('imageUpload', () => {
   });
 
   describe('error handling', () => {
-    it('rejects if FileReader fails for blob', async () => {
-      // Mock FileReader to fail
-      const originalFileReader = window.FileReader;
-
-      class MockFileReader extends EventTarget {
-        onload:
-          | ((this: FileReader, ev: ProgressEvent<FileReader>) => void)
-          | null = null;
-        onerror:
-          | ((this: FileReader, ev: ProgressEvent<FileReader>) => void)
-          | null = null;
-        result: string | ArrayBuffer | null = null;
-
-        readAsDataURL() {
-          // Simulate error
-          setTimeout(() => {
-            if (this.onerror) {
-              this.onerror.call(
-                this as unknown as FileReader,
-                new ProgressEvent('error') as ProgressEvent<FileReader>,
-              );
-            }
-          }, 0);
-        }
-      }
-
-      // @ts-expect-error - Mock for testing
-      window.FileReader = MockFileReader;
-
-      const blob = new Blob(['test']);
-
-      await expect(blobToDataUrl(blob)).rejects.toThrow('FileReader error');
-
-      window.FileReader = originalFileReader;
-    });
-
     it('rejects if FileReader fails for file', async () => {
       // Mock FileReader to fail
       const originalFileReader = window.FileReader;
