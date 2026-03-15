@@ -177,21 +177,21 @@
 
 ### Tests for Accessibility ⚠️
 
-- [ ] T090 [P] Accessibility test: Keyboard navigation for drag-and-drop in `src/components/TierList/TierList.test.tsx`
-- [ ] T091 [P] Accessibility test: Screen reader announcements for drag pickup/move/drop (covers FR-014/FR-015) in `src/components/TierList/TierList.test.tsx`
-- [ ] T092 [P] Accessibility test: Focus indicators visible in all components
+- [x] T090 [P] Accessibility test: Keyboard navigation for drag-and-drop in `src/components/TierList/TierList.test.tsx`
+- [x] T091 [P] Accessibility test: Screen reader announcements for drag pickup/move/drop (covers FR-014/FR-015) in `src/components/TierList/TierList.test.tsx`
+- [x] T092 [P] Accessibility test: Focus indicators visible in all components
 
 ### Implementation for Accessibility
 
-- [ ] T093 [P] Configure @dnd-kit/react keyboard sensor in useTierList hook
-- [ ] T094 [P] Configure @dnd-kit/react touch sensor with activation constraint (distance: 5)
-- [ ] T095 Add ARIA labels to all interactive elements: TierList (role="application"), Tier (role="region"), TierListItem (role="listitem")
-- [ ] T096 Add aria-grabbed to draggable items, aria-dropeffect to drop zones
-- [ ] T097 Create live region for screen reader announcements during drag operations
+- [x] T093 [P] Configure @dnd-kit/react keyboard sensor in useTierList hook
+- [x] T094 [P] Configure @dnd-kit/react touch sensor with activation constraint (distance: 5)
+- [x] T095 Add ARIA labels to all interactive elements: TierList (role="application"), Tier (role="region"), TierListItem (role="listitem")
+- [x] T096 Add aria-grabbed to draggable items, aria-dropeffect to drop zones
+- [x] T097 Create live region for screen reader announcements during drag operations
 - [ ] T098 Implement step-by-step audio cues: "Press Enter to pick up, arrow keys to move, Enter to drop"
-- [ ] T099 Ensure 44x44px minimum touch targets via Tailwind classes (min-h-11 min-w-11)
-- [ ] T100 Add visible focus indicators: focus:ring-2 focus:ring-offset-2 on all interactive elements
-- [ ] T101 Add keyboard instructions to aria-describedby for draggable items
+- [x] T099 Ensure 44x44px minimum touch targets via Tailwind classes (min-h-11 min-w-11)
+- [x] T100 Add visible focus indicators: focus:ring-2 focus:ring-offset-2 on all interactive elements
+- [x] T101 Add keyboard instructions to aria-describedby for draggable items
 
 **Checkpoint**: Accessibility complete - application usable via keyboard and screen reader
 
@@ -201,18 +201,18 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T102 [P] Add responsive design: mobile-first Tailwind breakpoints (sm:, md:, lg:, xl:) for 320px-1920px viewport
-- [ ] T103 [P] Implement dark mode support: system-preference only via prefers-color-scheme media query, dark: prefix classes
-- [ ] T104 [P] Add performance warning: display toast when item count >= 50, hard stop at 100 items
+- [x] T102 [P] Add responsive design: mobile-first Tailwind breakpoints (sm:, md:, lg:, xl:) for 320px-1920px viewport
+- [x] T103 [P] Implement dark mode support: system-preference only via prefers-color-scheme media query, dark: prefix classes
+- [x] T104 [P] Add performance warning: display toast when item count >= 50, hard stop at 100 items
 - [ ] T105 [P] Add loading states: skeleton loaders for tier list and items
 - [ ] T106 [P] Add error boundaries: component-level error boundaries with fallback UI
-- [ ] T107 [P] Write integration tests: complete user journey from create to save
-- [ ] T108 [P] Run test coverage: `npm run test:ci` and verify 100% coverage (excluding barrel exports)
-- [ ] T109 [P] Run type check: `npm run lint:tsc` with zero errors
-- [ ] T110 [P] Run linter: `npm run lint` with zero errors
+- [x] T107 [P] Write integration tests: complete user journey from create to save
+- [x] T108 [P] Run test coverage: `npm run test:ci` and verify 100% coverage (excluding barrel exports)
+- [x] T109 [P] Run type check: `npm run lint:tsc` with zero errors
+- [x] T110 [P] Run linter: `npm run lint` with zero errors
 - [ ] T111 [P] Update quickstart.md: validate all commands and paths work correctly
-- [ ] T112 [P] Add TSDoc comments to all public APIs: components, hooks, utilities
-- [ ] T113 [P] Code cleanup: remove unused imports, dead code, console statements
+- [x] T112 [P] Add TSDoc comments to all public APIs: components, hooks, utilities
+- [x] T113 [P] Code cleanup: remove unused imports, dead code, console statements
 
 ---
 
