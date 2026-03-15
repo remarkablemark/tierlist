@@ -524,49 +524,49 @@ async function openDatabase(): Promise<TierListDB> {
 const DEFAULT_TIERS: Omit<Tier, 'id'>[] = [
   {
     label: 'S',
-    color: '#ff7f7f',
+    color: '#e57373', // Muted coral red
     items: [],
     isCustomColor: false,
     isCustomLabel: false,
   },
   {
     label: 'A',
-    color: '#ffbf7f',
+    color: '#ffb74d', // Softer orange
     items: [],
     isCustomColor: false,
     isCustomLabel: false,
   },
   {
     label: 'B',
-    color: '#ffff7f',
+    color: '#fff176', // Gentle pastel yellow
     items: [],
     isCustomColor: false,
     isCustomLabel: false,
   },
   {
     label: 'C',
-    color: '#bfff7f',
+    color: '#aed581', // Muted light green
     items: [],
     isCustomColor: false,
     isCustomLabel: false,
   },
   {
     label: 'D',
-    color: '#7fff7f',
+    color: '#81c784', // Softer medium green
     items: [],
     isCustomColor: false,
     isCustomLabel: false,
   },
   {
     label: 'E',
-    color: '#7fbfff',
+    color: '#64b5f6', // Muted sky blue
     items: [],
     isCustomColor: false,
     isCustomLabel: false,
   },
   {
     label: 'F',
-    color: '#bf7fff',
+    color: '#ba68c8', // Softer purple
     items: [],
     isCustomColor: false,
     isCustomLabel: false,
