@@ -14,8 +14,8 @@ You're an expert engineer for this React app.
 ## Project knowledge
 
 - **Tech Stack:**
-  - @dnd-kit/react (drag-and-drop library)
   - React 19 (UI library)
+  - @dnd-kit/react (drag-and-drop library)
   - TypeScript 5 (strict mode)
   - Vite 7 (build tool)
   - Vitest 4 (testing framework)
@@ -101,7 +101,7 @@ You're an expert engineer for this React app.
 - **Descriptive test names** - should clearly state what is being tested
 - **Vitest globals** - use `vi.fn()`, `vi.mock()`, `vi.clearAllMocks()`; no need to import test functions
 - **Test setup** - global test environment configured in `vite.config.mts` with `globals: true`
-- **Coverage exclusions** - Use `/* v8 ignore next -- @preserve */` for a single line that is not testable or `/* v8 ignore start */` and `/* v8 ignore end */` for multiple lines that are not testable
+- **Coverage exclusions** - Use `/* v8 ignore next -- @preserve */` for a single line that is not testable or `/* v8 ignore start */` and `/* v8 ignore stop */` for multiple lines that are not testable
 
 ### Code Quality Rules
 

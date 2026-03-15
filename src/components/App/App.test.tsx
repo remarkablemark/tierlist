@@ -1,32 +1,23 @@
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 
-import { App } from '.';
+import { App } from './App';
 
 describe('App component', () => {
-  it('renders without crashing', () => {
+  it('renders the tier list', () => {
     render(<App />);
 
-    const heading = screen.getByRole('heading', { level: 1 });
-    expect(heading).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Tier List' }),
+    ).toBeInTheDocument();
 
-    const button = screen.getByRole('button', { name: /count is 0/i });
-    expect(button).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /add tier/i }),
+    ).toBeInTheDocument();
 
-    const images = screen.getAllByRole('img');
-    expect(images).toHaveLength(3);
-  });
+    expect(
+      screen.getByRole('button', { name: /add item/i }),
+    ).toBeInTheDocument();
 
-  it('button click increments count', async () => {
-    const user = userEvent.setup();
-    render(<App />);
-
-    const button = screen.getByRole('button', { name: /count is 0/i });
-
-    await user.click(button);
-    expect(button).toHaveTextContent('count is 1');
-
-    await user.click(button);
-    expect(button).toHaveTextContent('count is 2');
+    expect(screen.getByText('No unassigned items')).toBeInTheDocument();
   });
 });
