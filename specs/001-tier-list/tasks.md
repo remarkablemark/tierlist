@@ -7,6 +7,8 @@
 
 **Organization**: Tasks are organized by user story to enable independent implementation and testing of each story.
 
+**Maintenance Note**: This task list records the original implementation sequence. After subsequent dead-code cleanup, the standalone `escapeHtml`, `validation`, and `createDefaultTierList` utilities referenced below were removed because they were unused by production code. Default tier-list initialization now lives in `src/store/tierListContext.tsx`.
+
 ## Format: `[ID] [P?] [Story] Description`
 
 - **[P]**: Can run in parallel (different files, no dependencies on incomplete tasks)
@@ -36,14 +38,14 @@
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
 - [x] T005 Define TypeScript types in `src/types/tierList.ts`: TierList, Tier, TierListItem, ItemMetadata, TierListSettings, TierListState, TierListAction. Create constants in `src/constants/tierList.ts`: DEFAULT_TIERS, DEFAULT_SETTINGS
-- [x] T006 [P] Create utility: `src/utils/escapeHtml.ts` with escapeHtml function and tests
-- [x] T007 [P] Create utility: `src/utils/validation.ts` with validateTierList, validateTier, validateItem, isValidCssColor, getTotalItemCount, findItemLocation and tests
+- [x] T006 [P] Create utility: `src/utils/escapeHtml.ts` with escapeHtml function and tests. Later removed during dead-code cleanup.
+- [x] T007 [P] Create utility: `src/utils/validation.ts` with validateTierList, validateTier, validateItem, isValidCssColor, getTotalItemCount, findItemLocation and tests. Later removed during dead-code cleanup.
 - [x] T008 [P] Create utility: `src/utils/generateId.ts` with generateId function using crypto.randomUUID() and tests
 - [x] T009 Create tier list reducer: `src/store/tierListReducer.ts` implementing all TierListAction types (TIER_ADD, TIER_DELETE, TIER_REORDER, TIER_UPDATE_LABEL, TIER_UPDATE_COLOR, TIER_RESET, ITEM_ADD, ITEM_DELETE, ITEM_MOVE, ITEM_REORDER, ITEM_UPDATE_LABEL, DRAG_START, DRAG_MOVE, DRAG_END, UNDO, REDO, SETTINGS_UPDATE, LOAD)
 - [x] T010 Write reducer tests: `src/store/tierListReducer.test.ts` covering all action types
 - [x] T011 Create context provider: `src/store/tierListContext.tsx` with TierListContext, TierListProvider, useTierListContext
 - [x] T012 Write context tests: `src/store/tierListContext.test.tsx` testing provider and hook
-- [x] T013 [P] [US1] Unit test: createDefaultTierList produces DEFAULT_TIERS baseline in `src/utils/createDefaultTierList.test.ts`
+- [x] T013 [P] [US1] Unit test: createDefaultTierList produces DEFAULT_TIERS baseline in `src/utils/createDefaultTierList.test.ts`. Later removed during dead-code cleanup.
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -63,11 +65,11 @@
 - [x] T016 [P] [US1] Component test: Tier displays label and color in `src/components/Tier/Tier.test.tsx`
 - [x] T017 [P] [US1] Integration test: Add tier flow in `src/components/TierList/TierList.test.tsx`
 - [x] T018 [P] [US1] Integration test: Delete tier with items moves to unassigned in `src/components/TierList/TierList.test.tsx`
-- [x] T019 [P] [US1] Unit test: createDefaultTierList produces DEFAULT_TIERS baseline in `src/utils/createDefaultTierList.test.ts`
+- [x] T019 [P] [US1] Unit test: createDefaultTierList produces DEFAULT_TIERS baseline in `src/utils/createDefaultTierList.test.ts`. Later removed during dead-code cleanup.
 
 ### Implementation for User Story 1
 
-- [x] T020 [P] [US1] Create default tier list factory: `src/utils/createDefaultTierList.ts` with createDefaultTierList function. Imports DEFAULT_TIERS from `src/constants/tierList.ts`
+- [x] T020 [P] [US1] Create default tier list factory: `src/utils/createDefaultTierList.ts` with createDefaultTierList function. Imports DEFAULT_TIERS from `src/constants/tierList.ts`. Later removed during dead-code cleanup; initialization now lives in `src/store/tierListContext.tsx`.
 - [x] T021 [US1] Create TierList component: `src/components/TierList/TierList.tsx` with DragDropProvider provider, renders tiers, handles tier add/delete/reorder. Types defined inline (no separate .types.ts file needed)
 - [x] T022 [US1] Create barrel export: `src/components/TierList/index.ts`
 - [x] T023A [US1] Integrate tier list into app shell: update `src/components/App/App.tsx` to render `TierList` within `TierListProvider`
@@ -245,13 +247,13 @@
 
 **Foundational Phase**:
 
-- T006 (escapeHtml), T007 (validation), T008 (generateId) utilities can develop in parallel
+- T006 (escapeHtml), T007 (validation), T008 (generateId) utilities can develop in parallel. `T006` and `T007` were later removed during dead-code cleanup.
 - T009 (reducer) and T011 (context) can develop in parallel
 
 **User Story 1**:
 
 - T015, T016, T017, T018 (tests) can run in parallel
-- T019 (createDefaultTierList) and T015-T018 (tests) can start in parallel
+- T019 (createDefaultTierList) and T015-T018 (tests) can start in parallel. `T019` was later removed during dead-code cleanup.
 
 **User Story 2**:
 
@@ -287,7 +289,7 @@ npm test -- src/components/TierList/TierList.test.tsx &
 npm test -- src/components/Tier/Tier.test.tsx &
 
 # Launch utilities in parallel:
-# Developer A: T019 createDefaultTierList.ts
+# Developer A: T019 createDefaultTierList.ts (later removed; logic now lives in `src/store/tierListContext.tsx`)
 # Developer B: T015-T018 tests
 ```
 

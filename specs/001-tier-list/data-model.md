@@ -329,6 +329,8 @@ function findItemLocation(
 
 ## Validation Rules
 
+Implementation note: earlier planning referenced standalone `src/utils/validation.ts`, `src/utils/escapeHtml.ts`, and `src/utils/createDefaultTierList.ts` modules. Those files were later removed during dead-code cleanup because they were unused by production code. The rules below remain useful as specification-level constraints.
+
 ### TierList Validation
 
 ```typescript
@@ -577,11 +579,11 @@ const DEFAULT_TIERS: Omit<Tier, 'id'>[] = [
 ### Default Tier List
 
 ```typescript
-function createDefaultTierList(name: string = 'Tier List'): TierList {
+function createDefaultTierList(): TierList {
   const now = Date.now();
   return {
     id: crypto.randomUUID(),
-    name: escapeHtml(name),
+    name: 'Tier List',
     createdAt: now,
     updatedAt: now,
     tiers: DEFAULT_TIERS.map((t) => ({ ...t, id: crypto.randomUUID() })),
@@ -639,6 +641,8 @@ function isTierListItem(obj: any): obj is TierListItem {
 ---
 
 ## Utility Functions
+
+Implementation note: the helpers below are design references, not a list of current production utility modules.
 
 ### HTML Escaping
 

@@ -64,8 +64,8 @@ src/
 │   ├── tierListReducer.ts    # Reducer for all actions
 │   └── tierListContext.tsx   # Context provider
 └── utils/
-    ├── escapeHtml.ts    # HTML entity escaping
-    └── validation.ts    # Validation helpers
+    ├── generateId.ts    # UUID generation helper
+    └── imageUpload.ts   # File and image helpers
 ```
 
 ---
@@ -160,7 +160,18 @@ interface TierListContextValue {
 const TierListContext = createContext<TierListContextValue | null>(null);
 
 export function TierListProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(tierListReducer, createDefaultTierList());
+  const initialTierList = {
+    id: generateId(),
+    name: 'Tier List',
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+    tiers: DEFAULT_TIERS.map((tier) => ({ ...tier, id: generateId() })),
+    unassignedItems: [],
+    settings: DEFAULT_SETTINGS,
+    version: 1,
+  };
+
+  const [state, dispatch] = useReducer(tierListReducer, initialTierList);
 
   return (
     <TierListContext.Provider value={{ state, dispatch }}>
@@ -242,13 +253,23 @@ export function useTierListContext() {
 ### Example Test Structure
 
 ```typescript
-// features/tier-list/store/tierListReducer.test.ts
+// store/tierListReducer.test.ts
 import { tierListReducer } from './tierListReducer';
-import { createDefaultTierList } from '../utils/createDefaultTierList';
+import { DEFAULT_SETTINGS, DEFAULT_TIERS } from '../constants/tierList';
+import { generateId } from '../utils/generateId';
 
 describe('tierListReducer', () => {
   it('should add a new tier', () => {
-    const state = createDefaultTierList();
+    const state = {
+      id: generateId(),
+      name: 'Tier List',
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+      tiers: DEFAULT_TIERS.map((tier) => ({ ...tier, id: generateId() })),
+      unassignedItems: [],
+      settings: DEFAULT_SETTINGS,
+      version: 1,
+    };
     const action = { type: 'TIER_ADD' as const, payload: {} };
     const newState = tierListReducer(state, action);
 
@@ -261,18 +282,6 @@ describe('tierListReducer', () => {
 
 ## Common Patterns
 
-### HTML Escaping
-
-```typescript
-// utils/escapeHtml.ts
-export function escapeHtml(text: string): string {
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
-}
-```
-
 ### UUID Generation
 
 ```typescript
@@ -282,27 +291,22 @@ export function generateId(): string {
 }
 ```
 
-### Item Count Validation
+### Default Tier List Initialization
 
 ```typescript
-// utils/validation.ts
-const MAX_ITEMS = 100;
-const WARNING_THRESHOLD = 50;
+function createDefaultTierList(): TierList {
+  const now = Date.now();
 
-export function validateItemCount(currentCount: number): {
-  valid: boolean;
-  warning?: string;
-} {
-  if (currentCount >= MAX_ITEMS) {
-    return { valid: false, warning: `Maximum ${MAX_ITEMS} items reached` };
-  }
-  if (currentCount >= WARNING_THRESHOLD) {
-    return {
-      valid: true,
-      warning: `Warning: ${currentCount} items may affect performance`,
-    };
-  }
-  return { valid: true };
+  return {
+    id: generateId(),
+    name: 'Tier List',
+    createdAt: now,
+    updatedAt: now,
+    tiers: DEFAULT_TIERS.map((tier) => ({ ...tier, id: generateId() })),
+    unassignedItems: [],
+    settings: DEFAULT_SETTINGS,
+    version: 1,
+  };
 }
 ```
 
