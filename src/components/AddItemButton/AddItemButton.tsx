@@ -3,7 +3,7 @@
  * @packageDocumentation
  */
 
-import { type ChangeEvent, useRef } from 'react';
+import { useRef } from 'react';
 
 import { type AddItemButtonProps } from './AddItemButton.types';
 
@@ -31,7 +31,7 @@ export function AddItemButton({
   /* v8 ignore stop */
 
   /* v8 ignore start */
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files ?? []);
     if (files.length > 0) {
       onFileSelect(files);

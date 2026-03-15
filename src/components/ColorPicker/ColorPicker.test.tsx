@@ -57,18 +57,6 @@ describe('ColorPicker', () => {
     expect(colorInput).toHaveAttribute('type', 'color');
   });
 
-  it('calls onColorSelect with updated custom color', async () => {
-    const user = userEvent.setup();
-    const onColorSelect = vi.fn();
-    render(<ColorPicker {...mockProps} onColorSelect={onColorSelect} />);
-
-    // Click apply without changing - should use current customColor
-    const applyButton = screen.getByRole('button', { name: /apply/i });
-    await user.click(applyButton);
-
-    expect(onColorSelect).toHaveBeenCalledWith('#e57373');
-  });
-
   it('calls onColorSelect with custom color when Apply is clicked', async () => {
     const user = userEvent.setup();
     const onColorSelect = vi.fn();

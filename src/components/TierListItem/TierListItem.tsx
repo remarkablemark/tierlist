@@ -3,7 +3,7 @@
  * @packageDocumentation
  */
 
-import { type KeyboardEvent, useState } from 'react';
+import { useState } from 'react';
 
 import { type TierListItemComponentProps } from './TierListItem.types';
 
@@ -36,7 +36,7 @@ export function TierListItem({
     onDragEnd(dropped);
   };
 
-  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.target !== event.currentTarget) {
       return;
     }
@@ -97,7 +97,7 @@ export function TierListItem({
     setIsEditing(false);
   };
 
-  const handleLabelKeydown = (event: KeyboardEvent<HTMLInputElement>) => {
+  const handleLabelKeydown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       event.currentTarget.blur();
     } else if (event.key === 'Escape') {

@@ -3,7 +3,7 @@
  * @packageDocumentation
  */
 
-import { type KeyboardEvent, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { ColorPicker } from '../ColorPicker';
 import { type TierProps } from './Tier.types';
@@ -41,7 +41,7 @@ export function Tier({
     }
   };
 
-  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       event.currentTarget.blur();
     }

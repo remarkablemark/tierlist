@@ -4,7 +4,7 @@
  */
 
 import { DragDropProvider } from '@dnd-kit/react';
-import { type DragEvent, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTierList } from 'src/hooks/useTierList';
 import { type TierListItem as TierItemType } from 'src/types/tierList';
 import { generateId } from 'src/utils/generateId';
@@ -186,7 +186,7 @@ export function TierList() {
   };
 
   const handlePointerDragStart = (
-    event: DragEvent<HTMLDivElement>,
+    event: React.DragEvent<HTMLDivElement>,
     item: TierItemType,
   ) => {
     const dataTransfer = event.dataTransfer as DataTransfer | undefined;
