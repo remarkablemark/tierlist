@@ -374,7 +374,7 @@ export function TierList() {
           </h1>
 
           <div className="flex items-center gap-2">
-            {/* Undo/Redo */}
+            {/* Undo */}
             <button
               className="cursor-pointer rounded-md border border-slate-300 bg-white px-3 py-2 text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300 dark:hover:border-slate-500 dark:hover:bg-slate-600"
               onClick={undo}
@@ -382,8 +382,10 @@ export function TierList() {
               aria-label="Undo"
               type="button"
             >
-              Undo
+              <span className="hidden sm:inline-block">↺</span> Undo
             </button>
+
+            {/* Redo */}
             <button
               className="cursor-pointer rounded-md border border-slate-300 bg-white px-3 py-2 text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300 dark:hover:border-slate-500 dark:hover:bg-slate-600"
               onClick={redo}
@@ -391,7 +393,7 @@ export function TierList() {
               aria-label="Redo"
               type="button"
             >
-              Redo
+              <span className="hidden sm:inline-block">↻</span> Redo
             </button>
 
             {/* Add Tier Button */}
