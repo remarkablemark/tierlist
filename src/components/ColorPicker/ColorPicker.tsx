@@ -115,7 +115,7 @@ export function ColorPicker({
         </div>
 
         <button
-          className="cursor-pointer rounded-md bg-slate-100 px-3 py-1 text-slate-700 transition-colors hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
+          className="cursor-pointer rounded-md border border-slate-300 bg-white px-2 py-1 text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300 dark:hover:border-slate-500 dark:hover:bg-slate-600"
           onClick={handleCustomColorSubmit}
           type="button"
         >
