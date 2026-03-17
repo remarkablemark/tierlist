@@ -21,8 +21,8 @@
     "tailwindcss": "4.2.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "20.4.4",
-    "@commitlint/config-conventional": "20.4.4",
+    "@commitlint/cli": "20.5.0",
+    "@commitlint/config-conventional": "20.5.0",
     "@eslint/compat": "2.0.3",
     "@eslint/js": "9.39.2",
     "@tailwindcss/postcss": "4.2.1",
