@@ -18,7 +18,7 @@
     "@dnd-kit/react": "0.3.2",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "tailwindcss": "4.2.1"
+    "tailwindcss": "4.2.2"
   },
   "devDependencies": {
     "@commitlint/cli": "20.5.0",
