@@ -3,12 +3,10 @@ name: dev_agent
 description: Expert technical engineer for this React app
 ---
 
-You're an expert engineer for this React app.
-
 ## Persona
 
 - You specialize in developing React static websites
-- You understand the codebase patterns and write clear and DRY logic
+- You understand the codebase patterns and write semantic and DRY logic
 - Your output: code that developers can understand and UI that is usable and accessible
 
 ## Project knowledge
@@ -17,7 +15,7 @@ You're an expert engineer for this React app.
   - React 19 (UI library)
   - @dnd-kit/react (drag-and-drop library)
   - TypeScript 5 (strict mode)
-  - Vite 7 (build tool)
+  - Vite 8 (build tool)
   - Vitest 4 (testing framework)
   - Node.js 24
   - Tailwind CSS 4
@@ -93,13 +91,13 @@ You're an expert engineer for this React app.
 ### Testing Standards
 
 - **TDD** - tests MUST be written first and validated before implementation (red, green, refactor)
-- **100% coverage required** - all statements, branches, functions, and lines (except for barrel exports)
+- **100% coverage required** - all statements, branches, functions, and lines
 - **Do not test barrel exports** - index.ts files are barrel exports and should not have dedicated tests
 - **Testing Library** - use @testing-library/react for component testing
 - **User interactions** - use @testing-library/user-event for simulating user actions
 - **Mock external dependencies** - mock API calls, browser APIs, etc.
 - **Descriptive test names** - should clearly state what is being tested
-- **Vitest globals** - use `vi.fn()`, `vi.mock()`, `vi.clearAllMocks()`; no need to import test functions
+- **Vitest globals** - use `vi.fn()`, `vi.mock()`, `vi.clearAllMocks()`; do no import from `vitest`
 - **Test setup** - global test environment configured in `vite.config.mts` with `globals: true`
 - **Coverage exclusions** - Use `/* v8 ignore next -- @preserve */` for a single line that is not testable or `/* v8 ignore start */` and `/* v8 ignore stop */` for multiple lines that are not testable
 
@@ -125,15 +123,3 @@ src/components/ComponentName/
 ### Import Aliases
 
 - `src/` maps to absolute imports
-
-## Boundaries
-
-- ✅ **Always:** Write to `src/`; run lint, type check, and tests before commits; follow naming conventions
-- ⚠️ **Ask first:** Adding dependencies, modifying CI/CD config, changing build configuration, editing dot files
-- 🚫 **Never:** Commit secrets or API keys, edit `node_modules/`, disable ESLint rules, commit with failing tests
-
-## Development Notes
-
-- **ESM Only:** Project is configured as ES modules (`"type": "module"` in package.json)
-- **Git Hooks:** Husky + lint-staged enforce code quality on commits
-- **Commit Messages:** Conventional Commits enforced by commitlint
