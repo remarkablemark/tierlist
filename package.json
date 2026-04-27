@@ -22,7 +22,7 @@
     "tailwindcss": "4.2.4"
   },
   "devDependencies": {
-    "@commitlint/cli": "20.5.0",
+    "@commitlint/cli": "20.5.2",
     "@commitlint/config-conventional": "20.5.0",
     "@eslint/compat": "2.0.5",
     "@eslint/js": "10.0.1",
