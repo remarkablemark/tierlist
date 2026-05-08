@@ -22,8 +22,8 @@
     "tailwindcss": "4.2.4"
   },
   "devDependencies": {
-    "@commitlint/cli": "20.5.3",
-    "@commitlint/config-conventional": "20.5.3",
+    "@commitlint/cli": "21.0.0",
+    "@commitlint/config-conventional": "21.0.0",
     "@eslint/compat": "2.0.5",
     "@eslint/js": "10.0.1",
     "@rolldown/plugin-babel": "0.2.3",
