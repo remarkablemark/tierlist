@@ -19,7 +19,7 @@
     "@tailwindcss/postcss": "4.3.3",
     "react": "19.2.7",
     "react-dom": "19.2.7",
-    "tailwindcss": "4.3.2"
+    "tailwindcss": "4.3.3"
   },
   "devDependencies": {
     "@commitlint/cli": "21.2.1",
